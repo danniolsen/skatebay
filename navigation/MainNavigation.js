@@ -8,16 +8,29 @@ const Stack = createStackNavigator();
 
 function MainNavigator(props) {
   return (
-    <Stack.Navigator>
-      {props.auth && <Stack.Screen name="Auth" component={Auth} />}
+    <Fragment>
+      {props.auth && (
+        <Stack.Navigator headerMode="none">
+          <Stack.Screen name="Auth" component={Auth} />
+        </Stack.Navigator>
+      )}
+
       {!props.auth && (
-        <>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: { height: 50 }
+          }}
+        >
           <Stack.Screen name="root" component={BottomTabNavigator} />
           <Stack.Screen name="SpotDetails" component={SpotDetails} />
-        </>
+        </Stack.Navigator>
       )}
-    </Stack.Navigator>
+    </Fragment>
   );
 }
 
 export default MainNavigator;
+
+/*
+
+*/

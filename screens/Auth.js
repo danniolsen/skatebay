@@ -1,7 +1,9 @@
 import * as React from "react";
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 
-function Auth() {
+function Auth(props) {
+  let header = props;
+
   return (
     <SafeAreaView style={s.container}>
       <Text>Auth</Text>
