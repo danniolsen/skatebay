@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 
 function SpotDetails(props) {
   props.navigation.setOptions({ headerTitle: null });
-  console.log(props.route);
   return (
     <SafeAreaView style={s.container}>
       <Text>SpotDetails</Text>
