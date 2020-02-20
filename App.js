@@ -4,10 +4,10 @@ import { SplashScreen } from "expo";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
-import MainNavigator from "./navigation/MainNavigation";
-import useLinking from "./navigation/useLinking";
+import MainNavigator from "./src/navigation/MainNavigation";
+import useLinking from "./src/navigation/useLinking";
 import * as firebase from "firebase";
-import firebaseConfig from "./config/firebase";
+import firebaseConfig from "./src/config/firebase";
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -32,14 +32,12 @@ export default function App(props) {
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();
-        // Load our initial navigation state
-        setInitialNavigationState(await getInitialState());
+        setInitialNavigationState(await getInitialState()); // Load our initial navigation state
 
-        // Load fonts
         await Font.loadAsync({
           ...Ionicons.font,
-          "Roboto-Thin": require("./assets/fonts/Roboto-Thin.ttf"),
-          "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf")
+          "Roboto-Thin": require("./src/assets/fonts/Roboto-Thin.ttf"),
+          "Roboto-Regular": require("./src/assets/fonts/Roboto-Regular.ttf")
         });
       } catch (e) {
         // We might want to provide this error information to an error reporting service

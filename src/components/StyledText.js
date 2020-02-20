@@ -3,7 +3,17 @@ import { Text } from "react-native";
 
 export function ThinText(props) {
   return (
-    <Text {...props} style={[props.style, { fontFamily: "Roboto-Thin" }]} />
+    <Text
+      {...props}
+      style={[
+        props.style,
+        {
+          fontFamily: "Roboto-Thin",
+          fontSize: props.size,
+          color: props.color
+        }
+      ]}
+    />
   );
 }
 
