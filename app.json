@@ -12,7 +12,7 @@
     "splash": {
       "image": "./src/assets/images/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#f8f8f8"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -33,7 +33,7 @@
       "googleServicesFile": "./src/config/google-services.json"
     },
     "androidStatusBar": {
-      "backgroundColor": "#FFF"
+      "backgroundColor": "#F8F8F8"
     },
     "facebookScheme": "fb242532483422277",
     "facebookAppId": "242532483422277",
