@@ -22,12 +22,9 @@ export default function App(props) {
     }
 
     firebase.auth().onAuthStateChanged(user => {
-      console.log("auth state changed now");
       if (user != null) {
-        console.log(user);
         setAuthenticated(true);
       } else {
-        console.log(user);
         setAuthenticated(false);
       }
     });

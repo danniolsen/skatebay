@@ -8,23 +8,29 @@ function Auth(props) {
   return (
     <ImageBackground
       source={require("../assets/images/authBackground.png")}
-      style={{ width: "100%", height: "100%" }}
+      style={{ resizeMode: "cover", height: "100%" }}
     >
       <View style={s.content}>
         <View style={s.head}>
-          <View style={s.logo} />
-          <ThinText size={30} color="#a2a2a2">
-            Skatebay 2020.
+          <ThinText style={s.headline} size={35} color="#a2a2a2">
+            Skatebay
           </ThinText>
+          <Image source={require("../assets/images/logo.png")} style={s.logo} />
         </View>
 
-        <View style={s.midt}>
-          <ThinText>center</ThinText>
-        </View>
+        <View style={s.midt} />
 
         <View style={s.authCon}>
-          <AuthWidget type="Facebook" bg="#3c66c4" />
-          <AuthWidget type="Google" bg="#4285F4" />
+          <AuthWidget
+            onPress={() => console.log("pressed")}
+            type="Facebook"
+            bg="#3c66c4"
+          />
+          <AuthWidget
+            onPress={() => console.log("pressed")}
+            type="Google"
+            bg="#4285F4"
+          />
         </View>
       </View>
     </ImageBackground>
@@ -36,9 +42,12 @@ export default Auth;
 const s = StyleSheet.create({
   content: { flex: 1 },
   head: {
-    flex: 1.5,
+    flex: 2.4,
     alignItems: "center",
     justifyContent: "center"
+  },
+  headline: {
+    marginBottom: 20
   },
   logo: {
     width: 130,
@@ -50,7 +59,7 @@ const s = StyleSheet.create({
     color: "#F00"
   },
   midt: {
-    flex: 2.9,
+    flex: 1.4,
     alignItems: "center",
     justifyContent: "center"
   },
