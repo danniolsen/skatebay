@@ -12,6 +12,12 @@ web-report/
 
 # macOS
 .DS_Store
-.ENV
+.env
 node_modules
 .env*.local
+
+
+# keys
+google-services.json
+GoogleService-info.plist
+skatebaystore

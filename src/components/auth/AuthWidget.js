@@ -13,7 +13,7 @@ const AuthWidget = props => {
       activeOpacity={0.9}
       style={[s.button, { backgroundColor: props.bg }]}
       onPress={() => {
-        AuthGoogle();
+        props.type === "Google" ? AuthGoogle() : AuthFacebook();
       }}
     >
       <Image source={btnImg} style={s.btnImg} />

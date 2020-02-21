@@ -11,7 +11,7 @@
     "scheme": "myapp",
     "splash": {
       "image": "./src/assets/images/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -19,10 +19,37 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "host.exp.Exponent",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.4691008764-iqp9cv45cps5kmei6t3l5ep1utgdb4c0"
+        }
+      },
+      "googleServicesFile": "./src/config/GoogleService-info.plist",
       "supportsTablet": false
     },
+    "android": {
+      "package": "host.exp.Exponent",
+      "googleServicesFile": "./src/config/google-services.json"
+    },
     "androidStatusBar": {
-      "backgroundColor": "#00F"
+      "backgroundColor": "#FFF"
+    },
+    "facebookScheme": "fb242532483422277",
+    "facebookAppId": "242532483422277",
+    "facebookDisplayName": "skatebay",
+    "extra": {
+      "firebase": {
+        "apiKey": "AIzaSyDSR50q7sGKjuEzbrjjb3VYwBy0cnSA6b0",
+        "authDomain": "skatebay-f8803.firebaseapp.com",
+        "databaseURL": "https://skatebay-f8803.firebaseio.com",
+        "projectId": "skatebay-f8803",
+        "storageBucket": "skatebay-f8803.appspot.com",
+        "messagingSenderId": "4691008764"
+      },
+      "facebook": {
+        "appId": "242532483422277"
+      }
     }
   }
 }

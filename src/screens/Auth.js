@@ -2,7 +2,6 @@ import * as React from "react";
 import { StyleSheet, View, ImageBackground, Image } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { ThinText } from "../components/StyledText";
-import { AuthGoogle, AuthFacebook } from "../features/AuthSocial";
 import AuthWidget from "../components/auth/AuthWidget";
 
 function Auth(props) {

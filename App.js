@@ -6,29 +6,31 @@ import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import MainNavigator from "./src/navigation/MainNavigation";
 import useLinking from "./src/navigation/useLinking";
-import * as firebase from "firebase";
-import firebaseConfig from "./src/config/firebase";
+import { firebaseConfig, firebase } from "./src/utils/firebase";
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [initialNavigationState, setInitialNavigationState] = React.useState();
-  const [signedIn, setSignIn] = React.useState(false);
+  const [authenticated, setAuthenticated] = React.useState(false);
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
   // Load any resources or data that we need prior to rendering
+
   React.useEffect(() => {
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
 
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        setSignIn(true);
+    firebase.auth().onAuthStateChanged(user => {
+      console.log("auth state changed now");
+      if (user != null) {
+        console.log(user);
+        setAuthenticated(true);
       } else {
-        setSignIn(false);
+        console.log(user);
+        setAuthenticated(false);
       }
     });
-
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();
@@ -47,7 +49,6 @@ export default function App(props) {
         SplashScreen.hide();
       }
     }
-
     loadResourcesAndDataAsync();
   }, []);
 
@@ -61,7 +62,7 @@ export default function App(props) {
           ref={containerRef}
           initialState={initialNavigationState}
         >
-          <MainNavigator auth={signedIn} route={"Profile"} />
+          <MainNavigator auth={authenticated} route={"Profile"} />
         </NavigationContainer>
       </View>
     );
