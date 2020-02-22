@@ -6,10 +6,6 @@ import AuthWidget from "../components/auth/AuthWidget";
 import { connect } from "react-redux";
 
 function Auth(props) {
-  React.useEffect(() => {
-    const { user } = props;
-    console.log(props);
-  });
   return (
     <ImageBackground
       source={require("../assets/images/authBackground.png")}

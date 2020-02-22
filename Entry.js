@@ -7,14 +7,16 @@ import { NavigationContainer } from "@react-navigation/native";
 import MainNavigator from "./src/navigation/MainNavigation";
 import useLinking from "./src/navigation/useLinking";
 import { firebaseConfig, firebase } from "./src/utils/firebase";
+import { connect } from "react-redux";
+import { setUserState } from "./src/redux/actions/userActions";
 
-export default function App(props) {
+function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [initialNavigationState, setInitialNavigationState] = React.useState();
   const [authenticated, setAuthenticated] = React.useState(false);
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
-  // Load any resources or data that we need prior to rendering
+  const { setUserDis } = props;
 
   React.useEffect(() => {
     if (!firebase.apps.length) {
@@ -23,6 +25,7 @@ export default function App(props) {
 
     firebase.auth().onAuthStateChanged(user => {
       if (user != null) {
+        setUserDis(user);
         setAuthenticated(true);
       } else {
         setAuthenticated(false);
@@ -65,6 +68,15 @@ export default function App(props) {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  setUserDis: payload => dispatch(setUserState(payload))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(App);
 
 const styles = StyleSheet.create({
   container: {

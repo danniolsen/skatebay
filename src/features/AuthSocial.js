@@ -11,7 +11,7 @@ const AuthFacebook = async () => {
   await Facebook.initializeAsync(FACEBOOK_ID);
 
   const { type, token } = await Facebook.logInWithReadPermissionsAsync({
-    permissions: ["public_profile"]
+    permissions: ["public_profile", "email"]
   });
 
   if (type === "success") {
