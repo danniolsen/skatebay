@@ -3,8 +3,13 @@ import { StyleSheet, View, ImageBackground, Image } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { ThinText } from "../components/StyledText";
 import AuthWidget from "../components/auth/AuthWidget";
+import { connect } from "react-redux";
 
 function Auth(props) {
+  React.useEffect(() => {
+    const { user } = props;
+    console.log(props);
+  });
   return (
     <ImageBackground
       source={require("../assets/images/authBackground.png")}
@@ -37,7 +42,14 @@ function Auth(props) {
   );
 }
 
-export default Auth;
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(Auth);
 
 const s = StyleSheet.create({
   content: { flex: 1 },

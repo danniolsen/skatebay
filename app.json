@@ -6,9 +6,9 @@
     "sdkVersion": "36.0.0",
     "platforms": ["ios", "android"],
     "version": "1.0.0",
+    "scheme": "skatebayapp2020",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
-    "scheme": "myapp",
     "splash": {
       "image": "./src/assets/images/splash.png",
       "resizeMode": "cover",
@@ -25,12 +25,12 @@
           "reservedClientId": "com.googleusercontent.apps.4691008764-iqp9cv45cps5kmei6t3l5ep1utgdb4c0"
         }
       },
-      "googleServicesFile": "./src/config/GoogleService-info.plist",
+      "googleServicesFile": "./src/utils/GoogleService-info.plist",
       "supportsTablet": false
     },
     "android": {
       "package": "host.exp.Exponent",
-      "googleServicesFile": "./src/config/google-services.json"
+      "googleServicesFile": "./src/utils/google-services.json"
     },
     "androidStatusBar": {
       "backgroundColor": "#F8F8F8"
