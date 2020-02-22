@@ -3,6 +3,7 @@ import { StyleSheet, View, ImageBackground, Image } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { ThinText } from "../components/StyledText";
 import AuthWidget from "../components/auth/AuthWidget";
+import { connect } from "react-redux";
 
 function Auth(props) {
   return (
@@ -37,7 +38,14 @@ function Auth(props) {
   );
 }
 
-export default Auth;
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(Auth);
 
 const s = StyleSheet.create({
   content: { flex: 1 },
