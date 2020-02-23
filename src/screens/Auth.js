@@ -22,16 +22,8 @@ function Auth(props) {
         <View style={s.midt} />
 
         <View style={s.authCon}>
-          <AuthWidget
-            onPress={() => console.log("pressed")}
-            type="Facebook"
-            bg="#3c66c4"
-          />
-          <AuthWidget
-            onPress={() => console.log("pressed")}
-            type="Google"
-            bg="#4285F4"
-          />
+          <AuthWidget type="Facebook" bg="#3c66c4" />
+          <AuthWidget type="Google" bg="#4285F4" />
         </View>
       </View>
     </ImageBackground>

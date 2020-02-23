@@ -17,7 +17,6 @@ const AuthFacebook = async () => {
   if (type === "success") {
     const credential = firebase.auth.FacebookAuthProvider.credential(token);
 
-    // Sign in with credential from the Facebook user.
     firebase
       .auth()
       .signInWithCredential(credential)
@@ -61,4 +60,21 @@ const AuthGoogle = async () => {
   }
 };
 
-export { AuthFacebook, AuthGoogle };
+const SignOut = () => {
+  try {
+    console.log("signing out now");
+    firebase
+      .auth()
+      .signOut()
+      .then(function() {
+        alert("signed out");
+      })
+      .catch(function(error) {
+        alert("error", error);
+      });
+  } catch (e) {
+    console.log("can't sign out", e);
+  }
+};
+
+export { AuthFacebook, AuthGoogle, SignOut };

@@ -7,15 +7,15 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest --watchAll",
-    "postinstall": "remotedev-debugger --hostname localhost --port 5678 --injectserver"
+    "test": "jest --watchAll"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
     "@expo/vector-icons": "~10.0.0",
-    "@react-native-community/masked-view": "^0.1.6",
+    "@react-native-community/async-storage": "^1.8.0",
+    "@react-native-community/masked-view": "0.1.5",
     "@react-navigation/bottom-tabs": "^5.0.0",
     "@react-navigation/native": "^5.0.0",
     "@react-navigation/stack": "^5.0.0",
@@ -35,9 +35,11 @@
     "react-native-dotenv": "^0.2.0",
     "react-native-gesture-handler": "~1.5.0",
     "react-native-safe-area-context": "0.6.0",
-    "react-native-screens": "^2.0.0-beta.10",
+    "react-native-screens": "2.0.0-alpha.12",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "remote-redux-devtools": "^0.5.16"
   },

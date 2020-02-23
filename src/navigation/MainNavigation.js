@@ -26,7 +26,7 @@ function MainNavigator(props) {
       )}
 
       {props.auth && !loading && (
-        <Stack.Navigator screenOptions={{ headerStyle: { height: 50 } }}>
+        <Stack.Navigator>
           <Stack.Screen name="root" component={BottomTabNavigator} />
           <Stack.Screen name="SpotDetails" component={SpotDetails} />
         </Stack.Navigator>

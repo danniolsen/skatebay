@@ -4,11 +4,6 @@ import { StyleSheet, SafeAreaView, Text, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 
 function SpotList(props) {
-  React.useEffect(() => {
-    const { user } = props;
-    console.log(user);
-  });
-
   let details = {
     id: "bla",
     location: "here"
@@ -27,13 +22,12 @@ function SpotList(props) {
   );
 }
 
-const mapStateToProps = state => ({
-  user: state.user
-});
+const mapStateToProps = state => ({});
+const mapDispatchToProps = dispatch => ({});
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(SpotList);
 
 const s = StyleSheet.create({

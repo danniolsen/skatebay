@@ -24,6 +24,7 @@ function App(props) {
     }
 
     firebase.auth().onAuthStateChanged(user => {
+      console.log("auth state hsa changed");
       if (user != null) {
         setUserDis(user);
         setAuthenticated(true);
