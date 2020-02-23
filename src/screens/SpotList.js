@@ -1,15 +1,18 @@
 import * as React from "react";
 import { ThinText, NormalText } from "../components/StyledText";
-import { StyleSheet, SafeAreaView, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
+import Header from "../components/header/Header";
 
 function SpotList(props) {
+  const { user } = props;
   let details = {
     id: "bla",
     location: "here"
   };
   return (
-    <SafeAreaView style={s.container}>
+    <View style={s.container}>
+      <Header rightIcon="filter" rightAction={() => alert("filtering")} />
       <ThinText>spot list</ThinText>
       <TouchableOpacity
         onPress={() => {
@@ -18,11 +21,11 @@ function SpotList(props) {
       >
         <Text>to details</Text>
       </TouchableOpacity>
-    </SafeAreaView>
+    </View>
   );
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({ user: state.user });
 const mapDispatchToProps = dispatch => ({});
 
 export default connect(

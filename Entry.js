@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Platform, StatusBar, StyleSheet, View } from "react-native";
+import { Platform, StatusBar, StyleSheet, SafeAreaView } from "react-native";
 import { SplashScreen } from "expo";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,7 +16,7 @@ function App(props) {
   const [authenticated, setAuthenticated] = React.useState(false);
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
-  const { setUserDis } = props;
+  const { setUserDis, user } = props;
 
   React.useEffect(() => {
     if (!firebase.apps.length) {
@@ -24,14 +24,12 @@ function App(props) {
     }
 
     firebase.auth().onAuthStateChanged(user => {
-      console.log("auth state hsa changed");
       if (user != null) {
         setUserDis(user);
         setAuthenticated(true);
-      } else {
-        setAuthenticated(false);
       }
     });
+
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();
@@ -57,15 +55,15 @@ function App(props) {
     return null;
   } else {
     return (
-      <View style={styles.container}>
-        <StatusBar backgroundColor="#F8f8f8f8" barStyle="dark-content" />
+      <SafeAreaView style={styles.container}>
+        <StatusBar backgroundColor="#FFF" barStyle="dark-content" />
         <NavigationContainer
           ref={containerRef}
           initialState={initialNavigationState}
         >
-          <MainNavigator auth={authenticated} route={"Profile"} />
+          <MainNavigator auth={authenticated} />
         </NavigationContainer>
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -73,9 +71,11 @@ function App(props) {
 const mapDispatchToProps = dispatch => ({
   setUserDis: payload => dispatch(setUserState(payload))
 });
-
+const mapStateToProps = state => ({
+  user: state.user
+});
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(App);
 

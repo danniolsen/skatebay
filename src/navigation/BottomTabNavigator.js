@@ -10,12 +10,14 @@ const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = "UserProfile";
 
 export default function BottomTabNavigator({ navigation, route }) {
-  navigation.setOptions({ headerTitle: null });
+  navigation.setOptions({ title: null });
 
   return (
     <BottomTab.Navigator
       initialRouteName={INITIAL_ROUTE_NAME}
-      tabBarOptions={{ showLabel: false }}
+      tabBarOptions={{
+        showLabel: false
+      }}
     >
       <BottomTab.Screen
         name="SpotList"

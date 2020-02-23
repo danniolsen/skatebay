@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Text, SafeAreaView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, View, SafeAreaView } from "react-native";
 import BottomTabNavigator from "./BottomTabNavigator";
 import Auth from "../screens/Auth";
 import SpotDetails from "../screens/SpotDetails";
@@ -17,7 +17,7 @@ function MainNavigator(props) {
   }, []);
 
   return (
-    <Fragment>
+    <View style={{ flex: 1 }}>
       {loading && <Loading />}
       {!props.auth && !loading && (
         <Stack.Navigator headerMode="none">
@@ -26,12 +26,12 @@ function MainNavigator(props) {
       )}
 
       {props.auth && !loading && (
-        <Stack.Navigator>
+        <Stack.Navigator headerMode="none">
           <Stack.Screen name="root" component={BottomTabNavigator} />
           <Stack.Screen name="SpotDetails" component={SpotDetails} />
         </Stack.Navigator>
       )}
-    </Fragment>
+    </View>
   );
 }
 

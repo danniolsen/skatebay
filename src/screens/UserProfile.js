@@ -1,31 +1,32 @@
 import * as React from "react";
-import { StyleSheet, Text, View, ScrollView, SafeAreaView } from "react-native";
-import { Image } from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { Image, ImageBackground } from "react-native";
 import { connect } from "react-redux";
-import { SignOut } from "../features/AuthSocial";
+import Header from "../components/header/Header";
+
 function UserProfile(props) {
-  const { user } = props;
+  const { user, navigation } = props;
 
   React.useEffect(() => {}, []);
   return (
-    <SafeAreaView style={s.container}>
+    <View style={s.container}>
+      <Header rightIcon="settings" rightAction={() => navigation.goBack()} />
       <ScrollView>
-        <View style={s.profileCon}>
-          <Image
-            style={s.profileImg}
-            source={{
-              uri: `${user.user.photo}?type=large`
-            }}
-          />
-        </View>
-        <View style={s.optionsCon}>
-          <Text>options</Text>
-        </View>
-        <View style={s.spotsCon}>
-          <Text onPress={() => SignOut()}>{user.user.uid}</Text>
-        </View>
+        <ImageBackground
+          blurRadius={4}
+          style={s.profileCon}
+          resizeMode="cover"
+          source={{ uri: `${user.user.photo}?type=large` }}
+        >
+          <View style={s.overlay}>
+            <Image
+              style={s.profileImage}
+              source={{ uri: `${user.user.photo}?type=large` }}
+            />
+          </View>
+        </ImageBackground>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -41,15 +42,15 @@ export default connect(
 
 const s = StyleSheet.create({
   container: { flex: 1 },
-  profileCon: { alignItems: "center", paddingTop: 20 },
-  profileImg: {
+  profileCon: { flex: 1, justifyContent: "center" },
+  overlay: { alignItems: "center", backgroundColor: "rgba(105,105,105,0.3)" },
+  profileImage: {
     width: 100,
     height: 100,
-    borderRadius: 15,
-    borderWidth: 3,
+    marginTop: 40,
+    marginBottom: 40,
     borderColor: "#FFF",
-    resizeMode: "cover"
-  },
-  optionsCon: { backgroundColor: "#EEE" },
-  spotsCon: { backgroundColor: "#CCC" }
+    borderWidth: 5,
+    borderRadius: 20
+  }
 });

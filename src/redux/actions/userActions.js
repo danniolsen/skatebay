@@ -16,7 +16,7 @@ const setUserState = user => {
       displayName: user.displayName,
       email: user.email,
       photo: user.photoURL,
-      uid: user.providerData[0].uid
+      uid: user.uid
     };
     dispatch(fetchUserSuccess({ user: userStructure }));
   };
