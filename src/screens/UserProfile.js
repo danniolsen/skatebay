@@ -7,10 +7,12 @@ import Header from "../components/header/Header";
 function UserProfile(props) {
   const { user, navigation } = props;
 
-  React.useEffect(() => {}, []);
   return (
     <View style={s.container}>
-      <Header rightIcon="settings" rightAction={() => navigation.goBack()} />
+      <Header
+        rightIcon="settings"
+        rightAction={() => navigation.push("Settings")}
+      />
       <ScrollView>
         <ImageBackground
           blurRadius={4}

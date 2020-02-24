@@ -11,7 +11,6 @@ import { SignOut } from "../../features/AuthSocial";
 const setUserState = user => {
   const setUser = (dispatch, error) => {
     dispatch(fetchUserBegin);
-    console.log(user.photoURL);
     const userStructure = {
       displayName: user.displayName,
       email: user.email,
@@ -26,6 +25,7 @@ const setUserState = user => {
 const clearUserState = () => {
   const clearUser = dispatch => {
     dispatch(clearUserSuccess);
+    SignOut();
   };
   return clearUser;
 };

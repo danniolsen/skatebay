@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Platform, StatusBar, StyleSheet, SafeAreaView } from "react-native";
+import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { SplashScreen } from "expo";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
@@ -22,11 +22,13 @@ function App(props) {
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
-
     firebase.auth().onAuthStateChanged(user => {
       if (user != null) {
         setUserDis(user);
         setAuthenticated(true);
+      } else {
+        setUserDis({ user: {} });
+        setAuthenticated(false);
       }
     });
 
@@ -55,7 +57,7 @@ function App(props) {
     return null;
   } else {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <StatusBar backgroundColor="#FFF" barStyle="dark-content" />
         <NavigationContainer
           ref={containerRef}
@@ -63,7 +65,7 @@ function App(props) {
         >
           <MainNavigator auth={authenticated} />
         </NavigationContainer>
-      </SafeAreaView>
+      </View>
     );
   }
 }

@@ -12,7 +12,7 @@ function SpotList(props) {
   };
   return (
     <View style={s.container}>
-      <Header rightIcon="filter" rightAction={() => alert("filtering")} />
+      <Header rightIcon="sliders" rightAction={() => alert("filtering")} />
       <ThinText>spot list</ThinText>
       <TouchableOpacity
         onPress={() => {

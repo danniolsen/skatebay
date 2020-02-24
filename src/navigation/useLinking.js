@@ -12,7 +12,8 @@ export default function(containerRef) {
           ExploreMap: "ExploreMap",
           SpotUpload: "SpotUpload",
           UserProfile: "UserProfile",
-          SpotDetails: "SpotDetails"
+          SpotDetails: "SpotDetails",
+          Settings: "Settings"
         }
       }
     }

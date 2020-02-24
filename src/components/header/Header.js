@@ -31,7 +31,7 @@ export default Header;
 
 const s = StyleSheet.create({
   container: {
-    backgroundColor: "#F8F8F8",
+    backgroundColor: "#FFF",
     flexDirection: "row",
     paddingTop: 13,
     alignItems: "center",

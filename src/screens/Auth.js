@@ -16,7 +16,12 @@ function Auth(props) {
           <ThinText style={s.headline} size={35} color="#a2a2a2">
             Skatebay
           </ThinText>
-          <Image source={require("../assets/images/logo.png")} style={s.logo} />
+          <View style={s.logoCon}>
+            <Image
+              source={require("../assets/images/logo.png")}
+              style={s.logo}
+            />
+          </View>
         </View>
 
         <View style={s.midt} />
@@ -49,11 +54,10 @@ const s = StyleSheet.create({
   headline: {
     marginBottom: 20
   },
+  logoCon: { backgroundColor: "#FFF", padding: 10, borderRadius: 20 },
   logo: {
-    width: 130,
-    height: 130,
-    borderRadius: 35,
-    backgroundColor: "#FFF"
+    width: 100,
+    height: 100
   },
   headText: {
     color: "#F00"

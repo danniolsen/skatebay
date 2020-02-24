@@ -60,20 +60,17 @@ const AuthGoogle = async () => {
   }
 };
 
-const SignOut = () => {
+const SignOut = async () => {
   try {
-    console.log("signing out now");
     firebase
       .auth()
       .signOut()
-      .then(function() {
-        alert("signed out");
-      })
+      .then(function() {})
       .catch(function(error) {
         alert("error", error);
       });
   } catch (e) {
-    console.log("can't sign out", e);
+    alert("Something went ");
   }
 };
 
