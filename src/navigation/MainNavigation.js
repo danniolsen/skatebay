@@ -6,21 +6,17 @@ import SpotDetails from "../screens/SpotDetails";
 import Settings from "../screens/Settings";
 import Loading from "../screens/Loading";
 import { createStackNavigator } from "@react-navigation/stack";
+import { connect } from "react-redux";
+
 const Stack = createStackNavigator();
 
 function MainNavigator(props) {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, []);
+  const { loading } = props;
 
   return (
     <View style={{ flex: 1 }}>
-      {loading && <Loading />}
-      {props.auth && !loading && (
+      {loading.loading && <Loading />}
+      {props.auth && !loading.loading && (
         <SafeAreaView style={{ flex: 1 }}>
           <Stack.Navigator headerMode="none">
             <Stack.Screen name="root" component={BottomTabNavigator} />
@@ -29,7 +25,7 @@ function MainNavigator(props) {
           </Stack.Navigator>
         </SafeAreaView>
       )}
-      {!props.auth && !loading && (
+      {!props.auth && !loading.loading && (
         <Stack.Navigator headerMode="none">
           <Stack.Screen name="Auth" component={Auth} />
         </Stack.Navigator>
@@ -38,4 +34,11 @@ function MainNavigator(props) {
   );
 }
 
-export default MainNavigator;
+const mapStateToProps = state => ({
+  loading: state.loading
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(MainNavigator);
