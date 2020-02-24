@@ -1,8 +1,9 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Text, SafeAreaView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, View, SafeAreaView } from "react-native";
 import BottomTabNavigator from "./BottomTabNavigator";
 import Auth from "../screens/Auth";
 import SpotDetails from "../screens/SpotDetails";
+import Settings from "../screens/Settings";
 import Loading from "../screens/Loading";
 import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
@@ -13,25 +14,27 @@ function MainNavigator(props) {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 2000);
   }, []);
 
   return (
-    <Fragment>
+    <View style={{ flex: 1 }}>
       {loading && <Loading />}
+      {props.auth && !loading && (
+        <SafeAreaView style={{ flex: 1 }}>
+          <Stack.Navigator headerMode="none">
+            <Stack.Screen name="root" component={BottomTabNavigator} />
+            <Stack.Screen name="SpotDetails" component={SpotDetails} />
+            <Stack.Screen name="Settings" component={Settings} />
+          </Stack.Navigator>
+        </SafeAreaView>
+      )}
       {!props.auth && !loading && (
         <Stack.Navigator headerMode="none">
           <Stack.Screen name="Auth" component={Auth} />
         </Stack.Navigator>
       )}
-
-      {props.auth && !loading && (
-        <Stack.Navigator screenOptions={{ headerStyle: { height: 50 } }}>
-          <Stack.Screen name="root" component={BottomTabNavigator} />
-          <Stack.Screen name="SpotDetails" component={SpotDetails} />
-        </Stack.Navigator>
-      )}
-    </Fragment>
+    </View>
   );
 }
 

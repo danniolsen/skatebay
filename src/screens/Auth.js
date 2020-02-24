@@ -16,22 +16,19 @@ function Auth(props) {
           <ThinText style={s.headline} size={35} color="#a2a2a2">
             Skatebay
           </ThinText>
-          <Image source={require("../assets/images/logo.png")} style={s.logo} />
+          <View style={s.logoCon}>
+            <Image
+              source={require("../assets/images/logo.png")}
+              style={s.logo}
+            />
+          </View>
         </View>
 
         <View style={s.midt} />
 
         <View style={s.authCon}>
-          <AuthWidget
-            onPress={() => console.log("pressed")}
-            type="Facebook"
-            bg="#3c66c4"
-          />
-          <AuthWidget
-            onPress={() => console.log("pressed")}
-            type="Google"
-            bg="#4285F4"
-          />
+          <AuthWidget type="Facebook" bg="#3c66c4" />
+          <AuthWidget type="Google" bg="#4285F4" />
         </View>
       </View>
     </ImageBackground>
@@ -57,11 +54,10 @@ const s = StyleSheet.create({
   headline: {
     marginBottom: 20
   },
+  logoCon: { backgroundColor: "#FFF", padding: 10, borderRadius: 20 },
   logo: {
-    width: 130,
-    height: 130,
-    borderRadius: 35,
-    backgroundColor: "#FFF"
+    width: 100,
+    height: 100
   },
   headText: {
     color: "#F00"

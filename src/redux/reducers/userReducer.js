@@ -1,7 +1,8 @@
 import {
   FETCH_USER_BEGIN,
   FETCH_USER_SUCCESS,
-  FETCH_USER_FAILURE
+  FETCH_USER_FAILURE,
+  CLEAR_USER_SUCCESS
 } from "../types/userTypes";
 
 const initialState = {
@@ -31,8 +32,15 @@ const userReducer = (state = initialState, action) => {
         user: action.payload.user,
         userError: null
       };
+    case CLEAR_USER_SUCCESS:
+      return {
+        ...state,
+        user: {},
+        userLoading: false,
+        userError: null
+      };
     default:
-      return initialState;
+      return state;
   }
 };
 

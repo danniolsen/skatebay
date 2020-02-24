@@ -16,21 +16,22 @@ function App(props) {
   const [authenticated, setAuthenticated] = React.useState(false);
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
-  const { setUserDis } = props;
+  const { setUserDis, user } = props;
 
   React.useEffect(() => {
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
-
     firebase.auth().onAuthStateChanged(user => {
       if (user != null) {
         setUserDis(user);
         setAuthenticated(true);
       } else {
+        setUserDis({ user: {} });
         setAuthenticated(false);
       }
     });
+
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();
@@ -57,12 +58,12 @@ function App(props) {
   } else {
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="#F8f8f8f8" barStyle="dark-content" />
+        <StatusBar backgroundColor="#FFF" barStyle="dark-content" />
         <NavigationContainer
           ref={containerRef}
           initialState={initialNavigationState}
         >
-          <MainNavigator auth={authenticated} route={"Profile"} />
+          <MainNavigator auth={authenticated} />
         </NavigationContainer>
       </View>
     );
@@ -72,9 +73,11 @@ function App(props) {
 const mapDispatchToProps = dispatch => ({
   setUserDis: payload => dispatch(setUserState(payload))
 });
-
+const mapStateToProps = state => ({
+  user: state.user
+});
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(App);
 

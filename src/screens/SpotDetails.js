@@ -1,12 +1,16 @@
 import * as React from "react";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import Header from "../components/header/Header";
 
 function SpotDetails(props) {
-  props.navigation.setOptions({ headerTitle: null });
   return (
-    <SafeAreaView style={s.container}>
+    <View style={s.container}>
+      <Header
+        leftIcon="chevron-left"
+        leftAction={() => props.navigation.goBack()}
+      />
       <Text>SpotDetails</Text>
-    </SafeAreaView>
+    </View>
   );
 }
 

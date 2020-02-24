@@ -19,6 +19,16 @@ export function ThinText(props) {
 
 export function NormalText(props) {
   return (
-    <Text {...props} style={[props.style, { fontFamily: "Roboto-Regular" }]} />
+    <Text
+      {...props}
+      style={[
+        props.style,
+        {
+          fontFamily: "Roboto-Regular",
+          fontSize: props.size,
+          color: props.color
+        }
+      ]}
+    />
   );
 }
