@@ -16,9 +16,10 @@ function App(props) {
   const [authenticated, setAuthenticated] = React.useState(false);
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
-  const { setUserDis, user, setLoadingDis } = props;
+  const { setUserDis, user, startLoadingDis, stopLoadingDis } = props;
 
   React.useEffect(() => {
+    startLoadingDis();
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
@@ -26,11 +27,11 @@ function App(props) {
       if (user != null) {
         setUserDis(user);
         setAuthenticated(true);
-        setLoadingDis();
+        stopLoadingDis();
       } else {
         setUserDis({ user: {} });
         setAuthenticated(false);
-        setLoadingDis();
+        stopLoadingDis();
       }
     });
 
@@ -78,7 +79,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setUserDis: payload => dispatch(setUserState(payload)),
-  setLoadingDis: payload => dispatch({ type: "LOADING_STOP" })
+  startLoadingDis: payload => dispatch({ type: "LOADING_START" }),
+  stopLoadingDis: payload => dispatch({ type: "LOADING_STOP" })
 });
 
 export default connect(
