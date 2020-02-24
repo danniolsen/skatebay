@@ -1,8 +1,19 @@
 import { combineReducers } from "redux";
 import User from "./userReducer";
 import Loading from "./loadingReducer";
+import { SignOut } from "../../features/AuthSocial";
 
-export default combineReducers({
+const appReducer = combineReducers({
   user: User,
   loading: Loading
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === "SIGN_OUT") {
+    SignOut();
+    state = undefined;
+  }
+  return appReducer(state, action);
+};
+
+export default rootReducer;

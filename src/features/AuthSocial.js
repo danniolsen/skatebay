@@ -44,10 +44,10 @@ const AuthGoogle = async () => {
         .auth()
         .signInWithCredential(credential)
         .then(res => {
-          // user res, create your user, do whatever you want
+          //hey
         })
         .catch(error => {
-          alert(error);
+          alert("Something went wrong");
           return null;
         });
     } else {

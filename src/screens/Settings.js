@@ -3,7 +3,6 @@ import { FlatList, StyleSheet, View, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import { NormalText } from "../components/StyledText";
 import Header from "../components/header/Header";
-import { SignOut } from "../features/AuthSocial";
 
 function Settings(props) {
   const { navigation, signOutDis } = props;
@@ -13,7 +12,7 @@ function Settings(props) {
       <FlatList
         data={listData}
         renderItem={({ item }) => (
-          <Item title={item.title} action={() => SignOut()} />
+          <Item title={item.title} action={() => signOutDis()} />
         )}
         keyExtractor={item => item.title}
       />
@@ -32,7 +31,14 @@ const Item = props => {
   );
 };
 
-export default Settings;
+const mapDispatchToProps = dispatch => ({
+  signOutDis: payload => dispatch({ type: "SIGN_OUT" })
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Settings);
 
 const s = StyleSheet.create({
   listItem: {

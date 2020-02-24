@@ -1,7 +1,8 @@
 import * as React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import { Image, ImageBackground } from "react-native";
+import { Image, ImageBackground, Animated } from "react-native";
 import { connect } from "react-redux";
+import { ThinText } from "../components/StyledText";
 import Header from "../components/header/Header";
 
 function UserProfile(props) {
@@ -21,6 +22,9 @@ function UserProfile(props) {
           source={{ uri: `${user.user.photo}?type=large` }}
         >
           <View style={s.overlay}>
+            <ThinText style={s.displayName} color="#FFF" size={20}>
+              {user.user.displayName}
+            </ThinText>
             <Image
               style={s.profileImage}
               source={{ uri: `${user.user.photo}?type=large` }}
@@ -45,14 +49,21 @@ export default connect(
 const s = StyleSheet.create({
   container: { flex: 1 },
   profileCon: { flex: 1, justifyContent: "center" },
-  overlay: { alignItems: "center", backgroundColor: "rgba(105,105,105,0.3)" },
+  overlay: {
+    alignItems: "center",
+    backgroundColor: "rgba(105,105,105,0.6)",
+    paddingTop: 15,
+    paddingBottom: 15
+  },
+  displayName: {
+    padding: 5,
+    marginBottom: 15
+  },
   profileImage: {
-    width: 100,
-    height: 100,
-    marginTop: 40,
-    marginBottom: 40,
+    width: 150,
+    height: 150,
     borderColor: "#FFF",
     borderWidth: 5,
-    borderRadius: 20
+    borderRadius: 75
   }
 });

@@ -10,6 +10,10 @@ import { firebaseConfig, firebase } from "./src/utils/firebase";
 import { connect } from "react-redux";
 import { setUserState } from "./src/redux/actions/userActions";
 
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
 function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [initialNavigationState, setInitialNavigationState] = React.useState();
@@ -19,22 +23,17 @@ function App(props) {
   const { setUserDis, user, startLoadingDis, stopLoadingDis } = props;
 
   React.useEffect(() => {
-    startLoadingDis();
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
     firebase.auth().onAuthStateChanged(user => {
+      console.log("in state change");
       if (user != null) {
         setUserDis(user);
         setAuthenticated(true);
         stopLoadingDis();
       } else {
-        setUserDis({ user: {} });
         setAuthenticated(false);
         stopLoadingDis();
       }
     });
-
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();
