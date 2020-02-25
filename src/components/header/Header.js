@@ -36,9 +36,7 @@ const s = StyleSheet.create({
     paddingTop: 13,
     alignItems: "center",
     paddingBottom: 13,
-    height: 56,
-    borderBottomWidth: 1,
-    borderBottomColor: "#CCC"
+    height: 56
   },
   left: {
     flex: 1,
