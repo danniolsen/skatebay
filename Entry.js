@@ -19,9 +19,11 @@ function App(props) {
   const [initialNavigationState, setInitialNavigationState] = React.useState();
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
-  const { setUserDis, user, stopLoadingDis, auth } = props;
+  const { setUserDis, user, auth } = props;
+  const { stopLoadingDis, startLoadingDis } = props;
 
   React.useEffect(() => {
+    startLoadingDis();
     firebase.auth().onAuthStateChanged(user => {
       if (user != null) {
         firebase
@@ -79,7 +81,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setUserDis: payload => dispatch(setUserState(payload)),
-  stopLoadingDis: payload => dispatch({ type: "LOADING_STOP" })
+  stopLoadingDis: payload => dispatch({ type: "LOADING_STOP" }),
+  startLoadingDis: payload => dispatch({ type: "LOADING_START" })
 });
 
 export default connect(
