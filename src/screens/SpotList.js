@@ -1,26 +1,33 @@
 import * as React from "react";
 import { ThinText, NormalText } from "../components/StyledText";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity, FlatList } from "react-native";
 import { connect } from "react-redux";
 import Header from "../components/header/Header";
+import LocationService from "../features/LocationService";
 
 function SpotList(props) {
   const { user } = props;
-  let details = {
-    id: "bla",
-    location: "here"
-  };
+
+  React.useEffect(() => {
+    LocationService()
+      .then(loc => {
+        console.log(loc);
+      })
+      .catch(e => {
+        alert(e);
+      });
+  }, []);
+
   return (
     <View style={s.container}>
       <Header rightIcon="sliders" rightAction={() => alert("filtering")} />
-      <ThinText>spot list</ThinText>
-      <TouchableOpacity
-        onPress={() => {
-          props.navigation.push("SpotDetails", { details });
-        }}
-      >
-        <Text>to details</Text>
-      </TouchableOpacity>
+
+      <ThinText>get users location</ThinText>
+      <ThinText>load spotlist</ThinText>
+      <ThinText>inject ad for every 5 spot</ThinText>
+      <ThinText>enter spot to see details</ThinText>
+      <NormalText>lat: comming soon</NormalText>
+      <NormalText>lon: comming soon</NormalText>
     </View>
   );
 }
