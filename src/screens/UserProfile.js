@@ -6,6 +6,7 @@ import { ThinText, NormalText } from "../components/StyledText";
 import Header from "../components/header/Header";
 import { Feather } from "@expo/vector-icons";
 import ProfileHeader from "../components/profile/ProfileHeader";
+import ProfileSpot from "../components/profile/ProfileSpot";
 
 function UserProfile(props) {
   const { user, navigation } = props;
@@ -24,16 +25,18 @@ function UserProfile(props) {
         rightAction={() => navigation.push("Settings")}
       />
       <FlatList
+        style={{ flexDirection: "column" }}
         ListHeaderComponent={
           <ProfileHeader user={user}>
             <Option icon="bookmark" number={"3391"} />
             <Option icon="layers" number={"0"} />
           </ProfileHeader>
         }
+        numColumns={4}
         data={data}
         onRefresh={() => getData()}
         refreshing={refreshing}
-        renderItem={({ item }) => <ThinText>{item.id}</ThinText>}
+        renderItem={({ item }) => <ProfileSpot text={item.id} />}
         keyExtractor={item => item.id}
         ListEmptyComponent={() => <ThinText>no data provided</ThinText>}
       />
@@ -66,7 +69,6 @@ export default connect(
 
 const s = StyleSheet.create({
   container: { flex: 1 },
-
   option: {
     flex: 1,
     padding: 10,

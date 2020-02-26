@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, ImageBackground, View, Image } from "react-native";
+import { Dimensions } from "react-native";
 
+const width = Dimensions.get("window").width;
 function ProfileHeader(props) {
   let user = props.user;
   let type = user.provider != "google.com" ? "?type=large" : "?sz=180";
@@ -23,7 +25,7 @@ function ProfileHeader(props) {
 }
 
 const s = StyleSheet.create({
-  profileCon: { flex: 1 },
+  profileCon: { flex: 1, width: width, marginBottom: 2 },
   overlay: {
     backgroundColor: "rgba(105,105,105,0.6)",
     paddingTop: 15,
