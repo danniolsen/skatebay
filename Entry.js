@@ -10,31 +10,34 @@ import { firebaseConfig, firebase } from "./src/utils/firebase";
 import { connect } from "react-redux";
 import { setUserState } from "./src/redux/actions/userActions";
 
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
 function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [initialNavigationState, setInitialNavigationState] = React.useState();
   const [authenticated, setAuthenticated] = React.useState(false);
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
-  const { setUserDis, user, startLoadingDis, stopLoadingDis } = props;
+  const { setUserDis, user, stopLoadingDis } = props;
 
   React.useEffect(() => {
-    startLoadingDis();
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
     firebase.auth().onAuthStateChanged(user => {
+      console.log("auth state change");
       if (user != null) {
-        setUserDis(user);
-        setAuthenticated(true);
-        stopLoadingDis();
+        firebase
+          .auth()
+          .currentUser.getIdToken(true)
+          .then(function(idToken) {
+            setUserDis(idToken);
+            setAuthenticated(true); // set this auth from redux when user is verified
+          });
       } else {
-        setUserDis({ user: {} });
         setAuthenticated(false);
         stopLoadingDis();
       }
     });
-
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();
@@ -79,7 +82,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setUserDis: payload => dispatch(setUserState(payload)),
-  startLoadingDis: payload => dispatch({ type: "LOADING_START" }),
   stopLoadingDis: payload => dispatch({ type: "LOADING_STOP" })
 });
 

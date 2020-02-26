@@ -45,7 +45,7 @@ const s = StyleSheet.create({
   },
   icon: { color: "#2f3c41" },
   center: {
-    flex: 5,
+    flex: 7,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center"
