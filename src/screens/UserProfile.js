@@ -1,40 +1,42 @@
 import * as React from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, FlatList } from "react-native";
 import { Image, ImageBackground, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import { ThinText, NormalText } from "../components/StyledText";
 import Header from "../components/header/Header";
 import { Feather } from "@expo/vector-icons";
+import ProfileHeader from "../components/profile/ProfileHeader";
 
 function UserProfile(props) {
   const { user, navigation } = props;
-  let type = user.user.provider != "google.com" ? "?type=large" : "?sz=180";
+  const [refreshing, setRefreshing] = React.useState(false);
+  const getData = () => {
+    setRefreshing(true);
+    //fetch data here.
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  };
   return (
     <View style={s.container}>
       <Header
         rightIcon="settings"
         rightAction={() => navigation.push("Settings")}
       />
-      <ScrollView>
-        <ImageBackground
-          blurRadius={4}
-          style={s.profileCon}
-          resizeMode="cover"
-          source={{ uri: `${user.user.photo}${type}` }}
-        >
-          <View style={s.overlay}>
-            <Image
-              style={s.profileImage}
-              source={{ uri: `${user.user.photo}${type}` }}
-            />
-            <View style={s.optionsCon}>
-              <Option icon="bookmark" number={3391} />
-              <Option icon="layers" number={0} />
-              <Option icon="user" number={user.user.displayName} />
-            </View>
-          </View>
-        </ImageBackground>
-      </ScrollView>
+      <FlatList
+        ListHeaderComponent={
+          <ProfileHeader user={user}>
+            <Option icon="bookmark" number={"3391"} />
+            <Option icon="layers" number={"0"} />
+          </ProfileHeader>
+        }
+        data={data}
+        onRefresh={() => getData()}
+        refreshing={refreshing}
+        renderItem={({ item }) => <ThinText>{item.id}</ThinText>}
+        keyExtractor={item => item.id}
+        ListEmptyComponent={() => <ThinText>no data provided</ThinText>}
+      />
     </View>
   );
 }
@@ -53,7 +55,7 @@ const Option = props => {
 };
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user.user
 });
 const mapDispatchToProps = dispatch => ({});
 
@@ -64,23 +66,7 @@ export default connect(
 
 const s = StyleSheet.create({
   container: { flex: 1 },
-  profileCon: { flex: 1 },
-  overlay: {
-    backgroundColor: "rgba(105,105,105,0.6)",
-    paddingTop: 15,
-    paddingBottom: 5,
-    alignItems: "center"
-  },
-  profileImage: {
-    width: 120,
-    height: 120,
-    borderColor: "#FFF",
-    borderWidth: 5,
-    borderRadius: 75
-  },
-  optionsCon: {
-    flexDirection: "row"
-  },
+
   option: {
     flex: 1,
     padding: 10,
@@ -91,3 +77,15 @@ const s = StyleSheet.create({
   },
   number: { marginTop: 2, marginLeft: 10 }
 });
+
+const data = [
+  { id: "1", img: "" },
+  { id: "2", img: "" },
+  { id: "3", img: "" },
+  { id: "4", img: "" },
+  { id: "5", img: "" },
+  { id: "6", img: "" },
+  { id: "7", img: "" },
+  { id: "8", img: "" },
+  { id: "9", img: "" }
+];

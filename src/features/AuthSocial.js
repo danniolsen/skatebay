@@ -7,16 +7,14 @@ import {
   ANDROID_CLIENT_ID
 } from "react-native-dotenv";
 
+// signin with facebook
 const AuthFacebook = async () => {
   await Facebook.initializeAsync(FACEBOOK_ID);
-
   const { type, token } = await Facebook.logInWithReadPermissionsAsync({
     permissions: ["public_profile", "email"]
   });
-
   if (type === "success") {
     const credential = firebase.auth.FacebookAuthProvider.credential(token);
-
     firebase
       .auth()
       .signInWithCredential(credential)
@@ -28,6 +26,7 @@ const AuthFacebook = async () => {
   }
 };
 
+// sign in with google
 const AuthGoogle = async () => {
   try {
     const result = await Google.logInAsync({
@@ -60,6 +59,7 @@ const AuthGoogle = async () => {
   }
 };
 
+// sign out of firebase
 const SignOut = async () => {
   try {
     firebase
