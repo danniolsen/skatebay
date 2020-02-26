@@ -2,14 +2,18 @@ import { loadingStart, loadingStop } from "../types/loadingTypes";
 
 const setLoadingStart = () => {
   const startLoading = (dispatch, error) => {
-    dispatch(fetchUserSuccess(loadingStart()));
+    dispatch(loadingStart());
+
+    setTimeout(() => {
+      dispatch(loadingStop());
+    }, 3000);
   };
   return startLoading;
 };
 
 const setLoadingStop = () => {
   const stopLoading = (dispatch, error) => {
-    dispatch(fetchUserSuccess(loadingStop()));
+    dispatch(loadingStop());
   };
   return stopLoading;
 };
