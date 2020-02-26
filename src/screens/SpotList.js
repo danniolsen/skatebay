@@ -4,18 +4,18 @@ import { StyleSheet, View, TouchableOpacity, FlatList } from "react-native";
 import { connect } from "react-redux";
 import Header from "../components/header/Header";
 import LocationService from "../features/LocationService";
+import { setNewLocation } from "../redux/actions/locationActions";
 
 function SpotList(props) {
-  const { user } = props;
+  const { user, location, locationDis } = props;
 
   React.useEffect(() => {
-    LocationService()
-      .then(loc => {
-        console.log(loc);
-      })
-      .catch(e => {
-        alert(e);
+    // get and set users location is not already set
+    if (location.latitude === null && location.longitude === null) {
+      LocationService().then(loc => {
+        locationDis(loc);
       });
+    }
   }, []);
 
   return (
@@ -26,14 +26,19 @@ function SpotList(props) {
       <ThinText>load spotlist</ThinText>
       <ThinText>inject ad for every 5 spot</ThinText>
       <ThinText>enter spot to see details</ThinText>
-      <NormalText>lat: comming soon</NormalText>
-      <NormalText>lon: comming soon</NormalText>
+      <NormalText>lat: {location.latitude}</NormalText>
+      <NormalText>lon: {location.longitude}</NormalText>
     </View>
   );
 }
 
-const mapStateToProps = state => ({ user: state.user });
-const mapDispatchToProps = dispatch => ({});
+const mapStateToProps = state => ({
+  user: state.user,
+  location: state.location
+});
+const mapDispatchToProps = dispatch => ({
+  locationDis: payload => dispatch(setNewLocation(payload))
+});
 
 export default connect(
   mapStateToProps,
@@ -43,3 +48,14 @@ export default connect(
 const s = StyleSheet.create({
   container: { flex: 1 }
 });
+
+/*
+console.log(location.latitude);
+if (location.latitude === null && location.longitude === null) {
+  LocationService().then(loc => {
+    locationDis(loc);
+  });
+} else {
+  console.log("using persisted location");
+}
+*/
