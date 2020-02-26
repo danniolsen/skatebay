@@ -13,6 +13,11 @@ function UserProfile(props) {
   const { user, navigation } = props;
   const [refreshing, setRefreshing] = React.useState(false);
   const [type, setType] = React.useState(0);
+
+  const changeType = newType => {
+    newType !== type ? setType(newType) : null;
+  };
+
   const getData = () => {
     setRefreshing(true);
     //fetch data here.
@@ -30,8 +35,8 @@ function UserProfile(props) {
         style={{ flexDirection: "column" }}
         ListHeaderComponent={
           <ProfileHeader user={user}>
-            <Option icon="bookmark" number={"3391"} />
-            <Option icon="layers" number={"0"} />
+            <Option icon="bookmark" number={0} action={() => changeType(0)} />
+            <Option icon="layers" number={0} action={() => changeType(1)} />
           </ProfileHeader>
         }
         numColumns={4}
@@ -48,7 +53,7 @@ function UserProfile(props) {
 
 const Option = props => {
   return (
-    <TouchableOpacity style={s.option}>
+    <TouchableOpacity onPress={props.action} style={s.option}>
       <View style={{ flexDirection: "row" }}>
         <Feather name={props.icon} color="#FFF" size={20} />
         <NormalText style={s.number} color="#FFF" size={15}>
