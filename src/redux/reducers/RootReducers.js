@@ -1,11 +1,13 @@
 import { combineReducers } from "redux";
 import User from "./userReducer";
 import Loading from "./loadingReducer";
+import Auth from "./authReducer";
 import { SignOut } from "../../features/AuthSocial";
 
 const appReducer = combineReducers({
   user: User,
-  loading: Loading
+  loading: Loading,
+  auth: Auth
 });
 
 const rootReducer = (state, action) => {

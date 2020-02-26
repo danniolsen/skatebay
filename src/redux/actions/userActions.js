@@ -18,6 +18,7 @@ const setUserState = idToken => {
       .then(function(response) {
         let user = response.data;
         dispatch(fetchUserSuccess({ user: user }));
+        dispatch({ type: "SET_AUTH_SUCCESS", payload: true });
         dispatch({ type: "LOADING_STOP" });
       })
       .catch(function(error) {

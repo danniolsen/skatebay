@@ -17,24 +17,20 @@ if (!firebase.apps.length) {
 function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [initialNavigationState, setInitialNavigationState] = React.useState();
-  const [authenticated, setAuthenticated] = React.useState(false);
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
-  const { setUserDis, user, stopLoadingDis } = props;
+  const { setUserDis, user, stopLoadingDis, auth } = props;
 
   React.useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
-      console.log("auth state change");
       if (user != null) {
         firebase
           .auth()
           .currentUser.getIdToken(true)
           .then(function(idToken) {
             setUserDis(idToken);
-            setAuthenticated(true); // set this auth from redux when user is verified
           });
       } else {
-        setAuthenticated(false);
         stopLoadingDis();
       }
     });
@@ -69,7 +65,7 @@ function App(props) {
           ref={containerRef}
           initialState={initialNavigationState}
         >
-          <MainNavigator auth={authenticated} />
+          <MainNavigator auth={auth} />
         </NavigationContainer>
       </View>
     );
@@ -77,7 +73,8 @@ function App(props) {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  auth: state.auth.auth
 });
 
 const mapDispatchToProps = dispatch => ({
