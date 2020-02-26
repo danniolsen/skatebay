@@ -7,10 +7,12 @@ import Header from "../components/header/Header";
 import { Feather } from "@expo/vector-icons";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import ProfileSpot from "../components/profile/ProfileSpot";
+import { EmptyProfileList } from "../components/profile/EmptyList";
 
 function UserProfile(props) {
   const { user, navigation } = props;
   const [refreshing, setRefreshing] = React.useState(false);
+  const [type, setType] = React.useState(0);
   const getData = () => {
     setRefreshing(true);
     //fetch data here.
@@ -38,7 +40,7 @@ function UserProfile(props) {
         refreshing={refreshing}
         renderItem={({ item }) => <ProfileSpot text={item.id} />}
         keyExtractor={item => item.id}
-        ListEmptyComponent={() => <ThinText>no data provided</ThinText>}
+        ListEmptyComponent={() => <EmptyProfileList type={type} />}
       />
     </View>
   );
@@ -80,6 +82,8 @@ const s = StyleSheet.create({
   number: { marginTop: 2, marginLeft: 10 }
 });
 
+const data = [];
+/*
 const data = [
   { id: "1", img: "" },
   { id: "2", img: "" },
@@ -91,3 +95,4 @@ const data = [
   { id: "8", img: "" },
   { id: "9", img: "" }
 ];
+*/
