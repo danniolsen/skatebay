@@ -5,7 +5,7 @@ import configureStore from "./src/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 
 //dev only
-import { YellowBox, Platform } from "react-native";
+import { YellowBox } from "react-native";
 YellowBox.ignoreWarnings(["Warning: ..."]);
 // dev only ends
 
