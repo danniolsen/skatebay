@@ -7,33 +7,50 @@ import LocationService from "../features/LocationService";
 import { setNewLocation } from "../redux/actions/locationActions";
 import Spot from "../components/spotList/Spot";
 import EmptySpotList from "../components/spotList/EmptySpotList";
+import { getSpotList } from "../redux/actions/spotListActions";
 
 function SpotList(props) {
-  const { user, location, locationDis } = props;
-  const [refreshing, setRefreshing] = React.useState(false);
+  const { user, location, locationDis, spotList } = props;
+  const { spotListDis } = props;
+
+  const [refreshing, setRefreshing] = React.useState(true);
   React.useEffect(() => {
-    // get and set users location is not already set
-    if (location.latitude === null && location.longitude === null) {
-      getSpotlist();
-    }
+    getSpotlist();
   }, []);
 
   const getSpotlist = () => {
+    setRefreshing(true);
     LocationService().then(loc => {
       locationDis(loc);
-      // get spotlist with new location
+      getSpots(loc);
     });
+  };
+
+  const getSpots = loc => {
+    let spotData = {
+      latitude: loc.latitude,
+      longitude: loc.longitude,
+      idToken: "0"
+    };
+    spotListDis(spotData);
+    setRefreshing(false);
   };
 
   return (
     <View style={s.container}>
       <Header rightIcon="sliders" rightAction={() => alert("filtering")} />
       <FlatList
-        data={spots}
+        data={spotList.spotList}
         onRefresh={() => getSpotlist()}
         refreshing={refreshing}
-        renderItem={({ item }) => <Spot url={item.url} />}
-        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <Spot
+            title={item.spot_title}
+            imgCount={item.img_count}
+            url={item.spot_images[0].img_url}
+          />
+        )}
+        keyExtractor={item => item.spot_id.toString()}
         ListEmptyComponent={() => <EmptySpotList />}
         showsVerticalScrollIndicator={false}
       />
@@ -43,10 +60,12 @@ function SpotList(props) {
 
 const mapStateToProps = state => ({
   user: state.user,
-  location: state.location
+  location: state.location,
+  spotList: state.spotList
 });
 const mapDispatchToProps = dispatch => ({
-  locationDis: payload => dispatch(setNewLocation(payload))
+  locationDis: payload => dispatch(setNewLocation(payload)),
+  spotListDis: payload => dispatch(getSpotList(payload))
 });
 
 export default connect(
@@ -57,53 +76,6 @@ export default connect(
 const s = StyleSheet.create({
   container: { flex: 1 }
 });
+//const spots = [];
+
 const spots = [];
-/*
-const spots = [
-  {
-    id: "1",
-    url:
-      "https://www.skatein.com/admin/wp-content/uploads/2017/05/nordhavn-skatespot-01-1080x500.jpg"
-  },
-  {
-    id: "2",
-    url:
-      "https://www.skatein.com/admin/wp-content/uploads/2017/05/utterslev-skatespot-03-1000x500.jpg"
-  },
-  {
-    id: "3",
-    url:
-      "https://i.pinimg.com/originals/89/53/78/895378433d088aa0b7d053479550a559.jpg"
-  },
-  {
-    id: "4",
-    url:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
-  },
-  {
-    id: "5",
-    url:
-      "https://www.skatein.com/admin/wp-content/uploads/2017/05/utterslev-skatespot-03-1000x500.jpg "
-  },
-  {
-    id: "6",
-    url:
-      "https://www.skatein.com/admin/wp-content/uploads/2017/05/utterslev-skatespot-03-1000x500.jpg"
-  },
-  {
-    id: "7",
-    url:
-      "https://www.skatein.com/admin/wp-content/uploads/2017/05/nordhavn-skatespot-01-1080x500.jpg"
-  },
-  {
-    id: "8",
-    url:
-      "https://i.pinimg.com/originals/89/53/78/895378433d088aa0b7d053479550a559.jpg"
-  },
-  {
-    id: "9",
-    url:
-      "https://i.pinimg.com/originals/89/53/78/895378433d088aa0b7d053479550a559.jpg"
-  }
-];
-*/
