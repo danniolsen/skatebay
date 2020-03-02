@@ -1,11 +1,46 @@
 import * as React from "react";
 import { View, TouchableOpacity, Text, StyleSheet, Image } from "react-native";
-import { Dimensions } from "react-native";
+import { Dimensions, ActivityIndicator, Alert } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { ThinText, NormalText } from "../StyledText";
 const width = Dimensions.get("window").width;
+import { getDistance, geolib, convertDistance } from "geolib";
 
 function Spot(props) {
+  const { navigation } = props;
+  const [blur, setBlur] = React.useState(0);
+
+  const distance = location => {
+    let dis = getDistance(
+      { latitude: props.spotLocation.lat, longitude: props.spotLocation.lon },
+      {
+        latitude: props.userLocation.latitude,
+        longitude: props.userLocation.longitude
+      }
+    );
+    let converted = convertDistance(dis, "km");
+    return converted.toFixed(1);
+  };
+
+  const hideSpot = () => {
+    Alert.alert(
+      "Spot removal",
+      "Are you sure you want to remove this spot from your list?",
+      [
+        { text: "Cancel", onPress: () => null },
+        { text: "Remove spot", onPress: () => setBlur(70) }
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const saveSpot = spot_id => {
+    let saveData = {
+      user_id: props.userId,
+      spot_id: props.spotId
+    };
+  };
+
   return (
     <View style={s.container}>
       <View style={s.header}>
@@ -20,20 +55,43 @@ function Spot(props) {
       <TouchableOpacity onPress={props.enterAction}>
         <View style={s.imageCon}>
           <View style={s.imageOverlay}>
-            <Feather name="image" size={20} color="#FFF" />
-            <NormalText style={s.imgNo} size={15} color="#FFF">
+            <Feather name="image" size={20} color="#2f363d" />
+            <NormalText style={s.imgNo} size={15} color="#2f363d">
               {props.imgCount}
             </NormalText>
           </View>
-          <Image // check loading options
-            source={{ uri: props.url }}
+          <Image
+            source={{
+              uri: props.url
+            }}
             style={s.image}
+            blurRadius={blur}
           />
         </View>
       </TouchableOpacity>
-      {/*options*/}
-      {/*save / remove*/}
-      {/*distance*/}
+
+      <View style={s.optionsBar}>
+        <View style={s.option}>
+          <TouchableOpacity onPress={() => saveSpot(props.spot_id)}>
+            <Feather name="bookmark" size={25} color="#2f363d" />
+          </TouchableOpacity>
+        </View>
+        <View style={s.option}>
+          <TouchableOpacity onPress={() => hideSpot()}>
+            <Feather
+              name="eye-off"
+              style={{ marginTop: 1 }}
+              size={22}
+              color="#2f363d"
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={s.distance}>
+          <ThinText color="#2f363d" size={20}>
+            {distance(props.spotLocation)} km
+          </ThinText>
+        </View>
+      </View>
     </View>
   );
 }
@@ -53,7 +111,7 @@ const s = StyleSheet.create({
   header: { flexDirection: "row", padding: 10 },
   headline: { flex: 1 },
   more: { marginTop: 2 },
-  imageCon: { margin: 4, position: "relative" },
+  imageCon: { margin: 4, marginBottom: 0, position: "relative" },
   imageOverlay: {
     position: "absolute",
     top: 10,
@@ -61,10 +119,10 @@ const s = StyleSheet.create({
     zIndex: 1,
     alignItems: "flex-end",
     paddingHorizontal: 10,
-    paddingVertical: 7,
+    paddingVertical: 4,
     flexDirection: "row",
-    borderRadius: 10,
-    backgroundColor: "rgba(105,105,105,0.6)"
+    borderRadius: 6,
+    backgroundColor: "rgba(255,255,255,0.7)"
   },
   imgNo: { paddingLeft: 5 },
   image: {
@@ -72,5 +130,11 @@ const s = StyleSheet.create({
     height: width - 100,
     resizeMode: "cover"
   },
-  optionsBar: {}
+  optionsBar: {
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    flexDirection: "row"
+  },
+  option: { flex: 1 },
+  distance: { flex: 6, alignItems: "flex-end" }
 });

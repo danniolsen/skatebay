@@ -11,7 +11,7 @@ import { getSpotList } from "../redux/actions/spotListActions";
 
 function SpotList(props) {
   const { user, location, locationDis, spotList } = props;
-  const { spotListDis } = props;
+  const { spotListDis, navigation } = props;
 
   const [refreshing, setRefreshing] = React.useState(true);
   React.useEffect(() => {
@@ -27,13 +27,13 @@ function SpotList(props) {
   };
 
   const getSpots = loc => {
-    let spotData = {
-      latitude: loc.latitude,
-      longitude: loc.longitude,
-      idToken: "0"
-    };
+    let spotData = { location: loc, user: user.user };
     spotListDis(spotData);
     setRefreshing(false);
+  };
+
+  const goToSpot = spot => {
+    navigation.push("SpotDetails", spot);
   };
 
   return (
@@ -43,14 +43,20 @@ function SpotList(props) {
         data={spotList.spotList}
         onRefresh={() => getSpotlist()}
         refreshing={refreshing}
+        scrollToIndex={2}
         renderItem={({ item }) => (
           <Spot
             title={item.spot_title}
-            imgCount={item.img_count}
+            spotId={item.spot_id}
+            userId={user.user.uid}
+            imgCount={item.spot_images.length}
             url={item.spot_images[0].img_url}
+            userLocation={location}
+            spotLocation={{ lat: item.latitude, lon: item.longitude }}
+            enterAction={() => goToSpot(item)}
           />
         )}
-        keyExtractor={item => item.spot_id.toString()}
+        keyExtractor={(item, index) => index.toString()}
         ListEmptyComponent={() => <EmptySpotList />}
         showsVerticalScrollIndicator={false}
       />
@@ -76,6 +82,3 @@ export default connect(
 const s = StyleSheet.create({
   container: { flex: 1 }
 });
-//const spots = [];
-
-const spots = [];

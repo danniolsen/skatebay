@@ -18,7 +18,7 @@ function MainNavigator(props) {
       {loading.loading && <Loading />}
       {props.auth && !loading.loading && (
         <SafeAreaView style={{ flex: 1 }}>
-          <Stack.Navigator headerMode="none">
+          <Stack.Navigator headerMode="none" mode="modal">
             <Stack.Screen name="root" component={BottomTabNavigator} />
             <Stack.Screen name="SpotDetails" component={SpotDetails} />
             <Stack.Screen name="Settings" component={Settings} />

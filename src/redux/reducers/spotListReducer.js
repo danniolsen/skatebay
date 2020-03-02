@@ -10,7 +10,7 @@ const spotListReducer = (state = initialState, action) => {
     case FETCH_SPOTLIST:
       return {
         ...state,
-        spotList: action.payload.spots
+        spotList: action.payload
       };
     default:
       return state;
