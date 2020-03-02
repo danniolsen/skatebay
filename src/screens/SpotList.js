@@ -5,39 +5,73 @@ import { connect } from "react-redux";
 import Header from "../components/header/Header";
 import LocationService from "../features/LocationService";
 import { setNewLocation } from "../redux/actions/locationActions";
+import Spot from "../components/spotList/Spot";
+import EmptySpotList from "../components/spotList/EmptySpotList";
+import { getSpotList } from "../redux/actions/spotListActions";
 
 function SpotList(props) {
-  const { user, location, locationDis } = props;
+  const { user, location, locationDis, spotList } = props;
+  const { spotListDis, navigation } = props;
 
+  const [refreshing, setRefreshing] = React.useState(true);
   React.useEffect(() => {
-    // get and set users location is not already set
-    if (location.latitude === null && location.longitude === null) {
-      LocationService().then(loc => {
-        locationDis(loc);
-      });
-    }
+    getSpotlist();
   }, []);
+
+  const getSpotlist = () => {
+    setRefreshing(true);
+    LocationService().then(loc => {
+      locationDis(loc);
+      getSpots(loc);
+    });
+  };
+
+  const getSpots = loc => {
+    let spotData = { location: loc, user: user.user };
+    spotListDis(spotData);
+    setRefreshing(false);
+  };
+
+  const goToSpot = spot => {
+    navigation.push("SpotDetails", spot);
+  };
 
   return (
     <View style={s.container}>
       <Header rightIcon="sliders" rightAction={() => alert("filtering")} />
-
-      <ThinText>get users location</ThinText>
-      <ThinText>load spotlist</ThinText>
-      <ThinText>inject ad for every 5 spot</ThinText>
-      <ThinText>enter spot to see details</ThinText>
-      <NormalText>lat: {location.latitude}</NormalText>
-      <NormalText>lon: {location.longitude}</NormalText>
+      <FlatList
+        data={spotList.spotList}
+        onRefresh={() => getSpotlist()}
+        refreshing={refreshing}
+        scrollToIndex={2}
+        renderItem={({ item }) => (
+          <Spot
+            title={item.spot_title}
+            spotId={item.spot_id}
+            userId={user.user.uid}
+            imgCount={item.spot_images.length}
+            url={item.spot_images[0].img_url}
+            userLocation={location}
+            spotLocation={{ lat: item.latitude, lon: item.longitude }}
+            enterAction={() => goToSpot(item)}
+          />
+        )}
+        keyExtractor={(item, index) => index.toString()}
+        ListEmptyComponent={() => <EmptySpotList />}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
 }
 
 const mapStateToProps = state => ({
   user: state.user,
-  location: state.location
+  location: state.location,
+  spotList: state.spotList
 });
 const mapDispatchToProps = dispatch => ({
-  locationDis: payload => dispatch(setNewLocation(payload))
+  locationDis: payload => dispatch(setNewLocation(payload)),
+  spotListDis: payload => dispatch(getSpotList(payload))
 });
 
 export default connect(
@@ -48,14 +82,3 @@ export default connect(
 const s = StyleSheet.create({
   container: { flex: 1 }
 });
-
-/*
-console.log(location.latitude);
-if (location.latitude === null && location.longitude === null) {
-  LocationService().then(loc => {
-    locationDis(loc);
-  });
-} else {
-  console.log("using persisted location");
-}
-*/

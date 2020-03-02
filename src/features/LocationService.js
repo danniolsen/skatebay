@@ -5,11 +5,12 @@ import * as Permissions from "expo-permissions";
 const LocationService = async () => {
   let { status } = await Permissions.askAsync(Permissions.LOCATION);
   if (status !== "granted") {
-    alert("We need you location to show you spots! you fuck tard");
+    return alert(
+      "Location service is required in order to display the skatespots"
+    );
   }
 
   let location = await Location.getCurrentPositionAsync({});
-
   let geoLocation = {
     latitude: location.coords.latitude,
     longitude: location.coords.longitude

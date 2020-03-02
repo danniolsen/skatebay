@@ -43,9 +43,10 @@ function UserProfile(props) {
         data={data}
         onRefresh={() => getData()}
         refreshing={refreshing}
-        renderItem={({ item }) => <ProfileSpot text={item.id} />}
+        renderItem={({ item }) => <ProfileSpot />}
         keyExtractor={item => item.id}
         ListEmptyComponent={() => <EmptyProfileList type={type} />}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );

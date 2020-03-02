@@ -6,7 +6,7 @@ function SpotDetails(props) {
   return (
     <View style={s.container}>
       <Header
-        leftIcon="chevron-left"
+        leftIcon="chevron-down"
         leftAction={() => props.navigation.goBack()}
       />
       <Text>SpotDetails</Text>
