@@ -6,13 +6,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import MainNavigator from "./src/navigation/MainNavigation";
 import useLinking from "./src/navigation/useLinking";
-import { firebaseConfig, firebase } from "./src/utils/firebase";
+import * as firebase from "firebase";
+import { firebaseConfig } from "./src/utils/firebase";
 import { connect } from "react-redux";
 import { setUserState } from "./src/redux/actions/userActions";
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
 
 function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);

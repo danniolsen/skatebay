@@ -8,6 +8,7 @@ import { setNewLocation } from "../redux/actions/locationActions";
 import Spot from "../components/spotList/Spot";
 import EmptySpotList from "../components/spotList/EmptySpotList";
 import { getSpotList } from "../redux/actions/spotListActions";
+import * as firebase from "firebase";
 
 function SpotList(props) {
   const { user, location, locationDis, spotList } = props;
@@ -50,7 +51,7 @@ function SpotList(props) {
             spotId={item.spot_id}
             userId={user.user.uid}
             imgCount={item.spot_images.length}
-            url={item.spot_images[0].img_url}
+            url={item.spot_images[0]}
             userLocation={location}
             spotLocation={{ lat: item.latitude, lon: item.longitude }}
             enterAction={() => goToSpot(item)}

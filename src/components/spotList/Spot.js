@@ -4,11 +4,24 @@ import { Dimensions, ActivityIndicator, Alert } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { ThinText, NormalText } from "../StyledText";
 const width = Dimensions.get("window").width;
-import { getDistance, geolib, convertDistance } from "geolib";
+import { getDistance, convertDistance } from "geolib";
+import { storageRef } from "../../utils/firebase";
 
 function Spot(props) {
   const { navigation } = props;
   const [blur, setBlur] = React.useState(0);
+  const [mainImage, setMainImage] = React.useState();
+
+  React.useEffect(() => {
+    getImages(props.url);
+  }, []);
+
+  const getImages = imgUrl => {
+    let starsRef = storageRef.child(`/${imgUrl}`);
+    starsRef.getDownloadURL().then(url => {
+      setMainImage(url);
+    });
+  };
 
   const distance = location => {
     let dis = getDistance(
@@ -62,7 +75,7 @@ function Spot(props) {
           </View>
           <Image
             source={{
-              uri: props.url
+              uri: mainImage
             }}
             style={s.image}
             blurRadius={blur}
