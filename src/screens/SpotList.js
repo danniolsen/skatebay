@@ -9,10 +9,11 @@ import Spot from "../components/spotList/Spot";
 import EmptySpotList from "../components/spotList/EmptySpotList";
 import { getSpotList } from "../redux/actions/spotListActions";
 import * as firebase from "firebase";
+import { saveSpot } from "../redux/actions/saveSpotActions";
 
 function SpotList(props) {
   const { user, location, locationDis, spotList } = props;
-  const { spotListDis, navigation } = props;
+  const { spotListDis, navigation, saveSpotDis } = props;
 
   const [refreshing, setRefreshing] = React.useState(true);
   React.useEffect(() => {
@@ -37,6 +38,14 @@ function SpotList(props) {
     navigation.push("SpotDetails", spot);
   };
 
+  const saveSpot = (spot_id, user_id) => {
+    let saveData = {
+      spot_id: spot_id,
+      user_id: user_id
+    };
+    saveSpotDis(saveData);
+  };
+
   return (
     <View style={s.container}>
       <Header rightIcon="sliders" rightAction={() => alert("filtering")} />
@@ -53,8 +62,10 @@ function SpotList(props) {
             imgCount={item.spot_images.length}
             url={item.spot_images[0]}
             userLocation={location}
+            saveSpotAction={() => saveSpot(item.spot_id, user.user.user_id)}
             spotLocation={{ lat: item.latitude, lon: item.longitude }}
             enterAction={() => goToSpot(item)}
+            color="#2f363d"
           />
         )}
         keyExtractor={(item, index) => index.toString()}
@@ -72,7 +83,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   locationDis: payload => dispatch(setNewLocation(payload)),
-  spotListDis: payload => dispatch(getSpotList(payload))
+  spotListDis: payload => dispatch(getSpotList(payload)),
+  saveSpotDis: payload => dispatch(saveSpot(payload))
 });
 
 export default connect(

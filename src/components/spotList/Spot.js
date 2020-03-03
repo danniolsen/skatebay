@@ -47,14 +47,6 @@ function Spot(props) {
     );
   };
 
-  const saveSpot = spot_id => {
-    const saveData = {
-      user: { user_id: props.userId },
-      spot: { spot_id: props.spotId }
-    };
-    // dispatch save action
-  };
-
   return (
     <View style={s.container}>
       <View style={s.header}>
@@ -86,8 +78,8 @@ function Spot(props) {
 
       <View style={s.optionsBar}>
         <View style={s.option}>
-          <TouchableOpacity onPress={() => saveSpot(props.spot_id)}>
-            <Feather name="bookmark" size={25} color="#2f363d" />
+          <TouchableOpacity onPress={props.saveSpotAction}>
+            <Feather name="bookmark" size={25} color={props.color} />
           </TouchableOpacity>
         </View>
         <View style={s.option}>
