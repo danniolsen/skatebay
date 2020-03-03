@@ -1,6 +1,6 @@
-import { firebaseConfig, firebase } from "../utils/firebase";
 import * as Facebook from "expo-facebook";
 import * as Google from "expo-google-app-auth";
+import * as firebase from "firebase";
 import {
   FACEBOOK_ID,
   IOS_CLIENT_ID,

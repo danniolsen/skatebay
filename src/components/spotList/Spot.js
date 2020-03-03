@@ -17,7 +17,7 @@ function Spot(props) {
   }, []);
 
   const getImages = imgUrl => {
-    let starsRef = storageRef.child(`/${imgUrl}`);
+    let starsRef = storageRef.child(`/${props.spotId}/${imgUrl}`);
     starsRef.getDownloadURL().then(url => {
       setMainImage(url);
     });
@@ -48,10 +48,11 @@ function Spot(props) {
   };
 
   const saveSpot = spot_id => {
-    let saveData = {
-      user_id: props.userId,
-      spot_id: props.spotId
+    const saveData = {
+      user: { user_id: props.userId },
+      spot: { spot_id: props.spotId }
     };
+    // dispatch save action
   };
 
   return (

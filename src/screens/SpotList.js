@@ -49,7 +49,7 @@ function SpotList(props) {
           <Spot
             title={item.spot_title}
             spotId={item.spot_id}
-            userId={user.user.uid}
+            userId={user.user.user_id}
             imgCount={item.spot_images.length}
             url={item.spot_images[0]}
             userLocation={location}
