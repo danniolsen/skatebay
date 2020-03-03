@@ -1,7 +1,7 @@
 import { FETCH_SPOTLIST } from "../types/spotListTypes";
 const initialState = {
   spotList: [],
-  sptListError: null
+  spotListError: null
 };
 
 const spotListReducer = (state = initialState, action) => {

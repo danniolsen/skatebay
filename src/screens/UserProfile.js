@@ -7,13 +7,13 @@ import Header from "../components/header/Header";
 import { Feather } from "@expo/vector-icons";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import ProfileSpot from "../components/profile/ProfileSpot";
-import { EmptyProfileList } from "../components/profile/EmptyList";
+import EmptyProfileList from "../components/profile/EmptyList";
 
 function UserProfile(props) {
-  const { user, navigation } = props;
+  const { user, navigation, saved } = props;
   const [refreshing, setRefreshing] = React.useState(false);
   const [type, setType] = React.useState(0);
-
+  console.log(saved);
   const changeType = newType => {
     newType !== type ? setType(newType) : null;
   };
@@ -40,12 +40,16 @@ function UserProfile(props) {
           </ProfileHeader>
         }
         numColumns={4}
-        data={data}
+        data={saved.spots}
         onRefresh={() => getData()}
         refreshing={refreshing}
-        renderItem={({ item }) => <ProfileSpot />}
+        renderItem={({ item }) => (
+          <ProfileSpot
+            enterAction={() => navigation.push("SpotDetails", item)}
+          />
+        )}
         keyExtractor={item => item.id}
-        ListEmptyComponent={() => <EmptyProfileList type={type} />}
+        ListEmptyComponent={() => <EmptyProfileList />}
         showsVerticalScrollIndicator={false}
       />
     </View>
@@ -66,7 +70,8 @@ const Option = props => {
 };
 
 const mapStateToProps = state => ({
-  user: state.user.user
+  user: state.user.user,
+  saved: state.saved
 });
 const mapDispatchToProps = dispatch => ({});
 
@@ -87,18 +92,3 @@ const s = StyleSheet.create({
   },
   number: { marginTop: 2, marginLeft: 10 }
 });
-
-const data = [];
-/*
-const data = [
-  { id: "1", img: "" },
-  { id: "2", img: "" },
-  { id: "3", img: "" },
-  { id: "4", img: "" },
-  { id: "5", img: "" },
-  { id: "6", img: "" },
-  { id: "7", img: "" },
-  { id: "8", img: "" },
-  { id: "9", img: "" }
-];
-*/

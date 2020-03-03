@@ -8,7 +8,7 @@ function ProfileSpot(props) {
   let spot = props.spot;
   let testImg = "https://sites.google.com/site/ccrisafi/skatespot02.jpg";
   return (
-    <TouchableOpacity onPress={props.action} style={s.container}>
+    <TouchableOpacity onPress={props.enterAction} style={s.container}>
       <Image source={{ uri: testImg }} style={s.img} />
     </TouchableOpacity>
   );
