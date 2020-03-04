@@ -4,8 +4,8 @@ import { Dimensions, ActivityIndicator, Alert } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { ThinText, NormalText } from "../StyledText";
 const width = Dimensions.get("window").width;
-import { getDistance, convertDistance } from "geolib";
 import { storageRef } from "../../utils/firebase";
+import SpotOptions from "./SpotOptions";
 
 function Spot(props) {
   const { navigation } = props;
@@ -21,38 +21,6 @@ function Spot(props) {
     starsRef.getDownloadURL().then(url => {
       setMainImage(url);
     });
-  };
-
-  const distance = location => {
-    let dis = getDistance(
-      { latitude: props.spotLocation.lat, longitude: props.spotLocation.lon },
-      {
-        latitude: props.userLocation.latitude,
-        longitude: props.userLocation.longitude
-      }
-    );
-    let converted = convertDistance(dis, "km");
-    return converted.toFixed(1);
-  };
-
-  const hideSpot = () => {
-    Alert.alert(
-      "Spot removal",
-      "Are you sure you want to remove this spot from your list?",
-      [
-        { text: "Cancel", onPress: () => null },
-        { text: "Remove spot", onPress: () => setBlur(70) }
-      ],
-      { cancelable: false }
-    );
-  };
-
-  const saveSpot = spot_id => {
-    const saveData = {
-      user: { user_id: props.userId },
-      spot: { spot_id: props.spotId }
-    };
-    // dispatch save action
   };
 
   return (
@@ -85,26 +53,12 @@ function Spot(props) {
       </TouchableOpacity>
 
       <View style={s.optionsBar}>
-        <View style={s.option}>
-          <TouchableOpacity onPress={() => saveSpot(props.spot_id)}>
-            <Feather name="bookmark" size={25} color="#2f363d" />
-          </TouchableOpacity>
-        </View>
-        <View style={s.option}>
-          <TouchableOpacity onPress={() => hideSpot()}>
-            <Feather
-              name="eye-off"
-              style={{ marginTop: 1 }}
-              size={22}
-              color="#2f363d"
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={s.distance}>
-          <ThinText color="#2f363d" size={20}>
-            {distance(props.spotLocation)} km
-          </ThinText>
-        </View>
+        <SpotOptions
+          spotId={props.spotId}
+          saved={props.saved}
+          hideSpot={() => setBlur(70)}
+          spotLocation={props.spotLocation}
+        />
       </View>
     </View>
   );
@@ -148,7 +102,5 @@ const s = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 15,
     flexDirection: "row"
-  },
-  option: { flex: 1 },
-  distance: { flex: 6, alignItems: "flex-end" }
+  }
 });

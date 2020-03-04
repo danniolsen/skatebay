@@ -7,17 +7,27 @@ import Header from "../components/header/Header";
 import { Feather } from "@expo/vector-icons";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import ProfileSpot from "../components/profile/ProfileSpot";
-import { EmptyProfileList } from "../components/profile/EmptyList";
+import EmptyProfileList from "../components/profile/EmptyList";
+import { getSavedSpotsList } from "../redux/actions/saveSpotActions";
 
 function UserProfile(props) {
-  const { user, navigation } = props;
+  const { user, navigation, saved, savedListDis } = props;
   const [refreshing, setRefreshing] = React.useState(false);
   const [type, setType] = React.useState(0);
+
+  React.useEffect(() => {
+    let isCancelled = false;
+    if (!isCancelled) {
+      savedListDis(user);
+    }
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
 
   const changeType = newType => {
     newType !== type ? setType(newType) : null;
   };
-
   const getData = () => {
     setRefreshing(true);
     //fetch data here.
@@ -35,17 +45,26 @@ function UserProfile(props) {
         style={{ flexDirection: "column" }}
         ListHeaderComponent={
           <ProfileHeader user={user}>
-            <Option icon="bookmark" number={0} action={() => changeType(0)} />
+            <Option
+              icon="bookmark"
+              number={saved.spots.length}
+              action={() => changeType(0)}
+            />
             <Option icon="layers" number={0} action={() => changeType(1)} />
           </ProfileHeader>
         }
         numColumns={4}
-        data={data}
+        data={saved.spots}
         onRefresh={() => getData()}
         refreshing={refreshing}
-        renderItem={({ item }) => <ProfileSpot />}
+        renderItem={({ item }) => (
+          <ProfileSpot
+            spot={item}
+            enterAction={() => navigation.push("SpotDetails", item)}
+          />
+        )}
         keyExtractor={item => item.id}
-        ListEmptyComponent={() => <EmptyProfileList type={type} />}
+        ListEmptyComponent={() => <EmptyProfileList />}
         showsVerticalScrollIndicator={false}
       />
     </View>
@@ -66,9 +85,12 @@ const Option = props => {
 };
 
 const mapStateToProps = state => ({
-  user: state.user.user
+  user: state.user.user,
+  saved: state.saved
 });
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  savedListDis: payload => dispatch(getSavedSpotsList(payload))
+});
 
 export default connect(
   mapStateToProps,
@@ -87,18 +109,3 @@ const s = StyleSheet.create({
   },
   number: { marginTop: 2, marginLeft: 10 }
 });
-
-const data = [];
-/*
-const data = [
-  { id: "1", img: "" },
-  { id: "2", img: "" },
-  { id: "3", img: "" },
-  { id: "4", img: "" },
-  { id: "5", img: "" },
-  { id: "6", img: "" },
-  { id: "7", img: "" },
-  { id: "8", img: "" },
-  { id: "9", img: "" }
-];
-*/

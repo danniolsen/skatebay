@@ -2,14 +2,28 @@ import * as React from "react";
 import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { Dimensions, Text } from "react-native";
 const width = Dimensions.get("window").width;
+import { storageRef } from "../../utils/firebase";
 
 function ProfileSpot(props) {
   let type = props.type;
   let spot = props.spot;
-  let testImg = "https://sites.google.com/site/ccrisafi/skatespot02.jpg";
+
+  const [mainImage, setMainImage] = React.useState();
+
+  React.useEffect(() => {
+    getImages(props.spot.spot_images[0]);
+  }, []);
+
+  const getImages = imgUrl => {
+    let starsRef = storageRef.child(`/${props.spot.spot_id}/${imgUrl}`);
+    starsRef.getDownloadURL().then(url => {
+      setMainImage(url);
+    });
+  };
+
   return (
-    <TouchableOpacity onPress={props.action} style={s.container}>
-      <Image source={{ uri: testImg }} style={s.img} />
+    <TouchableOpacity onPress={props.enterAction} style={s.container}>
+      <Image source={{ uri: mainImage }} style={s.img} />
     </TouchableOpacity>
   );
 }

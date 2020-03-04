@@ -4,11 +4,13 @@ import Loading from "./loadingReducer";
 import Auth from "./authReducer";
 import Location from "./locationReducer";
 import SpotList from "./spotListReducer";
+import Saved from "./savedReducer";
 import { SignOut } from "../../features/AuthSocial";
 
 const appReducer = combineReducers({
   user: User,
   spotList: SpotList,
+  saved: Saved,
   loading: Loading,
   auth: Auth,
   location: Location

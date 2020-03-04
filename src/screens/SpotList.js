@@ -16,7 +16,11 @@ function SpotList(props) {
 
   const [refreshing, setRefreshing] = React.useState(true);
   React.useEffect(() => {
-    getSpotlist();
+    let isCancelled = false;
+    if (!isCancelled) {
+      getSpotlist();
+    }
+    return () => (isCancelled = true);
   }, []);
 
   const getSpotlist = () => {
@@ -55,6 +59,7 @@ function SpotList(props) {
             userLocation={location}
             spotLocation={{ lat: item.latitude, lon: item.longitude }}
             enterAction={() => goToSpot(item)}
+            saved={item.saved}
           />
         )}
         keyExtractor={(item, index) => index.toString()}

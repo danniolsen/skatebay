@@ -1,4 +1,4 @@
-import { fetchSpotList } from "../types/spotListTypes";
+import { fetchSpotList, fetchSpotListError } from "../types/spotListTypes";
 import axios from "axios";
 
 const getSpotList = spotData => {
@@ -6,7 +6,7 @@ const getSpotList = spotData => {
     axios
       .post(`http://192.168.1.76:5000/spotlist`, {
         user: {
-          user_id: spotData.user.uid,
+          user_id: spotData.user.user_id,
           latitude: spotData.location.latitude,
           longitude: spotData.location.longitude,
           distance: 200,
@@ -18,7 +18,7 @@ const getSpotList = spotData => {
         dispatch(fetchSpotList(spotlist));
       })
       .catch(function(error) {
-        console.log("fetch error", error);
+        dispatch(fetchSpotListError([]));
       });
   };
   return spotlistSet;

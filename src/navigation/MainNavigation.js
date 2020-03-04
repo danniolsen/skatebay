@@ -7,7 +7,6 @@ import Settings from "../screens/Settings";
 import Loading from "../screens/Loading";
 import { createStackNavigator } from "@react-navigation/stack";
 import { connect } from "react-redux";
-
 const Stack = createStackNavigator();
 
 function MainNavigator(props) {
