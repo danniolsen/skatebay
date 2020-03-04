@@ -5,6 +5,7 @@ import Auth from "./authReducer";
 import Location from "./locationReducer";
 import SpotList from "./spotListReducer";
 import Saved from "./savedReducer";
+import Hidden from "./hideReducer";
 import { SignOut } from "../../features/AuthSocial";
 
 const appReducer = combineReducers({
@@ -13,7 +14,8 @@ const appReducer = combineReducers({
   saved: Saved,
   loading: Loading,
   auth: Auth,
-  location: Location
+  location: Location,
+  hiddenSpots: Hidden
 });
 
 const rootReducer = (state, action) => {
