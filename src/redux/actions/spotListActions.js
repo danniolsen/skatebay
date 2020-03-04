@@ -9,7 +9,7 @@ const getSpotList = spotData => {
           user_id: spotData.user.user_id,
           latitude: spotData.location.latitude,
           longitude: spotData.location.longitude,
-          distance: 200,
+          distance: 10,
           idToken: spotData.user.idToken
         }
       })
