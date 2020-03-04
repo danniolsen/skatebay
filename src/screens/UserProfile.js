@@ -8,16 +8,26 @@ import { Feather } from "@expo/vector-icons";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import ProfileSpot from "../components/profile/ProfileSpot";
 import EmptyProfileList from "../components/profile/EmptyList";
+import { getSavedSpotsList } from "../redux/actions/saveSpotActions";
 
 function UserProfile(props) {
-  const { user, navigation, saved } = props;
+  const { user, navigation, saved, savedListDis } = props;
   const [refreshing, setRefreshing] = React.useState(false);
   const [type, setType] = React.useState(0);
-  console.log(saved);
+
+  React.useEffect(() => {
+    let isCancelled = false;
+    if (!isCancelled) {
+      savedListDis(user);
+    }
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
   const changeType = newType => {
     newType !== type ? setType(newType) : null;
   };
-
   const getData = () => {
     setRefreshing(true);
     //fetch data here.
@@ -35,7 +45,11 @@ function UserProfile(props) {
         style={{ flexDirection: "column" }}
         ListHeaderComponent={
           <ProfileHeader user={user}>
-            <Option icon="bookmark" number={0} action={() => changeType(0)} />
+            <Option
+              icon="bookmark"
+              number={saved.spots.length}
+              action={() => changeType(0)}
+            />
             <Option icon="layers" number={0} action={() => changeType(1)} />
           </ProfileHeader>
         }
@@ -45,6 +59,7 @@ function UserProfile(props) {
         refreshing={refreshing}
         renderItem={({ item }) => (
           <ProfileSpot
+            spot={item}
             enterAction={() => navigation.push("SpotDetails", item)}
           />
         )}
@@ -73,7 +88,9 @@ const mapStateToProps = state => ({
   user: state.user.user,
   saved: state.saved
 });
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  savedListDis: payload => dispatch(getSavedSpotsList(payload))
+});
 
 export default connect(
   mapStateToProps,

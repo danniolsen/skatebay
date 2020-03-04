@@ -1,12 +1,12 @@
 import axios from "axios";
-import { getSavedSpots } from "../types/savedTypes";
+import { getSavedSpots, saveNewSpot } from "../types/savedTypes";
 
 const getSavedSpotsList = user => {
   const savedSpots = (dispatch, err) => {
     axios
       .post("http://192.168.1.76:5000/savedlist", {
         user: {
-          user_id: user.user.user_id,
+          user_id: user.user_id,
           idToken: "verify token later"
         }
       })
@@ -14,7 +14,7 @@ const getSavedSpotsList = user => {
         dispatch(getSavedSpots({ spots: response.data }));
       })
       .catch(err => {
-        console.log(err.stack);
+        dispatch(getSavedSpots([]));
       });
   };
   return savedSpots;
@@ -27,9 +27,7 @@ const saveSpot = saveData => {
         spot: { spot_id: saveData.spot_id },
         user: { user_id: saveData.user_id }
       })
-      .then(function(response) {
-        alert(response.data.msg);
-      })
+      .then(function(response) {})
       .catch(error => {
         alert("Something went wrong");
       });

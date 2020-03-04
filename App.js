@@ -7,7 +7,8 @@ import * as firebase from "firebase";
 import { firebaseConfig } from "./src/utils/firebase";
 //dev only
 import { YellowBox } from "react-native";
-YellowBox.ignoreWarnings(["Warning: ..."]);
+YellowBox.ignoreWarnings(["Warning: ...", "Setting a timer"]);
+
 // dev only ends
 
 export default function Index(props) {

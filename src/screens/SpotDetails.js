@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Header from "../components/header/Header";
 
 function SpotDetails(props) {
-  console.log(props.route.params);
+  //console.log(props.route.params);
   return (
     <View style={s.container}>
       <Header
