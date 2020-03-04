@@ -9,7 +9,7 @@ function Settings(props) {
   const { navigation, signOutDis } = props;
   return (
     <View style={s.container}>
-      <Header leftIcon="chevron-left" leftAction={() => navigation.goBack()} />
+      <Header leftIcon="chevron-down" leftAction={() => navigation.goBack()} />
       <ScrollView style={s.listCon}>
         <Item
           icon="bell"
@@ -28,7 +28,7 @@ function Settings(props) {
         />
         <Item
           icon="database"
-          title="Data collection"
+          title="Data"
           action={() => alert("data collection view")}
         />
         <Item
@@ -37,6 +37,11 @@ function Settings(props) {
           action={() => alert("support view")}
         />
         <Item icon="info" title="About" action={() => alert("info view")} />
+        <Item
+          icon="eye-off"
+          title="Restore removed spot"
+          action={() => alert("info view")}
+        />
         <Item icon="lock" title="Sign out" action={() => signOutDis()} />
       </ScrollView>
     </View>
