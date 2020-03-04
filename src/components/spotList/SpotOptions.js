@@ -7,15 +7,14 @@ import { connect } from "react-redux";
 import { saveSpot } from "../../redux/actions/saveSpotActions";
 import { getSavedSpotsList } from "../../redux/actions/saveSpotActions";
 import { getDistance, convertDistance } from "geolib";
-import { hideSpot } from "../../redux/actions/hideActions";
-
+import { removeSpot } from "../../redux/actions/removeActions";
 function SpotOptions(props) {
   const [btnColored, setButtonColor] = React.useState({
     saved: false,
     color: "#2f363d"
   });
-  const { saveSpotDis, savedListDis, user, userLocation, hideSpotDis } = props;
-  const { hiddenSpots } = props;
+  const { saveSpotDis, savedListDis, user, userLocation } = props;
+  const { removeSpotDis } = props;
 
   React.useEffect(() => {
     let saved = props.saved
@@ -54,24 +53,24 @@ function SpotOptions(props) {
     return converted.toFixed(1);
   };
 
-  const hideSpotWarning = () => {
+  const removeSpotWarning = () => {
     Alert.alert(
       "Spot removal",
       "Are you sure you want to remove this spot from your list?",
       [
         { text: "Cancel", onPress: () => console.log("not to day") },
-        { text: "Remove spot", onPress: () => hideSpot() }
+        { text: "Remove spot", onPress: () => removeSpot() }
       ],
       { cancelable: false }
     );
   };
 
-  const hideSpot = () => {
-    let hideSpotData = {
-      spot: props.spotId,
-      hiddenSpotList: hiddenSpots.hidden
+  const removeSpot = () => {
+    let removeData = {
+      spot_id: props.spotId,
+      user_id: user.user_id
     };
-    hideSpotDis(hideSpotData);
+    removeSpotDis(removeData);
     props.hideSpot();
   };
 
@@ -83,7 +82,7 @@ function SpotOptions(props) {
         </TouchableOpacity>
       </View>
       <View style={s.option}>
-        <TouchableOpacity onPress={() => hideSpotWarning()}>
+        <TouchableOpacity onPress={() => removeSpotWarning()}>
           <Feather
             name="eye-off"
             style={{ marginTop: 1 }}
@@ -103,13 +102,12 @@ function SpotOptions(props) {
 
 const mapStateToProps = state => ({
   user: state.user.user,
-  userLocation: state.location,
-  hiddenSpots: state.hiddenSpots
+  userLocation: state.location
 });
 const mapDispatchToProps = dispatch => ({
   saveSpotDis: payload => dispatch(saveSpot(payload)),
   savedListDis: payload => dispatch(getSavedSpotsList(payload)),
-  hideSpotDis: payload => dispatch(hideSpot(payload))
+  removeSpotDis: payload => dispatch(removeSpot(payload))
 });
 
 export default connect(
