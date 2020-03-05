@@ -10,12 +10,25 @@ const LocationService = async () => {
     );
   }
 
-  let location = await Location.getCurrentPositionAsync({});
-  let geoLocation = {
-    latitude: location.coords.latitude,
-    longitude: location.coords.longitude
-  };
-  return geoLocation;
+  let location = Location.getCurrentPositionAsync({});
+  return location
+    .then(loc => {
+      let geoLocation = {
+        latitude: loc.coords.latitude,
+        longitude: loc.coords.longitude
+      };
+      return geoLocation;
+    })
+    .catch(err => {
+      alert(
+        "Location service is required inorder to show spots based on your location"
+      );
+      let geoLocation = {
+        latitude: "0.000000",
+        longitude: "00.00000"
+      };
+      return geoLocation;
+    });
 };
 
 export default LocationService;
