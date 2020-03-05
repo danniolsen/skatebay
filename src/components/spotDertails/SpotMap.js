@@ -8,11 +8,17 @@ const { width, height } = Dimensions.get("window");
 
 const SpotMap = props => {
   const [openIcon, setOpenIcon] = React.useState("chevron-up");
+
+  let min = 50;
+  let midt = height / 2;
+  let max = height - 185;
+
   return (
     <View style={s.container}>
       <BottomSheet
-        enabledBottomInitialAnimation={true}
-        snapPoints={[200, 400, 680]}
+        //enabledBottomInitialAnimation={true}
+        snapPoints={["80%", "50%", 50]}
+        initialSnap={[1]}
         renderHeader={() => <RenderHeader icon={openIcon} />}
         renderContent={() => (
           <RenderContent
@@ -74,7 +80,11 @@ const s = StyleSheet.create({
     alignItems: "center",
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
-    backgroundColor: "#FFF"
+    backgroundColor: "#FFF",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -16 },
+    shadowOpacity: 0.1,
+    shadowRadius: 40
   },
   mapContent: { backgroundColor: "#FFF" },
   map: { width: width, height: height }

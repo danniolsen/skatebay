@@ -1,35 +1,39 @@
 import * as React from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import { ThinText } from "../components/StyledText";
 import Header from "../components/header/Header";
 import { connect } from "react-redux";
 import SpotMap from "../components/spotDertails/SpotMap";
 import { Feather } from "@expo/vector-icons";
+import SpotImages from "../components/spotDertails/SpotImages";
 
 function SpotDetails(props) {
   const { userlocation } = props;
-  //let spotDetails = props.route.params;
-  let spotDetails = {
-    distance: "0.30306628925287166",
-    latitude: "39.559",
-    longitude: "2.678",
-    saved: 64,
-    spot_id: 4,
-    spot_images: ["flat1.jpg", "flat2.jpg"],
-    spot_title: "Flat ground",
-    spot_type: "Street"
-  };
+  let spotDetails = props.route.params;
 
   return (
     <View style={s.container}>
       <Header
-        leftIcon="chevron-down"
+        leftIcon="chevron-left"
         leftAction={() => props.navigation.goBack()}
       />
 
-      <ScrollView style={s.spotContainer}>
-        <ThinText>hey</ThinText>
-      </ScrollView>
+      <View style={s.spotContainer}>
+        <View style={s.spotHeadCon}>
+          <View style={s.spotTitle}>
+            <ThinText size={20}>{spotDetails.spot_title}</ThinText>
+          </View>
+          <View style={s.spotMore}>
+            <TouchableOpacity onPress={() => alert("more")}>
+              <Feather name="more-vertical" size={20} color="#2f3c41" />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <SpotImages
+          spotId={spotDetails.spot_id}
+          spotImages={spotDetails.spot_images}
+        />
+      </View>
 
       <View style={s.mapContainer}>
         <SpotMap
@@ -53,6 +57,17 @@ export default connect(
 
 const s = StyleSheet.create({
   container: { flex: 1 },
-  spotContainer: { flex: 1 },
-  mapContainer: { flex: 1 }
+  spotContainer: {
+    flex: 1,
+    marginTop: 5,
+    borderRadius: 5,
+    backgroundColor: "#FFF"
+  },
+  spotHeadCon: {
+    padding: 10,
+    flexDirection: "row"
+  },
+  spotTitle: { flex: 3 },
+  spotMore: { flex: 1, alignItems: "flex-end", marginTop: 2 },
+  mapContainer: { flex: 0.1 }
 });

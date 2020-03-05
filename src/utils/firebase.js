@@ -27,4 +27,4 @@ if (!firebase.apps.length) {
 const storage = firebase.app().storage(`gs://${STORAGE_BUCKET}`);
 let storageRef = storage.ref();
 
-export { firebaseConfig, storageRef };
+export { firebaseConfig, storageRef, storage };
