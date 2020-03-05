@@ -11,7 +11,13 @@ function ProfileSpot(props) {
   const [mainImage, setMainImage] = React.useState();
 
   React.useEffect(() => {
-    getImages(props.spot.spot_images[0]);
+    let isCancelled = false;
+    if (!isCancelled) {
+      getImages(props.spot.spot_images[0]);
+    }
+    return () => {
+      isCancelled = true;
+    };
   }, []);
 
   const getImages = imgUrl => {
