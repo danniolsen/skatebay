@@ -53,7 +53,6 @@ const SpotImages = props => {
         imageLoadingColor="#CCC"
         images={images}
         resizeMode="contain"
-        onCurrentImagePressed={() => console.log(images)}
         dotColor="#000"
         inactiveDotColor="#FFF"
       />

@@ -2,7 +2,14 @@ import * as React from "react";
 import { Feather } from "@expo/vector-icons";
 import MapView, { Marker } from "react-native-maps";
 import BottomSheet from "reanimated-bottom-sheet";
-import { Fragment, StyleSheet, View, Dimensions, Text } from "react-native";
+import {
+  Fragment,
+  StyleSheet,
+  View,
+  Dimensions,
+  Text,
+  ScrollView
+} from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
@@ -46,33 +53,31 @@ const RenderContent = props => {
   let longitude = Number(props.spotLocLon);
 
   return (
-    <View style={s.mapContent}>
-      <MapView
-        showsUserLocation={true}
-        style={s.map}
-        region={{
+    <MapView
+      showsUserLocation={true}
+      style={s.map}
+      region={{
+        latitude: latitude,
+        longitude: longitude,
+        latitudeDelta: 0.009,
+        longitudeDelta: 0.0093
+      }}
+    >
+      <Marker
+        coordinate={{
           latitude: latitude,
-          longitude: longitude,
-          latitudeDelta: 0.009,
-          longitudeDelta: 0.0093
+          longitude: longitude
         }}
-      >
-        <Marker
-          coordinate={{
-            latitude: latitude,
-            longitude: longitude
-          }}
-        />
-      </MapView>
-    </View>
+      />
+    </MapView>
   );
 };
 
 export default SpotMap;
 
 const s = StyleSheet.create({
-  container: { flex: 1, elevation: 2 },
-  sliderCon: { height: 20 },
+  container: { flex: 1 },
+  sliderCon: { backgroundColor: "#FFF" },
   mapHeader: {
     padding: 5,
     alignItems: "center",
@@ -80,6 +85,6 @@ const s = StyleSheet.create({
     borderTopRightRadius: 15,
     backgroundColor: "#FFF"
   },
-  mapContent: { backgroundColor: "#FFF" },
-  map: { width: width, height: "100%" }
+  mapContent: { flex: 1 },
+  map: { height: "100%", backgroundColor: "#FFF" }
 });
