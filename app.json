@@ -40,12 +40,12 @@
     "facebookDisplayName": "skatebay",
     "extra": {
       "firebase": {
-        "apiKey": "AIzaSyDSR50q7sGKjuEzbrjjb3VYwBy0cnSA6b0",
-        "authDomain": "skatebay-f8803.firebaseapp.com",
-        "databaseURL": "https://skatebay-f8803.firebaseio.com",
-        "projectId": "skatebay-f8803",
-        "storageBucket": "skatebay-f8803.appspot.com",
-        "messagingSenderId": "4691008764"
+        "apiKey": "firebase api key",
+        "authDomain": "auth domain",
+        "databaseURL": "db url",
+        "projectId": "project id",
+        "storageBucket": "bucket",
+        "messagingSenderId": "msg id"
       },
       "facebook": {
         "appId": "242532483422277"
