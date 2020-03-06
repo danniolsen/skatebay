@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import SpotMap from "../components/spotDertails/SpotMap";
 import { Feather } from "@expo/vector-icons";
 import SpotImages from "../components/spotDertails/SpotImages";
+import SpotInfo from "../components/spotDertails/SpotInfo";
 
 function SpotDetails(props) {
   const { userlocation } = props;
@@ -18,7 +19,7 @@ function SpotDetails(props) {
         leftAction={() => props.navigation.goBack()}
       />
 
-      <View style={s.spotContainer}>
+      <ScrollView style={s.spotContainer}>
         <View style={s.spotHeadCon}>
           <View style={s.spotTitle}>
             <ThinText size={20}>{spotDetails.spot_title}</ThinText>
@@ -33,7 +34,8 @@ function SpotDetails(props) {
           spotId={spotDetails.spot_id}
           spotImages={spotDetails.spot_images}
         />
-      </View>
+        <SpotInfo spotDetails={spotDetails} userLocation={userlocation} />
+      </ScrollView>
 
       <View style={s.mapContainer}>
         <SpotMap
@@ -56,9 +58,8 @@ export default connect(
 )(SpotDetails);
 
 const s = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, position: "relative" },
   spotContainer: {
-    flex: 1,
     marginTop: 5,
     borderRadius: 5,
     backgroundColor: "#FFF"

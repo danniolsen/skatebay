@@ -3,9 +3,11 @@ import { View, TouchableOpacity, Text, StyleSheet, Image } from "react-native";
 import { Dimensions, ActivityIndicator, Alert } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { ThinText, NormalText } from "../StyledText";
-const width = Dimensions.get("window").width;
 import { storageRef } from "../../utils/firebase";
 import SpotOptions from "./SpotOptions";
+
+const width = Dimensions.get("window").width;
+const imgHeight = width / 1.5;
 
 function Spot(props) {
   const { navigation } = props;
@@ -34,7 +36,7 @@ function Spot(props) {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity onPress={props.enterAction}>
+      <TouchableOpacity onPress={props.enterAction} activeOpacity={0.8}>
         <View style={s.imageCon}>
           <View style={s.imageOverlay}>
             <Feather name="image" size={20} color="#2f363d" />
@@ -79,7 +81,7 @@ const s = StyleSheet.create({
   header: { flexDirection: "row", padding: 10 },
   headline: { flex: 1 },
   more: { marginTop: 2 },
-  imageCon: { margin: 4, marginBottom: 0, position: "relative" },
+  imageCon: { position: "relative" },
   imageOverlay: {
     position: "absolute",
     top: 10,
@@ -94,9 +96,8 @@ const s = StyleSheet.create({
   },
   imgNo: { paddingLeft: 5 },
   image: {
-    width: width - 16,
-    height: width - 100,
-    resizeMode: "cover"
+    height: imgHeight,
+    resizeMode: "stretch"
   },
   optionsBar: {
     paddingVertical: 15,
