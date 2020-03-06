@@ -6,6 +6,7 @@ import { storage } from "../../utils/firebase";
 import { SliderBox } from "react-native-image-slider-box";
 
 const { width, height } = Dimensions.get("window");
+const imgHeight = width / 1.5;
 
 const SpotImages = props => {
   const { spotImages, spotId } = props;
@@ -49,6 +50,7 @@ const SpotImages = props => {
     <View style={s.container}>
       <SliderBox
         style={s.slider}
+        imageLoadingColor="#CCC"
         images={images}
         resizeMode="contain"
         onCurrentImagePressed={() => console.log(images)}
@@ -64,5 +66,5 @@ export default SpotImages;
 const s = StyleSheet.create({
   container: { backgroundColor: "#FFF" },
   image: { flex: 1 },
-  slider: { width: width, height: width }
+  slider: { width: width, height: imgHeight }
 });

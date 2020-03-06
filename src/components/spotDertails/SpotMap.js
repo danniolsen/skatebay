@@ -8,16 +8,13 @@ const { width, height } = Dimensions.get("window");
 
 const SpotMap = props => {
   const [openIcon, setOpenIcon] = React.useState("chevron-up");
-
-  let min = 50;
-  let midt = height / 2;
-  let max = height - 185;
+  const [mapLoading, setMapLoading] = React.useState(true);
 
   return (
     <View style={s.container}>
       <BottomSheet
-        //enabledBottomInitialAnimation={true}
-        snapPoints={["80%", "50%", 50]}
+        style={s.sliderCon}
+        snapPoints={["70%", "40%", "10%"]}
         initialSnap={[1]}
         renderHeader={() => <RenderHeader icon={openIcon} />}
         renderContent={() => (
@@ -53,11 +50,11 @@ const RenderContent = props => {
       <MapView
         showsUserLocation={true}
         style={s.map}
-        initialRegion={{
+        region={{
           latitude: latitude,
           longitude: longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421
+          latitudeDelta: 0.009,
+          longitudeDelta: 0.0093
         }}
       >
         <Marker
@@ -74,18 +71,15 @@ const RenderContent = props => {
 export default SpotMap;
 
 const s = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, elevation: 2 },
+  sliderCon: { height: 20 },
   mapHeader: {
     padding: 5,
     alignItems: "center",
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
-    backgroundColor: "#FFF",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: -16 },
-    shadowOpacity: 0.1,
-    shadowRadius: 40
+    backgroundColor: "#FFF"
   },
   mapContent: { backgroundColor: "#FFF" },
-  map: { width: width, height: height }
+  map: { width: width, height: "100%" }
 });
