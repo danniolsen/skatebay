@@ -24,7 +24,7 @@ const LocationService = async () => {
         "Location service is required inorder to show spots based on your location"
       );
       let geoLocation = {
-        latitude: "0.000000",
+        latitude: "00.000000",
         longitude: "00.00000"
       };
       return geoLocation;

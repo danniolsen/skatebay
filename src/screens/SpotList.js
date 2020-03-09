@@ -15,13 +15,16 @@ function SpotList(props) {
   const { spotListDis, navigation } = props;
 
   const [refreshing, setRefreshing] = React.useState(true);
-  React.useEffect(() => {
-    let isCancelled = false;
-    if (!isCancelled) {
-      getSpotlist();
-    }
-    return () => (isCancelled = true);
-  }, []);
+  React.useEffect(
+    () => {
+      let isCancelled = false;
+      if (!isCancelled) {
+        props.route.params ? getSpots(location) : getSpotlist();
+      }
+      return () => (isCancelled = true);
+    },
+    [getSpotlist, props.route]
+  );
 
   const getSpotlist = () => {
     setRefreshing(true);
