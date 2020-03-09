@@ -1,8 +1,8 @@
 import { SET_LOCATION } from "../types/locationTypes";
 
 const initialState = {
-  latitude: null,
-  longitude: null
+  latitude: 0.0,
+  longitude: 0.0
 };
 
 const locationReducer = (state = initialState, action) => {

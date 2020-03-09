@@ -16,7 +16,7 @@ function Spot(props) {
 
   React.useEffect(() => {
     getImages(props.url);
-  }, []);
+  });
 
   const getImages = imgUrl => {
     let starsRef = storageRef.child(`/${props.spotId}/${imgUrl}`);
