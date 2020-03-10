@@ -50,7 +50,7 @@ const SpotImages = props => {
     <View style={s.container}>
       <SliderBox
         style={s.slider}
-        imageLoadingColor="#CCC"
+        imageLoadingColor="#2f3c41"
         images={images}
         resizeMode="contain"
         dotColor="#000"
@@ -63,7 +63,7 @@ const SpotImages = props => {
 export default SpotImages;
 
 const s = StyleSheet.create({
-  container: { backgroundColor: "#FFF" },
+  container: { backgroundColor: "#FFF", height: imgHeight },
   image: { flex: 1 },
   slider: { width: width, height: imgHeight }
 });
