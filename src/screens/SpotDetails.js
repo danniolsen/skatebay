@@ -9,6 +9,7 @@ import Map from "../components/spotDertails/Map";
 import SpotDrawer from "../components/spotDertails/SpotDrawer";
 import SpotImages from "../components/spotDertails/SpotImages";
 import SpotInfo from "../components/spotDertails/SpotInfo";
+import LocationService from "../features/LocationService";
 
 const { width, height } = Dimensions.get("window");
 // new stuff ends
@@ -16,6 +17,13 @@ const { width, height } = Dimensions.get("window");
 function SpotDetails(props) {
   const { userlocation } = props;
   let spotDetails = props.route.params;
+  const [uLocation, setUlocation] = React.useState(userlocation);
+
+  const newDistance = () => {
+    LocationService().then(loc => {
+      setUlocation(loc);
+    });
+  };
   return (
     <View style={s.container}>
       <View style={s.mapContainer}>
@@ -30,7 +38,10 @@ function SpotDetails(props) {
         leftAction={() => props.navigation.goBack()}
       />
 
-      <SpotDrawer title={spotDetails.spot_title}>
+      <SpotDrawer
+        title={spotDetails.spot_title}
+        updateDistance={() => newDistance()}
+      >
         <ScrollView style={s.innerScroll}>
           <SpotImages
             spotId={spotDetails.spot_id}
@@ -38,7 +49,7 @@ function SpotDetails(props) {
           />
 
           <View style={s.spotInformations}>
-            <SpotInfo spotDetails={spotDetails} userLocation={userlocation} />
+            <SpotInfo spotDetails={spotDetails} userLocation={uLocation} />
           </View>
         </ScrollView>
       </SpotDrawer>

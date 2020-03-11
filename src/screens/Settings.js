@@ -9,7 +9,7 @@ function Settings(props) {
   const { navigation, signOutDis } = props;
   return (
     <View style={s.container}>
-      <Header leftIcon="chevron-down" leftAction={() => navigation.goBack()} />
+      <Header leftIcon="chevron-left" leftAction={() => navigation.goBack()} />
       <ScrollView style={s.listCon}>
         <Item
           icon="bell"

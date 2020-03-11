@@ -32,6 +32,6 @@ const Map = props => {
 export default Map;
 
 const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F00" },
+  container: { flex: 1, backgroundColor: "#FFF" },
   map: { width: "100%", height: "100%" }
 });

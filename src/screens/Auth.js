@@ -59,9 +59,6 @@ const s = StyleSheet.create({
     width: 100,
     height: 100
   },
-  headText: {
-    color: "#F00"
-  },
   midt: {
     flex: 1.4,
     alignItems: "center",

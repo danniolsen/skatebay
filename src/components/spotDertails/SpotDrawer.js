@@ -1,16 +1,25 @@
 import * as React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Dimensions } from "react-native";
 import BottomSheet from "reanimated-bottom-sheet";
 import { Feather } from "@expo/vector-icons";
 import { ThinText } from "../StyledText";
+
+const { width, height } = Dimensions.get("window");
+
 const SpotDrawer = props => {
   return (
     <BottomSheet
       style={s.container}
-      snapPoints={["85%", "53%", "15%"]}
-      initialSnap={1}
+      snapPoints={["80%", "53%", "20%"]}
+      initialSnap={2}
       onChange={() => alert("changed")}
-      renderHeader={() => <RenderHeader title={props.title} />}
+      renderHeader={() => (
+        <RenderHeader
+          title={props.title}
+          updateDistance={props.updateDistance}
+        />
+      )}
       renderContent={() => (
         <View style={{ backgroundColor: "#FFF" }}>{props.children}</View>
       )}
@@ -23,18 +32,21 @@ const SpotDrawer = props => {
 const RenderHeader = props => {
   return (
     <View style={s.mapHeader}>
-      <TouchableOpacity style={s.draggerCon}>
-        <View style={s.dragger} />
-      </TouchableOpacity>
-      <View style={s.spotTitle}>
-        <ThinText color="#2f3c41" size={20}>
-          {props.title}
-        </ThinText>
+      <View style={s.headerCon}>
+        <View style={s.spotTitle}>
+          <ThinText color="#2f3c41" size={20}>
+            {props.title}
+          </ThinText>
+        </View>
+        <View style={s.updateDistance}>
+          <TouchableOpacity onPress={props.updateDistance}>
+            <Feather name="navigation" color="#2f3c41" size={22} />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
 };
-
 export default SpotDrawer;
 
 const s = StyleSheet.create({
@@ -48,18 +60,15 @@ const s = StyleSheet.create({
     borderTopRightRadius: 15,
     backgroundColor: "#FFF"
   },
-  draggerCon: {
-    alignItems: "center",
-    paddingTop: 15,
-    paddingBottom: 5
+  headerCon: {
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    flexDirection: "row"
   },
-  dragger: {
-    width: 30,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 2.7,
-    borderRadius: 5,
-    backgroundColor: "#7A7A7A"
-  },
-  spotTitle: { flex: 1, padding: 10, paddingTop: 0 }
+  spotTitle: { flex: 1 },
+  updateDistance: {
+    flex: 1,
+    paddingTop: 3,
+    alignItems: "flex-end"
+  }
 });
