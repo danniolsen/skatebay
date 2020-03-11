@@ -19,7 +19,6 @@ function Loading() {
 
 const s = StyleSheet.create({
   container: { flex: 1, justifyContent: "center", alignItems: "center" },
-  txt: { color: "#F00" },
   spaceing: { marginBottom: 10, marginTop: 10 }
 });
 

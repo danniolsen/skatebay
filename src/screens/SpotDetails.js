@@ -1,48 +1,58 @@
 import * as React from "react";
-import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
-import { ThinText } from "../components/StyledText";
+import { StyleSheet, View, Dimensions, ScrollView, Text } from "react-native";
 import Header from "../components/header/Header";
 import { connect } from "react-redux";
-import SpotMap from "../components/spotDertails/SpotMap";
-import { Feather } from "@expo/vector-icons";
+
+// new stuff
+import { ThinText } from "../components/StyledText";
+import Map from "../components/spotDertails/Map";
+import SpotDrawer from "../components/spotDertails/SpotDrawer";
 import SpotImages from "../components/spotDertails/SpotImages";
 import SpotInfo from "../components/spotDertails/SpotInfo";
+import LocationService from "../features/LocationService";
+
+const { width, height } = Dimensions.get("window");
+// new stuff ends
 
 function SpotDetails(props) {
   const { userlocation } = props;
   let spotDetails = props.route.params;
+  const [uLocation, setUlocation] = React.useState(userlocation);
 
+  const newDistance = () => {
+    LocationService().then(loc => {
+      setUlocation(loc);
+    });
+  };
   return (
     <View style={s.container}>
+      <View style={s.mapContainer}>
+        <Map
+          spotLatitude={spotDetails.latitude}
+          spotLongitude={spotDetails.longitude}
+        />
+      </View>
+
       <Header
         leftIcon="chevron-left"
         leftAction={() => props.navigation.goBack()}
       />
 
-      <ScrollView style={s.spotContainer}>
-        <View style={s.spotHeadCon}>
-          <View style={s.spotTitle}>
-            <ThinText size={20}>{spotDetails.spot_title}</ThinText>
-          </View>
-          <View style={s.spotMore}>
-            <TouchableOpacity onPress={() => alert("more")}>
-              <Feather name="more-vertical" size={20} color="#2f3c41" />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <SpotImages
-          spotId={spotDetails.spot_id}
-          spotImages={spotDetails.spot_images}
-        />
-        <SpotInfo spotDetails={spotDetails} userLocation={userlocation} />
-      </ScrollView>
+      <SpotDrawer
+        title={spotDetails.spot_title}
+        updateDistance={() => newDistance()}
+      >
+        <ScrollView style={s.innerScroll}>
+          <SpotImages
+            spotId={spotDetails.spot_id}
+            spotImages={spotDetails.spot_images}
+          />
 
-      <View style={s.mapContainer}>
-        <SpotMap
-          spotLat={spotDetails.latitude}
-          spotLon={spotDetails.longitude}
-        />
-      </View>
+          <View style={s.spotInformations}>
+            <SpotInfo spotDetails={spotDetails} userLocation={uLocation} />
+          </View>
+        </ScrollView>
+      </SpotDrawer>
     </View>
   );
 }
@@ -58,17 +68,7 @@ export default connect(
 )(SpotDetails);
 
 const s = StyleSheet.create({
-  container: { flex: 1, position: "relative" },
-  spotContainer: {
-    marginTop: 5,
-    borderRadius: 5,
-    backgroundColor: "#FFF"
-  },
-  spotHeadCon: {
-    padding: 10,
-    flexDirection: "row"
-  },
-  spotTitle: { flex: 3 },
-  spotMore: { flex: 1, alignItems: "flex-end", marginTop: 2 },
-  mapContainer: { flex: 0.1 }
+  container: { flex: 1, ...StyleSheet.absoluteFillObject },
+  mapContainer: { ...StyleSheet.absoluteFillObject },
+  innerScroll: { height: "100%" }
 });

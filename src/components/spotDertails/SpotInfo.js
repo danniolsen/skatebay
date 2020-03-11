@@ -2,13 +2,32 @@ import * as React from "react";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { ThinText } from "../StyledText";
 import { getDistance, convertDistance } from "geolib";
+import * as Location from "expo-location";
+import * as Permissions from "expo-permissions";
 
 const SpotInfo = props => {
   const { spotDetails, userLocation } = props;
-  const [btnColored, setButtonColor] = React.useState({
-    saved: false,
-    color: "#2f363d"
+  const [addressLoading, setAddressLoading] = React.useState(true);
+  const [address, setAddress] = React.useState({
+    city: "City not found",
+    country: "Country not found",
+    street: "Street not found"
   });
+
+  React.useEffect(() => {
+    let isCancled = false;
+    if (!isCancled) {
+      getAddress().then(add => {
+        let newAddress = {
+          city: add[0].city,
+          country: add[0].country,
+          street: add[0].street
+        };
+        setAddress(newAddress);
+      });
+    }
+    () => (isCancled = true);
+  }, []);
 
   const distance = location => {
     let dis = getDistance(
@@ -25,23 +44,31 @@ const SpotInfo = props => {
     return converted.toFixed(1);
   };
 
+  const getAddress = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    let latitude = parseFloat(spotDetails.latitude);
+    let longitude = parseFloat(spotDetails.longitude);
+    try {
+      let addressLookup = Location.reverseGeocodeAsync({
+        latitude: latitude,
+        longitude: longitude
+      });
+      return addressLookup;
+    } catch (err) {
+      return err.stack;
+    }
+  };
+
   return (
     <View style={s.container}>
-      <View style={s.spotTypes}>
-        {["Street", "Skatepark", "curbs", "rails"].map((type, i) => {
-          return (
-            <View key={i} style={s.spotTypeCon}>
-              <ThinText size={20} color="#2f363d">
-                {type}
-              </ThinText>
-            </View>
-          );
-        })}
+      <View style={s.infoCon}>
+        <ThinText style={s.infoTxt}>
+          {address.city}, {address.country}.
+        </ThinText>
+        <ThinText style={s.infoTxt}>{address.street}.</ThinText>
       </View>
       <View style={s.distance}>
-        <ThinText color="#2f363d" size={20}>
-          {distance()} km
-        </ThinText>
+        <ThinText size={20}>{distance()} km</ThinText>
       </View>
     </View>
   );
@@ -50,16 +77,19 @@ const SpotInfo = props => {
 export default SpotInfo;
 
 const s = StyleSheet.create({
-  container: { padding: 10, paddingRight: 10, flexDirection: "row" },
-  spotTypes: { flex: 6, flexDirection: "row", flexWrap: "wrap" },
-  spotTypeCon: {
-    marginRight: 7,
-    marginBottom: 7,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 7,
-    borderWidth: 0.4,
-    borderColor: "#2f363d"
+  container: {
+    flexDirection: "row",
+    padding: 10,
+    borderBottomColor: "#BBB",
+    borderBottomWidth: StyleSheet.hairlineWidth
   },
-  distance: { flex: 1.6, paddingTop: 4, alignItems: "flex-end" }
+  infoCon: { flex: 6 },
+  infoTxt: { marginVertical: 2 },
+  distance: { flex: 3, alignItems: "flex-end", justifyContent: "center" }
 });
+
+/*
+<ThinText>{address.city}</ThinText>
+<ThinText>{address.country}</ThinText>
+<ThinText>{address.street}</ThinText>
+*/

@@ -8,6 +8,7 @@ import { NormalText } from "../components/StyledText";
 import { connect } from "react-redux";
 import { setNewLocation } from "../redux/actions/locationActions";
 import LocationService from "../features/LocationService";
+import PropTypes from "prop-types";
 
 const { width, height } = Dimensions.get("window");
 
@@ -178,3 +179,7 @@ const s = StyleSheet.create({
     backgroundColor: "rgba(52, 52, 52, 0.5)"
   }
 });
+
+ExploreMap.defaultProps = {
+  location: { latitude: 0.0, longitude: 0.0 }
+};
