@@ -2,9 +2,9 @@
 // left larger than right 3 > 2
 
 const timeAgo = dateTime => {
-  let timeNow = new Date("2020-03-12 12:00:00");
-  //let uploadDate = new Date(dateTime);
-  let uploadDate = new Date("2018-01-01 12:00:00");
+  let timeNow = new Date();
+  let uploadDate = new Date(dateTime);
+
   let diff = Math.abs(timeNow - uploadDate);
 
   let minutes = diff / (1000 * 60);
