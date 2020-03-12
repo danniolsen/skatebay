@@ -12,7 +12,7 @@ const SpotDrawer = props => {
     <BottomSheet
       style={s.container}
       snapPoints={["80%", "53%", "20%"]}
-      initialSnap={2}
+      initialSnap={0}
       onChange={() => alert("changed")}
       renderHeader={() => (
         <RenderHeader
