@@ -24,7 +24,7 @@ const SpotInfo = props => {
     if (!isCancled) {
       let date = timeAgo(spotDetails.spot_created_at);
       setTimeSince(date);
-
+      console.log(spotDetails);
       getAddress()
         .then(add => {
           let newAddress = {
