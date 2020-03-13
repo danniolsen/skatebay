@@ -2,8 +2,8 @@ import * as React from "react";
 import { StyleSheet, View, Dimensions, ScrollView, Text } from "react-native";
 import Header from "../components/header/Header";
 import { connect } from "react-redux";
+import { saveCount } from "../redux/actions/saveSpotActions";
 
-// new stuff
 import { ThinText } from "../components/StyledText";
 import Map from "../components/spotDertails/Map";
 import SpotDrawer from "../components/spotDertails/SpotDrawer";
@@ -18,12 +18,24 @@ function SpotDetails(props) {
   const { userlocation } = props;
   let spotDetails = props.route.params;
   const [uLocation, setUlocation] = React.useState(userlocation);
+  const [count, setCount] = React.useState("...");
 
   const newDistance = () => {
     LocationService().then(loc => {
       setUlocation(loc);
     });
   };
+
+  React.useEffect(() => {
+    let isCancled = false;
+    if (!isCancled) {
+      saveCount(spotDetails.spot_id).then(c => {
+        setCount(c);
+      });
+    }
+    () => (isCancled = true);
+  }, []);
+
   return (
     <View style={s.container}>
       <View style={s.mapContainer}>
@@ -49,7 +61,11 @@ function SpotDetails(props) {
           />
 
           <View style={s.spotInformations}>
-            <SpotInfo spotDetails={spotDetails} userLocation={uLocation} />
+            <SpotInfo
+              spotDetails={spotDetails}
+              userLocation={uLocation}
+              saveCount={count}
+            />
           </View>
         </ScrollView>
       </SpotDrawer>

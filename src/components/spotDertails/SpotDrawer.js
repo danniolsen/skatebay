@@ -12,7 +12,7 @@ const SpotDrawer = props => {
     <BottomSheet
       style={s.container}
       snapPoints={["80%", "53%", "20%"]}
-      initialSnap={0}
+      initialSnap={1}
       onChange={() => alert("changed")}
       renderHeader={() => (
         <RenderHeader
@@ -23,7 +23,6 @@ const SpotDrawer = props => {
       renderContent={() => (
         <View style={{ backgroundColor: "#FFF" }}>{props.children}</View>
       )}
-      overdragResistanceFactor={2}
       enabledContentGestureInteraction={false}
     />
   );
@@ -32,6 +31,9 @@ const SpotDrawer = props => {
 const RenderHeader = props => {
   return (
     <View style={s.mapHeader}>
+      <View style={s.pullBtnCon}>
+        <View style={s.pullBtn} />
+      </View>
       <View style={s.headerCon}>
         <View style={s.spotTitle}>
           <ThinText color="#2f3c41" size={20}>
@@ -70,5 +72,15 @@ const s = StyleSheet.create({
     flex: 1,
     paddingTop: 3,
     alignItems: "flex-end"
+  },
+  pullBtnCon: {
+    alignItems: "center",
+    marginTop: 10
+  },
+  pullBtn: {
+    backgroundColor: "#2f3c41",
+    width: 50,
+    height: 5,
+    borderRadius: 10
   }
 });
