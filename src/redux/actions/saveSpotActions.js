@@ -35,4 +35,17 @@ const saveSpot = saveData => {
   return saveNow;
 };
 
-export { getSavedSpotsList, saveSpot };
+const saveCount = spot_id => {
+  return axios
+    .post(`http://192.168.1.76:5000/savecount`, {
+      spot_id: spot_id
+    })
+    .then(response => {
+      return response.data[0].count;
+    })
+    .catch(err => {
+      return "Not avalible";
+    });
+};
+
+export { getSavedSpotsList, saveSpot, saveCount };
