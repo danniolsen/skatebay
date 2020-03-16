@@ -58,7 +58,7 @@ function SpotOptions(props) {
       "Spot removal",
       "Are you sure you want to remove this spot from your list?",
       [
-        { text: "Cancel", onPress: () => console.log("not to day") },
+        { text: "Cancel", onPress: () => null },
         { text: "Remove spot", onPress: () => removeSpot() }
       ],
       { cancelable: false }

@@ -6,27 +6,24 @@ import {
 
 const initialState = {
   auth: false,
-  authLoading: false,
-  error: null
+  authLoading: false
 };
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_AUTH_BEGIN:
       return {
-        ...state,
         authLoading: true
       };
     case SET_AUTH_SUCCESS:
       return {
-        ...state,
-        auth: true
+        auth: true,
+        authLoading: true
       };
     case SET_AUTH_FAILURE:
       return {
         auth: false,
-        authLoading: false,
-        error: action.payload.error
+        authLoading: false
       };
     default:
       return state;

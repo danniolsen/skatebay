@@ -12,7 +12,6 @@ export const setAuthSuccess = auth => ({
   payload: { auth: auth }
 });
 
-export const setAuthFailure = error => ({
-  type: SET_AUTH_FAILURE,
-  payload: error
+export const setAuthFailure = () => ({
+  type: SET_AUTH_FAILURE
 });

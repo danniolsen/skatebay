@@ -5,12 +5,14 @@ import {
   clearUserBegin,
   clearUserSuccess
 } from "../types/userTypes";
+
 import axios from "axios";
 
 import { SignOut } from "../../features/AuthSocial";
 
 const setUserState = idToken => {
   const setUser = (dispatch, error) => {
+    dispatch({ type: "SET_AUTH_BEGIN" });
     axios
       .post(`http://192.168.1.76:5000/auth`, {
         idToken: idToken
@@ -28,6 +30,7 @@ const setUserState = idToken => {
       .catch(function(error) {
         dispatch(fetchuUserFailure({ error: "Invalid request" }));
         dispatch({ type: "LOADING_STOP" });
+        dispatch({ type: "SET_AUTH_FAILURE", payload: "error" });
       });
   };
   return setUser;

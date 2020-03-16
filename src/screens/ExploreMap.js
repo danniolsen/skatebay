@@ -34,7 +34,7 @@ function ExploreMap(props) {
         setNewLocation(currentLocation);
       })
       .catch(err => {
-        console.log(err.stack);
+        alert("Location not available");
       });
   };
 
