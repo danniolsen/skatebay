@@ -9,16 +9,19 @@ import Spot from "../components/spotList/Spot";
 import EmptySpotList from "../components/spotList/EmptySpotList";
 import { getSpotList } from "../redux/actions/spotListActions";
 import * as firebase from "firebase";
+import SpotMoreModal from "../components/modals/SpotMoreModal";
 
 function SpotList(props) {
   const { user, location, locationDis, spotList } = props;
   const { spotListDis, navigation } = props;
-
+  const [moreActions, setMoreActions] = React.useState(false);
+  const [selected, setSelected] = React.useState(null);
   const [refreshing, setRefreshing] = React.useState(true);
   React.useEffect(
     () => {
       let isCancelled = false;
       if (!isCancelled) {
+        // check if custom location is in use from params
         props.route.params ? getSpots(location) : getSpotlist();
       }
       return () => (isCancelled = true);
@@ -44,8 +47,21 @@ function SpotList(props) {
     navigation.push("SpotDetails", spot);
   };
 
+  const openMoreActions = spot => {
+    setSelected(spot);
+    setMoreActions(true);
+  };
+
   return (
     <View style={s.container}>
+      {moreActions && (
+        <SpotMoreModal
+          visible={moreActions}
+          close={() => setMoreActions(false)}
+          spot={selected}
+          user={user}
+        />
+      )}
       <Header rightIcon="sliders" rightAction={() => alert("filtering")} />
       <FlatList
         data={spotList.spotList}
@@ -63,6 +79,7 @@ function SpotList(props) {
             spotLocation={{ lat: item.latitude, lon: item.longitude }}
             enterAction={() => goToSpot(item)}
             saved={item.saved}
+            moreAction={() => openMoreActions(item)}
           />
         )}
         keyExtractor={(item, index) => index.toString()}
