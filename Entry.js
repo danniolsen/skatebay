@@ -7,11 +7,12 @@ import { firebaseConfig } from "./src/utils/firebase";
 import { connect } from "react-redux";
 import { setUserState } from "./src/redux/actions/userActions";
 import Loading from "./src/screens/Loading";
+import TopBanner from "./src/components/banner/TopBanner";
 
 function App(props) {
   const containerRef = React.useRef();
   const { setUserDis, user, auth, loading, initialNavigationState } = props;
-  const { stopLoadingDis, startLoadingDis, containerRefs } = props;
+  const { stopLoadingDis, startLoadingDis, containerRefs, banner } = props;
   const [checkAuth, setCheckAuth] = React.useState(false);
 
   React.useEffect(() => {
@@ -37,6 +38,7 @@ function App(props) {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#FFF" barStyle="dark-content" />
+        {banner.show && <TopBanner msg={banner.msg} style={banner.style} />}
         <NavigationContainer
           ref={containerRefs}
           initialState={initialNavigationState}
@@ -50,7 +52,8 @@ function App(props) {
 
 const mapStateToProps = state => ({
   user: state.user,
-  auth: state.auth.auth
+  auth: state.auth.auth,
+  banner: state.banner.banner
 });
 
 const mapDispatchToProps = dispatch => ({
