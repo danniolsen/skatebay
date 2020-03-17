@@ -1,23 +1,18 @@
 import * as React from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
-import { SplashScreen } from "expo";
-import * as Font from "expo-font";
-import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import MainNavigator from "./src/navigation/MainNavigation";
-import useLinking from "./src/navigation/useLinking";
 import * as firebase from "firebase";
 import { firebaseConfig } from "./src/utils/firebase";
 import { connect } from "react-redux";
 import { setUserState } from "./src/redux/actions/userActions";
+import Loading from "./src/screens/Loading";
 
 function App(props) {
-  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-  const [initialNavigationState, setInitialNavigationState] = React.useState();
   const containerRef = React.useRef();
-  const { getInitialState } = useLinking(containerRef);
-  const { setUserDis, user, auth } = props;
-  const { stopLoadingDis, startLoadingDis } = props;
+  const { setUserDis, user, auth, loading, initialNavigationState } = props;
+  const { stopLoadingDis, startLoadingDis, containerRefs } = props;
+  const [checkAuth, setCheckAuth] = React.useState(false);
 
   React.useEffect(() => {
     startLoadingDis();
@@ -28,42 +23,25 @@ function App(props) {
           .currentUser.getIdToken(true)
           .then(function(idToken) {
             setUserDis(idToken);
+            setCheckAuth(true);
           });
       } else {
         stopLoadingDis();
       }
     });
-    async function loadResourcesAndDataAsync() {
-      try {
-        SplashScreen.preventAutoHide();
-        setInitialNavigationState(await getInitialState()); // Load our initial navigation state
-
-        await Font.loadAsync({
-          ...Ionicons.font,
-          "Roboto-Thin": require("./src/assets/fonts/Roboto-Thin.ttf"),
-          "Roboto-Regular": require("./src/assets/fonts/Roboto-Regular.ttf")
-        });
-      } catch (e) {
-        return null;
-      } finally {
-        setLoadingComplete(true);
-        SplashScreen.hide();
-      }
-    }
-    loadResourcesAndDataAsync();
   }, []);
 
-  if (!isLoadingComplete && !props.skipLoadingScreen) {
+  if (!loading && !props.skipLoadingScreen) {
     return null;
   } else {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#FFF" barStyle="dark-content" />
         <NavigationContainer
-          ref={containerRef}
+          ref={containerRefs}
           initialState={initialNavigationState}
         >
-          <MainNavigator auth={auth} />
+          <MainNavigator auth={checkAuth} />
         </NavigationContainer>
       </View>
     );

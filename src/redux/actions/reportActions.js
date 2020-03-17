@@ -15,7 +15,7 @@ const reportSpot = report => {
         return response.data;
       })
       .catch(error => {
-        console.log("catch error");
+        return error;
       });
   };
   return reporting;

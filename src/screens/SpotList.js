@@ -11,10 +11,11 @@ import { getSpotList } from "../redux/actions/spotListActions";
 import * as firebase from "firebase";
 import SpotMoreModal from "../components/modals/SpotMoreModal";
 import { reportSpot } from "../redux/actions/reportActions";
+import { bannerShow } from "../redux/actions/bannerActions";
 
 function SpotList(props) {
   const { user, location, locationDis, spotList, reportSpotDis } = props;
-  const { spotListDis, navigation } = props;
+  const { spotListDis, navigation, bannerShowDis } = props;
   const [moreActions, setMoreActions] = React.useState(false);
   const [selected, setSelected] = React.useState(null);
   const [refreshing, setRefreshing] = React.useState(true);
@@ -57,10 +58,22 @@ function SpotList(props) {
     let reportResponse = reportSpotDis(report);
     reportResponse
       .then(success => {
-        // show banner with msg: success.msg
+        bannerShowDis({
+          banner: {
+            msg: success.msg,
+            style: "#FFF",
+            show: true
+          }
+        });
       })
       .catch(err => {
-        // show banner with msg: err.msg
+        bannerShowDis({
+          banner: {
+            msg: "Something went wrong",
+            style: "#ffc107",
+            show: true
+          }
+        });
       })
       .finally(f => {
         setTimeout(() => {
@@ -116,7 +129,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   locationDis: payload => dispatch(setNewLocation(payload)),
   spotListDis: payload => dispatch(getSpotList(payload)),
-  reportSpotDis: payload => dispatch(reportSpot(payload))
+  reportSpotDis: payload => dispatch(reportSpot(payload)),
+  bannerShowDis: payload => dispatch(bannerShow(payload))
 });
 
 export default connect(
