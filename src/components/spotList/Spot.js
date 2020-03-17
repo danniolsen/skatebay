@@ -15,15 +15,15 @@ function Spot(props) {
   const [mainImage, setMainImage] = React.useState();
 
   React.useEffect(() => {
-    getImages(props.url);
+    let isCancled = false;
+    if (!isCancled) {
+      let starsRef = storageRef.child(`/${props.spotId}/${props.url}`);
+      starsRef.getDownloadURL().then(url => {
+        setMainImage(url);
+      });
+    }
+    () => (isCancled = true);
   });
-
-  const getImages = imgUrl => {
-    let starsRef = storageRef.child(`/${props.spotId}/${imgUrl}`);
-    starsRef.getDownloadURL().then(url => {
-      setMainImage(url);
-    });
-  };
 
   return (
     <View style={s.container}>

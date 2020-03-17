@@ -11,19 +11,31 @@ const LocationService = async () => {
   }
 
   let location = Location.getCurrentPositionAsync({});
+
+  let geoLocation = {
+    latitude: null,
+    longitude: null,
+    banner: {
+      msg: null,
+      style: null,
+      show: false
+    }
+  };
+
   return location
     .then(loc => {
-      let geoLocation = {
-        latitude: loc.coords.latitude,
-        longitude: loc.coords.longitude
-      };
+      geoLocation.latitude = loc.coords.latitude;
+      geoLocation.longitude = loc.coords.longitude;
       return geoLocation;
     })
     .catch(err => {
-      let geoLocation = {
-        latitude: "00.000000",
-        longitude: "00.00000"
-      };
+      lgeoLocation.atitude = "00.000000";
+      geoLocation.longitude = "00.00000";
+      geoLocation.banner.msg =
+        "Location service is required to show the skatespots";
+      geoLocation.banner.style = "#ffc105";
+      geoLocation.banner.show = true;
+
       return geoLocation;
     });
 };

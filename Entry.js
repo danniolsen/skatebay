@@ -1,70 +1,73 @@
 import * as React from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
+import { SplashScreen } from "expo";
+import * as Font from "expo-font";
+import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import MainNavigator from "./src/navigation/MainNavigation";
+import useLinking from "./src/navigation/useLinking";
 import * as firebase from "firebase";
 import { firebaseConfig } from "./src/utils/firebase";
 import { connect } from "react-redux";
 import { setUserState } from "./src/redux/actions/userActions";
-import Loading from "./src/screens/Loading";
-import TopBanner from "./src/components/banner/TopBanner";
-import CheckConnection from "./src/features/InternetConnection";
-import { bannerShow } from "./src/redux/actions/bannerActions";
 
 function App(props) {
+  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
+  const [initialNavigationState, setInitialNavigationState] = React.useState();
   const containerRef = React.useRef();
-  const { setUserDis, user, auth, loading, initialNavigationState } = props;
-  const {
-    stopLoadingDis,
-    startLoadingDis,
-    containerRefs,
-    banner,
-    bannerShowDis
-  } = props;
-  const [checkAuth, setCheckAuth] = React.useState(false);
+  const { getInitialState } = useLinking(containerRef);
+  const { setUserDis, user, auth } = props;
+  const { stopLoadingDis, startLoadingDis } = props;
 
-  React.useEffect(() => {
-    let isCancled = false;
-    if (!isCancled) {
-      checkConnection();
+  React.useEffect(
+    () => {
       startLoadingDis();
-      firebase.auth().onAuthStateChanged(user => {
+      let user = firebase.auth().onAuthStateChanged(user => {
         if (user != null) {
           firebase
             .auth()
             .currentUser.getIdToken(true)
             .then(function(idToken) {
               setUserDis(idToken);
-              setCheckAuth(true);
-              stopLoadingDis();
             });
         } else {
           stopLoadingDis();
         }
       });
-    }
-    () => (isCancled = true);
-  }, []);
 
-  const checkConnection = () => {
-    const connected = CheckConnection();
-    connected.then(res => {
-      bannerShowDis(res);
-    });
-  };
+      async function loadResourcesAndDataAsync() {
+        try {
+          SplashScreen.preventAutoHide();
+          setInitialNavigationState(await getInitialState()); // Load our initial navigation state
 
-  if (!loading && !props.skipLoadingScreen) {
+          await Font.loadAsync({
+            ...Ionicons.font,
+            "Roboto-Thin": require("./src/assets/fonts/Roboto-Thin.ttf"),
+            "Roboto-Regular": require("./src/assets/fonts/Roboto-Regular.ttf")
+          });
+        } catch (e) {
+          return null;
+        } finally {
+          setLoadingComplete(true);
+          SplashScreen.hide();
+        }
+      }
+      loadResourcesAndDataAsync();
+    },
+    [firebase]
+  );
+
+  if (!isLoadingComplete && !props.skipLoadingScreen) {
     return null;
   } else {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#FFF" barStyle="dark-content" />
-        {banner.show && <TopBanner msg={banner.msg} style={banner.style} />}
         <NavigationContainer
-          ref={containerRefs}
+          ref={containerRef}
           initialState={initialNavigationState}
         >
-          <MainNavigator auth={checkAuth} />
+          <MainNavigator authState={auth} />
         </NavigationContainer>
       </View>
     );
@@ -73,15 +76,13 @@ function App(props) {
 
 const mapStateToProps = state => ({
   user: state.user,
-  auth: state.auth.auth,
-  banner: state.banner.banner
+  auth: state.auth.auth
 });
 
 const mapDispatchToProps = dispatch => ({
   setUserDis: payload => dispatch(setUserState(payload)),
   stopLoadingDis: payload => dispatch({ type: "LOADING_STOP" }),
-  startLoadingDis: payload => dispatch({ type: "LOADING_START" }),
-  bannerShowDis: payload => dispatch(bannerShow(payload))
+  startLoadingDis: payload => dispatch({ type: "LOADING_START" })
 });
 
 export default connect(

@@ -35,6 +35,7 @@ function UserProfile(props) {
       setRefreshing(false);
     }, 2000);
   };
+
   return (
     <View style={s.container}>
       <Header

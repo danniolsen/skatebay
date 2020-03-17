@@ -10,12 +10,12 @@ import { connect } from "react-redux";
 const Stack = createStackNavigator();
 
 function MainNavigator(props) {
-  const { loading, banner } = props;
+  const { loading, banner, authState } = props;
 
   return (
     <View style={{ flex: 1 }}>
       {loading.loading && <Loading />}
-      {props.auth && !loading.loading && (
+      {authState && !loading.loading && (
         <SafeAreaView style={{ flex: 1 }}>
           <Stack.Navigator headerMode="none">
             <Stack.Screen name="root" component={BottomTabNavigator} />
@@ -24,7 +24,7 @@ function MainNavigator(props) {
           </Stack.Navigator>
         </SafeAreaView>
       )}
-      {!props.auth && !loading.loading && (
+      {!authState && !loading.loading && (
         <Stack.Navigator headerMode="none">
           <Stack.Screen name="Auth" component={Auth} />
         </Stack.Navigator>
@@ -34,7 +34,8 @@ function MainNavigator(props) {
 }
 
 const mapStateToProps = state => ({
-  loading: state.loading
+  loading: state.loading,
+  auth: state.auth
 });
 
 export default connect(

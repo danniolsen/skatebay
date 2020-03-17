@@ -11,6 +11,7 @@ import axios from "axios";
 import { SignOut } from "../../features/AuthSocial";
 
 const setUserState = idToken => {
+  console.log("setting user");
   const setUser = (dispatch, error) => {
     dispatch({ type: "SET_AUTH_BEGIN" });
     axios
@@ -31,7 +32,7 @@ const setUserState = idToken => {
       .catch(function(error) {
         dispatch(fetchuUserFailure({ error: "Invalid request" }));
         dispatch({ type: "LOADING_STOP" });
-        dispatch({ type: "SET_AUTH_FAILURE", payload: "error" });
+        dispatch({ type: "SET_AUTH_FAILURE", payload: { auth: false } });
       });
   };
   return setUser;

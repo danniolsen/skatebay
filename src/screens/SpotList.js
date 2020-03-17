@@ -19,22 +19,20 @@ function SpotList(props) {
   const [moreActions, setMoreActions] = React.useState(false);
   const [selected, setSelected] = React.useState(null);
   const [refreshing, setRefreshing] = React.useState(true);
-  React.useEffect(
-    () => {
-      let isCancelled = false;
-      if (!isCancelled) {
-        // check if custom location is in use from params
-        props.route.params ? getSpots(location) : getSpotlist();
-      }
-      return () => (isCancelled = true);
-    },
-    [getSpotlist, props.route]
-  );
+  React.useEffect(() => {
+    let isCancelled = false;
+    if (!isCancelled) {
+      // check if custom location is in use from params
+      props.route.params ? getSpots(location) : getSpotlist();
+    }
+    return () => (isCancelled = true);
+  }, []);
 
   const getSpotlist = () => {
     setRefreshing(true);
     LocationService().then(loc => {
-      locationDis(loc);
+      locationDis({ latitude: loc.latitude, longitude: loc.longitude });
+      bannerShowDis({ banner: loc.banner });
       getSpots(loc);
     });
   };
