@@ -10,9 +10,10 @@ import EmptySpotList from "../components/spotList/EmptySpotList";
 import { getSpotList } from "../redux/actions/spotListActions";
 import * as firebase from "firebase";
 import SpotMoreModal from "../components/modals/SpotMoreModal";
+import { reportSpot } from "../redux/actions/reportActions";
 
 function SpotList(props) {
-  const { user, location, locationDis, spotList } = props;
+  const { user, location, locationDis, spotList, reportSpotDis } = props;
   const { spotListDis, navigation } = props;
   const [moreActions, setMoreActions] = React.useState(false);
   const [selected, setSelected] = React.useState(null);
@@ -52,6 +53,22 @@ function SpotList(props) {
     setMoreActions(true);
   };
 
+  const reportSpot = report => {
+    let reportResponse = reportSpotDis(report);
+    reportResponse
+      .then(success => {
+        // show banner with msg: success.msg
+      })
+      .catch(err => {
+        // show banner with msg: err.msg
+      })
+      .finally(f => {
+        setTimeout(() => {
+          setMoreActions(false);
+        }, 1000);
+      });
+  };
+
   return (
     <View style={s.container}>
       {moreActions && (
@@ -60,6 +77,7 @@ function SpotList(props) {
           close={() => setMoreActions(false)}
           spot={selected}
           user={user}
+          submit={report => reportSpot(report)}
         />
       )}
       <Header rightIcon="sliders" rightAction={() => alert("filtering")} />
@@ -97,7 +115,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   locationDis: payload => dispatch(setNewLocation(payload)),
-  spotListDis: payload => dispatch(getSpotList(payload))
+  spotListDis: payload => dispatch(getSpotList(payload)),
+  reportSpotDis: payload => dispatch(reportSpot(payload))
 });
 
 export default connect(

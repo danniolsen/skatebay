@@ -19,6 +19,7 @@ const setUserState = idToken => {
       })
       .then(function(response) {
         let user = response.data;
+        user.idToken = idToken;
         dispatch(fetchUserSuccess({ user: user }));
 
         // check if user were returned

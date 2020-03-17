@@ -18,23 +18,19 @@ const SpotMoreModal = props => {
 
   const reportSpot = item => {
     let reported = {
-      spot_id: spot.spot_id,
-      user_id: user.user.user_id,
-      reason: item.title
+      spot: spot,
+      user: user,
+      reason: item.id
     };
     setSelected(reported);
     setInActive({ inactive: false, txt: "#FFF", bg: "#27ae60" });
     setColored({ id: item.id, color: "#CCC" });
   };
 
-  const submitReport = () => {
+  const submitReport = async () => {
     setReporting(true);
     setInActive({ ...inActive, inactive: true });
-
-    // send repport to backend.
-    // get answer back
-    // success -> show success, then close
-    // failure -> show error, keep open
+    props.submit(selected);
   };
 
   return (
