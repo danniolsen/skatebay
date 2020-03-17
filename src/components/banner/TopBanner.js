@@ -7,6 +7,7 @@ const TopBanner = props => {
   let color = "#FFF";
   const { msg, style, hideBannerDis } = props;
 
+  console.log(style);
   // wait 1500 ms to display banner (fade in and out)
   return (
     <View style={s.banner}>

@@ -20,9 +20,6 @@ const LocationService = async () => {
       return geoLocation;
     })
     .catch(err => {
-      alert(
-        "Location service is required inorder to show spots based on your location"
-      );
       let geoLocation = {
         latitude: "00.000000",
         longitude: "00.00000"
