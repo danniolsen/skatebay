@@ -8,7 +8,6 @@ import Loading from "../screens/Loading";
 import { createStackNavigator } from "@react-navigation/stack";
 import { connect } from "react-redux";
 const Stack = createStackNavigator();
-import TopBanner from "../components/banner/TopBanner";
 
 function MainNavigator(props) {
   const { loading, banner } = props;
@@ -18,8 +17,6 @@ function MainNavigator(props) {
       {loading.loading && <Loading />}
       {props.auth && !loading.loading && (
         <SafeAreaView style={{ flex: 1 }}>
-          {banner.show && <TopBanner msg={banner.msg} style={banner.style} />}
-
           <Stack.Navigator headerMode="none">
             <Stack.Screen name="root" component={BottomTabNavigator} />
             <Stack.Screen name="SpotDetails" component={SpotDetails} />
@@ -37,8 +34,7 @@ function MainNavigator(props) {
 }
 
 const mapStateToProps = state => ({
-  loading: state.loading,
-  banner: state.banner.banner
+  loading: state.loading
 });
 
 export default connect(
