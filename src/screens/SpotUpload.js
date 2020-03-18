@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import * as firebase from "firebase";
 
 function SpotUpload(props) {
+  console.log(props.user);
   return (
     <View style={s.container}>
       <Header />

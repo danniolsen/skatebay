@@ -5,16 +5,17 @@ import GoogleBtn from "../../assets/buttons/google.png";
 import { AuthFacebook, AuthGoogle } from "../../features/AuthSocial";
 
 const AuthWidget = props => {
-  // check type to match image
+  const { type, bg } = props;
   let btnImg = props.type === "Google" ? GoogleBtn : FacebookBtn;
 
+  const signIn = type => {
+    const authType = type === "Google" ? AuthGoogle() : AuthFacebook();
+  };
   return (
     <TouchableOpacity
       activeOpacity={0.9}
-      style={[s.button, { backgroundColor: props.bg }]}
-      onPress={() => {
-        props.type === "Google" ? AuthGoogle() : AuthFacebook();
-      }}
+      style={[s.button, { backgroundColor: bg }]}
+      onPress={() => signIn(type)}
     >
       <Image source={btnImg} style={s.btnImg} />
     </TouchableOpacity>
