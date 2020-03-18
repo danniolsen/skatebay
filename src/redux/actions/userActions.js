@@ -11,7 +11,6 @@ import axios from "axios";
 import { SignOut } from "../../features/AuthSocial";
 
 const setUserState = idToken => {
-  console.log("setting user");
   const setUser = (dispatch, error) => {
     dispatch({ type: "SET_AUTH_BEGIN" });
     axios
@@ -27,12 +26,13 @@ const setUserState = idToken => {
         if (Object.entries(user).length !== 0 && user.constructor === Object) {
           dispatch({ type: "SET_AUTH_SUCCESS", payload: { auth: true } });
         }
-        dispatch({ type: "LOADING_STOP" });
       })
       .catch(function(error) {
         dispatch(fetchuUserFailure({ error: "Invalid request" }));
-        dispatch({ type: "LOADING_STOP" });
         dispatch({ type: "SET_AUTH_FAILURE", payload: { auth: false } });
+      })
+      .finally(fin => {
+        dispatch({ type: "LOADING_STOP" });
       });
   };
   return setUser;
@@ -41,9 +41,14 @@ const setUserState = idToken => {
 const clearUserState = () => {
   const clearUser = dispatch => {
     dispatch({ type: "LOADING_START" });
-    dispatch(clearUserSuccess);
-    SignOut();
-    dispatch({ type: "LOADING_STOP" });
+    try {
+      dispatch(clearUserSuccess);
+      SignOut();
+    } catch (e) {
+      alert("Could not sign out");
+    } finally {
+      dispatch({ type: "LOADING_STOP" });
+    }
   };
   return clearUser;
 };

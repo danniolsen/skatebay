@@ -1,7 +1,7 @@
 import { LOADING_START, LOADING_STOP } from "../types/loadingTypes";
 
 const initialState = {
-  loading: false
+  loading: true
 };
 
 const loadingReducer = (state = initialState, action) => {
@@ -12,7 +12,7 @@ const loadingReducer = (state = initialState, action) => {
     case LOADING_STOP:
       return { loading: false };
     default:
-      return { loading: false };
+      return state;
   }
 };
 
