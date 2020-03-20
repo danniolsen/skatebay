@@ -1,6 +1,7 @@
 import Constants from "expo-constants";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
+import { getDistance } from "geolib";
 
 const LocationService = async () => {
   let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -38,6 +39,17 @@ const LocationService = async () => {
 
       return geoLocation;
     });
+};
+
+export const CheckImagesLocation = (prevLocation, imgLocation) => {
+  let prevLat = prevLocation.location.latitude;
+  let prevLon = prevLocation.location.longitude;
+  let result = getDistance(
+    { latitude: prevLat, longitude: prevLon },
+    { latitude: imgLocation.latitude, longitude: imgLocation.longitude }
+  );
+  console.log(result);
+  return result > 30 ? false : true;
 };
 
 export default LocationService;
