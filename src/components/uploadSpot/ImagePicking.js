@@ -135,8 +135,6 @@ const ImagePicking = props => {
 
 const ImageCon = props => {
   const { data, loading, noOfImages } = props;
-  // require("../../assets/images/imagePlaceholder.png")
-  // { uri: data.url }
 
   let setUri = data.set
     ? { uri: data.url }
