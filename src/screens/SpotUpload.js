@@ -20,7 +20,9 @@ function SpotUpload(props) {
     tags: []
   });
 
-  const setImages = e => {};
+  const setImages = e => {
+    //console.log(e.location);
+  };
 
   return (
     <View style={s.container}>
