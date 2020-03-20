@@ -74,9 +74,7 @@ const ImagePicking = props => {
 
     /*
     TODO:
-    // new placeholder
     // check locations are close to each other
-    // only send array elements where set is true
     */
   };
 
@@ -137,6 +135,12 @@ const ImagePicking = props => {
 
 const ImageCon = props => {
   const { data, loading, noOfImages } = props;
+  // require("../../assets/images/imagePlaceholder.png")
+  // { uri: data.url }
+
+  let setUri = data.set
+    ? { uri: data.url }
+    : require("../../assets/images/imagePlaceholder.png");
 
   return (
     <TouchableOpacity style={s.imageCon} onPress={props.pickImage}>
@@ -150,7 +154,7 @@ const ImageCon = props => {
         {loading && (
           <ActivityIndicator style={s.loading} size="large" color="#2f363d" />
         )}
-        {!loading && <Image style={s.img} source={{ uri: data.url }} />}
+        {!loading && <Image style={s.img} source={setUri} />}
       </View>
 
       <View style={s.imgOverlay}>
