@@ -49,7 +49,7 @@ export const CheckImagesLocation = (prevLocation, imgLocation) => {
     { latitude: imgLocation.latitude, longitude: imgLocation.longitude }
   );
   console.log(result);
-  return result > 30 ? false : true;
+  return result > 10 ? false : true;
 };
 
 export default LocationService;
