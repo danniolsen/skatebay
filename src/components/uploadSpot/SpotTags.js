@@ -3,7 +3,6 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { NormalText, ThinText } from "../StyledText";
 
 const SpotTags = props => {
-  const { newSpot } = props;
   const [newTags, setNewTags] = React.useState([]);
 
   const pickTag = tag => {
@@ -71,7 +70,12 @@ const SpotTags = props => {
 export default SpotTags;
 
 const s = StyleSheet.create({
-  container: { flex: 1, marginVertical: 5, backgroundColor: "#FFF" },
+  container: {
+    flex: 1,
+    marginTop: 5,
+    marginBottom: 15,
+    backgroundColor: "#FFF"
+  },
   headline: { paddingTop: 15, paddingLeft: 10 },
   tagCon: {
     flexDirection: "row",

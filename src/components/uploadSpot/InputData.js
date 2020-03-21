@@ -3,7 +3,6 @@ import { View, StyleSheet, TextInput } from "react-native";
 import { NormalText, ThinText } from "../StyledText";
 
 const InputData = props => {
-  const { newSpot } = props;
   const [newTitle, setNewTitle] = React.useState("");
   const [titleNum, setTitleNum] = React.useState(0);
 
