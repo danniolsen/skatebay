@@ -1,6 +1,6 @@
 import * as React from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import { ScrollView } from "react-native";
+import { TouchableOpacity, Alert, Keyboard } from "react-native";
+import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
 import {
   InputData,
   ImagePicking,
@@ -13,9 +13,11 @@ import { Feather } from "@expo/vector-icons";
 import { connect } from "react-redux";
 
 function SpotUpload(props) {
-  console.log(<Header />);
   const { user } = props;
-  const [newImages, setNewImages] = React.useState([]);
+
+  const [newImages, setNewImages] = React.useState([
+    { set: false, location: {} }
+  ]);
   const [newLocation, setNewLocation] = React.useState({
     latitude: null,
     longitude: null
@@ -30,8 +32,10 @@ function SpotUpload(props) {
     setNewImages(newImagesCopy);
 
     let newLocationCopy = Object.assign({}, newLocation);
-    newLocationCopy.latitude = images[0].location.latitude;
-    newLocationCopy.longitude = images[0].location.longitude;
+    if (images.length !== 0) {
+      newLocationCopy.latitude = images[0].location.latitude;
+      newLocationCopy.longitude = images[0].location.longitude;
+    }
     setNewLocation(newLocationCopy);
   };
 
@@ -42,28 +46,50 @@ function SpotUpload(props) {
   };
 
   const setTags = tag => {
-    let newTagsCopy = Object.assign([], newTags);
-    newTagsCopy.push(tag);
-    setNewTags(newTagsCopy);
+    let newTagsCopy = [...newTags];
+    setNewTags(tag);
+  };
+
+  const clearSpotWarn = () => {
+    Alert.alert(
+      "Clear spot",
+      "Are you sure you want to clear the spot?",
+      [
+        { text: "Cancel", onPress: () => null },
+        { text: "Clear", onPress: () => clearSpot() }
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const clearSpot = () => {
+    setNewTitle("");
+    setNewTags([]);
+    setNewLocation({ latitude: null, longitude: null });
+    setNewImages([{ set: false, location: {} }]);
   };
 
   const submitErrors = errors => {
     return errors;
   };
+
   return (
     <View style={s.container}>
-      <Header />
+      <Header rightIcon="trash" rightAction={() => clearSpotWarn()} />
       <ScrollView style={s.content}>
         <View style={s.imageContainer}>
-          <ImagePicking imageData={images => setImages(images)} />
+          <ImagePicking
+            imageData={images => setImages(images)}
+            getImages={newImages}
+          />
         </View>
 
         <View style={s.inputContiner}>
-          <InputData title={title => setTitle(title)} />
+          <InputData title={title => setTitle(title)} getTitle={newTitle} />
         </View>
 
         <View style={s.tagsContiner}>
-          <SpotTags selectTag={tag => setTags(tag)} />
+          <SpotTags selectTag={tag => setTags(tag)} getTags={newTags} />
         </View>
       </ScrollView>
 
@@ -104,10 +130,3 @@ const s = StyleSheet.create({
     left: 0
   }
 });
-
-/*
-<NormalText>{`lat ${newLocation.latitude}`}</NormalText>
-<NormalText>{`lon ${newLocation.longitude}`}</NormalText>
-<NormalText>{`img ${newImages.length}`}</NormalText>
-<NormalText>{`txt ${newTitle}`}</NormalText>
-*/
