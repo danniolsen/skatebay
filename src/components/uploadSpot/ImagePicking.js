@@ -10,11 +10,13 @@ import { CheckImagesLocation } from "../../features/LocationService";
 const imgHeight = width / 1.5;
 
 const ImagePicking = props => {
-  const [defaultUrl] = React.useState("https://reactjs.org/logo-og.png");
+  const { getImages } = props;
+
   const [imageLoading, setImageLoading] = React.useState(true);
-  const [images, setImages] = React.useState([
+  /*const [images, setImages] = React.useState([
     { url: defaultUrl, set: false, location: {} }
-  ]);
+  ]);*/
+
   const scrollViewRef = React.useRef();
   const [action, setAction] = React.useState(null);
 
@@ -49,10 +51,10 @@ const ImagePicking = props => {
         };
 
         if (imgLocation.latitude !== undefined) {
-          let prevLocation = images[images.length - 2];
+          let prevLocation = getImages[getImages.length - 2];
 
           let distanceCheck =
-            images.length === 1
+            getImages.length === 1
               ? true
               : CheckImagesLocation(prevLocation, imgLocation);
           if (distanceCheck) {
@@ -75,19 +77,19 @@ const ImagePicking = props => {
   };
   // add image to array, send images to parent component
   const setImg = async (imgUri, location) => {
-    let imagesCopy = Object.assign([images], images);
+    let imagesCopy = Object.assign([getImages], getImages);
     let lastImgId = imagesCopy.length - 1;
     imagesCopy[lastImgId].url = imgUri;
     imagesCopy[lastImgId].set = true;
     imagesCopy[lastImgId].location = location;
-    let nextImage = { url: defaultUrl, set: false, location: {} };
-    images.length !== 4 ? imagesCopy.push(nextImage) : null;
+    let nextImage = { url: "", set: false, location: {} };
+    getImages.length !== 4 ? imagesCopy.push(nextImage) : null;
 
     setAction("add"); // set slide action
 
-    setImages(imagesCopy); // add image to local component array
+    //setImages(imagesCopy); // add image to local component array
 
-    props.imageData(images); // send images to parrent component
+    props.imageData(imagesCopy); // send images to parrent component
   };
 
   // slide to next image placeholder if image action was ADD
@@ -102,18 +104,9 @@ const ImagePicking = props => {
   // remove an image from the images array
   const removeImage = async id => {
     setAction("remove");
-    let imagesCopy = Object.assign([images], images);
+    let imagesCopy = Object.assign([getImages], getImages);
     imagesCopy.splice(id, 1);
-
-    let firstImage = { url: defaultUrl, set: false, location: {} };
-    images.length === 1 ? imagesCopy.push(firstImage) : null;
-    setImages(imagesCopy);
-
-    // remove placeholder "first image when deleting images"
-    let removeId = imagesCopy[imagesCopy.length - 1];
-    let copyRealImgs = Object.assign([], imagesCopy);
-    copyRealImgs.splice(removeId, 1);
-    props.imageData(copyRealImgs);
+    props.imageData(imagesCopy);
   };
 
   return (
@@ -134,7 +127,7 @@ const ImagePicking = props => {
           slideImage();
         }}
       >
-        {images.map((img, index) => {
+        {getImages.map((img, index) => {
           return (
             <ImageCon
               key={index}
@@ -142,7 +135,7 @@ const ImagePicking = props => {
               removeImage={() => removeImage(index)}
               pickImage={() => pickImage(img)}
               loading={imageLoading}
-              noOfImages={images.length}
+              noOfImages={getImages.length}
             />
           );
         })}

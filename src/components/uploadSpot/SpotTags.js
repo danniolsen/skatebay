@@ -3,36 +3,34 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { NormalText, ThinText } from "../StyledText";
 
 const SpotTags = props => {
-  const [newTags, setNewTags] = React.useState([]);
+  const { getTags } = props;
 
   const pickTag = tag => {
-    let tagsCopy = Object.assign([], newTags);
+    let tagsCopy = Object.assign([], getTags);
     // check if tag exists, if true, remove tag, else add tag
     let exists = tagsCopy.find(({ id }) => id === tag.id);
     exists ? unsetTag(tag) : setTag(tag);
   };
 
   const setTag = tag => {
-    let tagsCopy = Object.assign([], newTags);
+    let tagsCopy = Object.assign([], getTags);
     // set tag if no more than 5 tags
     if (tagsCopy.length + 1 <= 5) {
       tagsCopy.push(tag);
-      setNewTags(tagsCopy);
       props.selectTag(tagsCopy); // send tags to uploadspot
     }
   };
 
   const unsetTag = tag => {
-    let tagsCopy = Object.assign([], newTags);
+    let tagsCopy = Object.assign([], getTags);
     // get tag index
     let index = tagsCopy.map(e => e.id).indexOf(tag.id);
     tagsCopy.splice(index, 1); // remove tag
-    setNewTags(tagsCopy); // set tags without removed
     props.selectTag(tagsCopy); // send tags to uploadspot
   };
 
   const colorTag = tag => {
-    let tagsCopy = Object.assign([], newTags);
+    let tagsCopy = Object.assign([], getTags);
     let exists = tagsCopy.find(({ id }) => id === tag.id);
     return exists ? "#7f8c8d" : "#bec1c2";
   };
@@ -60,7 +58,7 @@ const SpotTags = props => {
       </View>
       <View style={s.tagsCounter}>
         <ThinText size={16} color="#2f363d">
-          {`${newTags.length} / 5`}
+          {`${getTags.length} / 5`}
         </ThinText>
       </View>
     </View>

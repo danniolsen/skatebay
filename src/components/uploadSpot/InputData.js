@@ -3,15 +3,7 @@ import { View, StyleSheet, TextInput } from "react-native";
 import { NormalText, ThinText } from "../StyledText";
 
 const InputData = props => {
-  const [newTitle, setNewTitle] = React.useState("");
-  const [titleNum, setTitleNum] = React.useState(0);
-
-  const title = txt => {
-    let newText = txt.nativeEvent.text;
-    setNewTitle(newText);
-    setTitleNum(newText.length);
-    props.title(newText);
-  };
+  const { title, getTitle } = props;
 
   return (
     <View style={s.container}>
@@ -27,14 +19,14 @@ const InputData = props => {
         autoCapitalize={"sentences"}
         autoCorrect={false}
         maxLength={20}
-        onChange={txt => title(txt)}
+        onChange={txt => props.title(txt.nativeEvent.text)}
         placeholder="Spot title"
       >
-        <ThinText size={20}>{newTitle}</ThinText>
+        <ThinText size={20}>{getTitle}</ThinText>
       </TextInput>
 
       <View style={s.inputCounter}>
-        <ThinText size={14}>{`${titleNum} / 20`}</ThinText>
+        <ThinText size={14}>{`${getTitle.length} / 20`}</ThinText>
       </View>
     </View>
   );
