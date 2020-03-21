@@ -105,6 +105,11 @@ const ImagePicking = props => {
   const removeImage = async id => {
     setAction("remove");
     let imagesCopy = Object.assign([getImages], getImages);
+    let newPlaceholder = { url: "", set: false, location: {} };
+    let placeholderId = imagesCopy[imagesCopy.length - 1];
+    if (placeholderId.set !== false) {
+      imagesCopy.push(newPlaceholder);
+    }
     imagesCopy.splice(id, 1);
     props.imageData(imagesCopy);
   };

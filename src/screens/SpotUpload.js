@@ -35,6 +35,9 @@ function SpotUpload(props) {
     if (images.length !== 0) {
       newLocationCopy.latitude = images[0].location.latitude;
       newLocationCopy.longitude = images[0].location.longitude;
+    } else {
+      newLocationCopy.latitude = null;
+      newLocationCopy.longitude = null;
     }
     setNewLocation(newLocationCopy);
   };
@@ -73,6 +76,10 @@ function SpotUpload(props) {
     return errors;
   };
 
+  const uploadSpot = status => {
+    console.log("total status: ", status);
+  };
+
   return (
     <View style={s.container}>
       <Header rightIcon="trash" rightAction={() => clearSpotWarn()} />
@@ -102,6 +109,8 @@ function SpotUpload(props) {
           title={newTitle}
           tags={newTags}
           error={errors => submitErrors(errors)}
+          spotStatus={status => uploadSpot(status)}
+          btnStatus={true}
         />
       </View>
     </View>
