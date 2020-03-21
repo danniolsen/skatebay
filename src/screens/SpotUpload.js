@@ -1,30 +1,28 @@
 import * as React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native";
-import { InputData, ImagePicking, SpotTags } from "../components/uploadSpot";
+import {
+  InputData,
+  ImagePicking,
+  SpotTags,
+  SubmitSpot
+} from "../components/uploadSpot";
 import Header from "../components/header/Header";
 import { NormalText } from "../components/StyledText";
 import { Feather } from "@expo/vector-icons";
 import { connect } from "react-redux";
 
 function SpotUpload(props) {
+  console.log(<Header />);
   const { user } = props;
   const [newImages, setNewImages] = React.useState([]);
   const [newLocation, setNewLocation] = React.useState({
     latitude: null,
     longitude: null
   });
+  const [duplicate, setDuplicate] = React.useState(true);
   const [newTitle, setNewTitle] = React.useState("");
   const [newTags, setNewTags] = React.useState([]);
-  const [newSpot, setNewSpot] = React.useState({
-    title: null,
-    location: {
-      latitude: null,
-      longitude: null
-    },
-    images: [],
-    tags: []
-  });
 
   const setImages = images => {
     let newImagesCopy = Object.assign({}, newImages);
@@ -49,29 +47,37 @@ function SpotUpload(props) {
     setNewTags(newTagsCopy);
   };
 
+  const submitErrors = errors => {
+    return errors;
+  };
   return (
     <View style={s.container}>
-      <ScrollView>
+      <Header />
+      <ScrollView style={s.content}>
         <View style={s.imageContainer}>
-          <ImagePicking
-            newSpot={newSpot}
-            imageData={images => setImages(images)}
-          />
+          <ImagePicking imageData={images => setImages(images)} />
         </View>
 
         <View style={s.inputContiner}>
-          <InputData newSpot={newSpot} title={title => setTitle(title)} />
+          <InputData title={title => setTitle(title)} />
         </View>
 
         <View style={s.tagsContiner}>
-          <SpotTags newSpot={newSpot} selectTag={tag => setTags(tag)} />
-        </View>
-
-        <View style={s.buttonContainer}>
-          {/*submit component / validate data inorder to activate / deactivate btn*/}
-          <NormalText>Submit</NormalText>
+          <SpotTags selectTag={tag => setTags(tag)} />
         </View>
       </ScrollView>
+
+      <View style={s.buttonContainer}>
+        <SubmitSpot
+          user={user}
+          duplicate={duplicate}
+          images={newImages}
+          location={newLocation}
+          title={newTitle}
+          tags={newTags}
+          error={errors => submitErrors(errors)}
+        />
+      </View>
     </View>
   );
 }
@@ -86,11 +92,17 @@ export default connect(
 )(SpotUpload);
 
 const s = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, position: "relative" },
+  content: { flex: 1, marginBottom: 38 },
   imageContainer: { flex: 4.3 },
   inputContiner: { flex: 1.2 },
   tagsContiner: { flex: 3.5 },
-  buttonContainer: { flex: 1 }
+  buttonContainer: {
+    width: "100%",
+    position: "absolute",
+    bottom: 0,
+    left: 0
+  }
 });
 
 /*
