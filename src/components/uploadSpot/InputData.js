@@ -22,22 +22,20 @@ const InputData = props => {
         </NormalText>
       </View>
 
-      <View style={s.inputCon}>
-        <TextInput
-          style={s.inputField}
-          allowFontScaling
-          autoCapitalize={"sentences"}
-          autoCorrect={false}
-          maxLength={20}
-          onChange={txt => title(txt)}
-          placeholder="Spot title"
-        >
-          <ThinText size={20}>{newTitle}</ThinText>
-        </TextInput>
+      <TextInput
+        style={s.inputField}
+        allowFontScaling
+        autoCapitalize={"sentences"}
+        autoCorrect={false}
+        maxLength={20}
+        onChange={txt => title(txt)}
+        placeholder="Spot title"
+      >
+        <ThinText size={20}>{newTitle}</ThinText>
+      </TextInput>
 
-        <View style={s.inputCounter}>
-          <ThinText size={15}>{`${titleNum} / 20`}</ThinText>
-        </View>
+      <View style={s.inputCounter}>
+        <ThinText size={14}>{`${titleNum} / 20`}</ThinText>
       </View>
     </View>
   );
@@ -59,8 +57,8 @@ const s = StyleSheet.create({
   },
   inputCounter: {
     flex: 2,
-    margin: 10,
-    justifyContent: "center",
-    alignItems: "center"
+    marginRight: 10,
+    paddingBottom: 10,
+    alignItems: "flex-end"
   }
 });

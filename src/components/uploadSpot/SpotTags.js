@@ -35,7 +35,7 @@ const SpotTags = props => {
   const colorTag = tag => {
     let tagsCopy = Object.assign([], newTags);
     let exists = tagsCopy.find(({ id }) => id === tag.id);
-    return exists ? "#7f8c8d" : "#d1d5d6";
+    return exists ? "#7f8c8d" : "#bec1c2";
   };
 
   return (
@@ -76,7 +76,7 @@ const s = StyleSheet.create({
   tagCon: {
     flexDirection: "row",
     paddingHorizontal: 10,
-    paddingVertical: 10,
+    paddingTop: 10,
     flexWrap: "wrap",
     justifyContent: "center"
   },
@@ -85,7 +85,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 8,
     marginRight: 10,
-    marginBottom: 10
+    marginVertical: 5
   },
   tagsCounter: {
     paddingHorizontal: 15,
