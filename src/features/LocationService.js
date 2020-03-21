@@ -48,7 +48,6 @@ export const CheckImagesLocation = (prevLocation, imgLocation) => {
     { latitude: prevLat, longitude: prevLon },
     { latitude: imgLocation.latitude, longitude: imgLocation.longitude }
   );
-  console.log(result);
   return result > 25 ? false : true;
 };
 

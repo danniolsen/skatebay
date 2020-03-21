@@ -108,6 +108,12 @@ const ImagePicking = props => {
     let firstImage = { url: defaultUrl, set: false, location: {} };
     images.length === 1 ? imagesCopy.push(firstImage) : null;
     setImages(imagesCopy);
+
+    // remove placeholder "first image when deleting images"
+    let removeId = imagesCopy[imagesCopy.length - 1];
+    let copyRealImgs = Object.assign([], imagesCopy);
+    copyRealImgs.splice(removeId, 1);
+    props.imageData(copyRealImgs);
   };
 
   return (
@@ -178,12 +184,11 @@ export default ImagePicking;
 
 const s = StyleSheet.create({
   container: {
-    paddingVertical: 10,
-    marginTop: 5,
+    marginVertical: 5,
+    paddingBottom: 10,
     backgroundColor: "#FFF"
   },
-  headline: { paddingHorizontal: 10 },
-
+  headline: { paddingTop: 15, paddingLeft: 10 },
   imageCon: {
     width: width,
     height: imgHeight,
