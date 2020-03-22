@@ -90,7 +90,7 @@ function SpotUpload(props) {
           <ImagePicking
             headline={{
               name: "+ Add images",
-              warning: "min of 1 image is reqired"
+              warning: "Minimum 1 image is reqired"
             }}
             imageData={images => setImages(images)}
             getImages={newImages}
@@ -101,7 +101,7 @@ function SpotUpload(props) {
           <InputData
             headline={{
               name: "Spot title",
-              warning: "min 3 characters are reqired"
+              warning: "Minimum 3 characters are reqired"
             }}
             title={title => setTitle(title)}
             getTitle={newTitle}
@@ -112,7 +112,7 @@ function SpotUpload(props) {
           <SpotTags
             headline={{
               name: "+ add tags",
-              warning: "min of 1 tag is reqired"
+              warning: "Minimum of 1 tag is reqired"
             }}
             selectTag={tag => setTags(tag)}
             getTags={newTags}
