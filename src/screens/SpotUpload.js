@@ -2,7 +2,7 @@ import * as React from "react";
 import { TouchableOpacity, Alert, Keyboard } from "react-native";
 import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
 import { InputData, ImagePicking } from "../components/uploadSpot";
-import { SpotTags, SubmitSpot } from "../components/uploadSpot";
+import { SpotTags, VerifySpot } from "../components/uploadSpot";
 import Header from "../components/header/Header";
 import { NormalText } from "../components/StyledText";
 import { Feather } from "@expo/vector-icons";
@@ -121,7 +121,7 @@ function SpotUpload(props) {
       </ScrollView>
 
       <View style={s.buttonContainer}>
-        <SubmitSpot
+        <VerifySpot
           user={user}
           duplicate={duplicate}
           images={newImages}
@@ -150,9 +150,6 @@ export default connect(
 const s = StyleSheet.create({
   container: { flex: 1, position: "relative" },
   content: { flex: 1, marginBottom: 38 },
-  imageContainer: { flex: 4.3 },
-  inputContiner: { flex: 1.2 },
-  tagsContiner: { flex: 3.5 },
   buttonContainer: {
     width: "100%",
     position: "absolute",

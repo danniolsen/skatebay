@@ -1,8 +1,9 @@
 import * as React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { NormalText } from "../StyledText";
+import { Feather } from "@expo/vector-icons";
 
-const SubmitSpot = props => {
+const VerifySpot = props => {
   const { user, duplicate, images, location, title, tags, btnStatus } = props;
 
   const checkImages = () => {
@@ -59,20 +60,21 @@ const SubmitSpot = props => {
       style={[s.container, { backgroundColor: btnStatus ? "#3498db" : "#AAA" }]}
       onPress={props.uploadSpot}
     >
-      <NormalText color="#FFF" size={20}>
-        Submit
+      <NormalText color="#FFF" size={17} style={s.btnTxt}>
+        Verify
       </NormalText>
     </TouchableOpacity>
   );
 };
 
-export default SubmitSpot;
+export default VerifySpot;
 
 const s = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 5,
     alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 10
   },
   submitBtn: {

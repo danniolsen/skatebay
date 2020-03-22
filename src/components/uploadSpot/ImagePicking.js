@@ -1,14 +1,17 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Dimensions, Alert } from "react-native";
 import { TouchableOpacity, ActivityIndicator, ScrollView } from "react-native";
+import { Platform } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { NormalText, ThinText } from "../StyledText";
-const { width, height } = Dimensions.get("window");
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import { CheckImagesLocation } from "../../features/LocationService";
-const imgHeight = width / 1.5;
 import Headline from "./Headline";
+import Thumbnails from "./Thumbnails";
+
+const { width, height } = Dimensions.get("window");
+const imgHeight = width / 1.5;
 
 const ImagePicking = props => {
   const { getImages, headline } = props;
@@ -32,11 +35,13 @@ const ImagePicking = props => {
 
   // launch image picker, set image, check if location is present.
   const pickImage = async img => {
+    let editing = Platform.OS === "ios" ? false : true;
+    console.log(editing);
     if (!img.set) {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Image,
-        allowsEditing: false,
-        aspect: [4, 3],
+        allowsEditing: editing,
+        aspect: [15, 10],
         quality: 1,
         exif: true
       });
@@ -125,7 +130,6 @@ const ImagePicking = props => {
       <ScrollView
         showsHorizontalScrollIndicator={false}
         horizontal={true}
-        style={s.imageContainer}
         pagingEnabled
         snapToStart
         ref={scrollViewRef}
@@ -146,6 +150,7 @@ const ImagePicking = props => {
           );
         })}
       </ScrollView>
+      <Thumbnails images={getImages} />
     </View>
   );
 };
@@ -196,7 +201,7 @@ const s = StyleSheet.create({
     height: imgHeight,
     position: "relative"
   },
-  img: { width: width - 10, height: imgHeight, margin: 5 },
+  img: { width: width, height: imgHeight, marginVertical: 5 },
   loading: { height: imgHeight },
   remove: {
     position: "absolute",
