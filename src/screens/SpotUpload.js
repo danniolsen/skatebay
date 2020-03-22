@@ -1,12 +1,8 @@
 import * as React from "react";
 import { TouchableOpacity, Alert, Keyboard } from "react-native";
 import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
-import {
-  InputData,
-  ImagePicking,
-  SpotTags,
-  SubmitSpot
-} from "../components/uploadSpot";
+import { InputData, ImagePicking } from "../components/uploadSpot";
+import { SpotTags, SubmitSpot } from "../components/uploadSpot";
 import Header from "../components/header/Header";
 import { NormalText } from "../components/StyledText";
 import { Feather } from "@expo/vector-icons";
@@ -14,7 +10,6 @@ import { connect } from "react-redux";
 
 function SpotUpload(props) {
   const { user } = props;
-
   const [newImages, setNewImages] = React.useState([
     { set: false, location: {} }
   ]);
@@ -25,6 +20,7 @@ function SpotUpload(props) {
   const [duplicate, setDuplicate] = React.useState(true);
   const [newTitle, setNewTitle] = React.useState("");
   const [newTags, setNewTags] = React.useState([]);
+  const [btnActive, setBtnActive] = React.useState(false);
 
   const setImages = images => {
     let newImagesCopy = Object.assign({}, newImages);
@@ -76,8 +72,14 @@ function SpotUpload(props) {
     return errors;
   };
 
+  const spotStatus = status => {
+    setBtnActive(status);
+  };
+
   const uploadSpot = status => {
-    console.log("total status: ", status);
+    if (status) {
+      console.log("upload now");
+    }
   };
 
   return (
@@ -86,17 +88,35 @@ function SpotUpload(props) {
       <ScrollView style={s.content}>
         <View style={s.imageContainer}>
           <ImagePicking
+            headline={{
+              name: "+ Add images",
+              warning: "min of 1 image is reqired"
+            }}
             imageData={images => setImages(images)}
             getImages={newImages}
           />
         </View>
 
         <View style={s.inputContiner}>
-          <InputData title={title => setTitle(title)} getTitle={newTitle} />
+          <InputData
+            headline={{
+              name: "Spot title",
+              warning: "min 3 characters are reqired"
+            }}
+            title={title => setTitle(title)}
+            getTitle={newTitle}
+          />
         </View>
 
         <View style={s.tagsContiner}>
-          <SpotTags selectTag={tag => setTags(tag)} getTags={newTags} />
+          <SpotTags
+            headline={{
+              name: "+ add tags",
+              warning: "min of 1 tag is reqired"
+            }}
+            selectTag={tag => setTags(tag)}
+            getTags={newTags}
+          />
         </View>
       </ScrollView>
 
@@ -109,8 +129,9 @@ function SpotUpload(props) {
           title={newTitle}
           tags={newTags}
           error={errors => submitErrors(errors)}
-          spotStatus={status => uploadSpot(status)}
-          btnStatus={true}
+          spotStatus={status => spotStatus(status)}
+          uploadSpot={status => uploadSpot(status)}
+          btnStatus={btnActive}
         />
       </View>
     </View>

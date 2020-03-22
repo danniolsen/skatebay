@@ -41,6 +41,7 @@ export default function BottomTabNavigator({ navigation, route }) {
       <BottomTab.Screen
         name="SpotUpload"
         component={SpotUpload}
+        mode="modal"
         options={{
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="upload-cloud" />

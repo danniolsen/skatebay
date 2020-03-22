@@ -5,19 +5,6 @@ import { NormalText } from "../StyledText";
 const SubmitSpot = props => {
   const { user, duplicate, images, location, title, tags, btnStatus } = props;
 
-  const validateData = () => {
-    let statusArray = [];
-    let titleStatus = checkTitle();
-    let imagesStatus = checkImages();
-    let tagsStatus = checkTags();
-    let locationStatus = checkLocation();
-
-    statusArray.push(titleStatus, imagesStatus, tagsStatus, locationStatus);
-    const isTrue = currentStatus => currentStatus === true;
-    let status = statusArray.every(isTrue) ? true : false;
-    return props.spotStatus(status);
-  };
-
   const checkImages = () => {
     let numOfImgs = [];
     images.map((img, i) => {
@@ -47,13 +34,31 @@ const SubmitSpot = props => {
     return tags.length >= 1 && tags.length <= 5 ? true : false;
   };
 
+  const validateData = () => {
+    let statusArray = [];
+    let titleStatus = checkTitle();
+    let imagesStatus = checkImages();
+    let tagsStatus = checkTags();
+    let locationStatus = checkLocation();
+
+    statusArray.push(titleStatus, imagesStatus, tagsStatus, locationStatus);
+    const isTrue = currentStatus => currentStatus === true;
+    let status = statusArray.every(isTrue) ? true : false;
+    return props.spotStatus(status);
+  };
+
   /*const checkDuplicate = () => {
     make later when upload works
     return null;
   };*/
+  validateData();
 
   return (
-    <TouchableOpacity style={s.container} onPress={() => validateData()}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={[s.container, { backgroundColor: btnStatus ? "#3498db" : "#AAA" }]}
+      onPress={props.uploadSpot}
+    >
       <NormalText color="#FFF" size={20}>
         Submit
       </NormalText>
@@ -68,8 +73,7 @@ const s = StyleSheet.create({
     flex: 1,
     marginTop: 5,
     alignItems: "center",
-    paddingVertical: 10,
-    backgroundColor: "#3498db"
+    paddingVertical: 10
   },
   submitBtn: {
     justifyContent: "center",
