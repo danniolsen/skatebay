@@ -1,10 +1,11 @@
 import * as React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { NormalText, ThinText } from "../StyledText";
+import Headline from "./Headline";
 
 const SpotTags = props => {
-  const { getTags } = props;
-
+  const { getTags, headline } = props;
+  const [status, setStatus] = React.useState(false);
   const pickTag = tag => {
     let tagsCopy = Object.assign([], getTags);
     // check if tag exists, if true, remove tag, else add tag
@@ -19,6 +20,7 @@ const SpotTags = props => {
       tagsCopy.push(tag);
       props.selectTag(tagsCopy); // send tags to uploadspot
     }
+    setStatus(false);
   };
 
   const unsetTag = tag => {
@@ -27,6 +29,7 @@ const SpotTags = props => {
     let index = tagsCopy.map(e => e.id).indexOf(tag.id);
     tagsCopy.splice(index, 1); // remove tag
     props.selectTag(tagsCopy); // send tags to uploadspot
+    tagsCopy.length === 0 ? setStatus(true) : setStatus(false);
   };
 
   const colorTag = tag => {
@@ -37,16 +40,17 @@ const SpotTags = props => {
 
   return (
     <View style={s.container}>
-      <View style={s.headline}>
-        <NormalText size={13} color="#2f363d">
-          Tags
-        </NormalText>
-      </View>
+      <Headline
+        name={headline.name}
+        warning={headline.warning}
+        active={status}
+      />
 
       <View style={s.tagCon}>
         {tags.map(tag => {
           return (
             <TouchableOpacity
+              activeOpacity={1}
               onPress={() => pickTag(tag)}
               style={[s.tag, { backgroundColor: colorTag(tag) }]}
               key={tag.id}
@@ -74,7 +78,7 @@ const s = StyleSheet.create({
     marginBottom: 15,
     backgroundColor: "#FFF"
   },
-  headline: { paddingTop: 15, paddingLeft: 10 },
+
   tagCon: {
     flexDirection: "row",
     paddingHorizontal: 10,

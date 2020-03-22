@@ -1,17 +1,38 @@
 import * as React from "react";
 import { View, StyleSheet, TextInput } from "react-native";
 import { NormalText, ThinText } from "../StyledText";
+import Headline from "./Headline";
 
 const InputData = props => {
-  const { title, getTitle } = props;
+  const { getTitle, headline } = props;
+  const [status, setStatus] = React.useState(false);
+
+  const setTitle = txt => {
+    let newTitle = txt.nativeEvent.text;
+    props.title(newTitle);
+
+    if (status) {
+      newTitle.length < 3 ? null : setStatus(false);
+    }
+  };
+
+  const showError = del => {
+    let deleting = del.nativeEvent.key === "Backspace";
+    deleting && getTitle.length - 1 < 3 ? setStatus(true) : null;
+  };
+
+  const userLeft = () => {
+    let txt = getTitle.length;
+    txt < 3 ? setStatus(true) : null;
+  };
 
   return (
     <View style={s.container}>
-      <View style={s.headline}>
-        <NormalText size={13} color="#2f363d">
-          Spot title
-        </NormalText>
-      </View>
+      <Headline
+        name={headline.name}
+        warning={headline.warning}
+        active={status}
+      />
 
       <TextInput
         style={s.inputField}
@@ -19,8 +40,10 @@ const InputData = props => {
         autoCapitalize={"sentences"}
         autoCorrect={false}
         maxLength={20}
-        onChange={txt => props.title(txt.nativeEvent.text)}
+        onChange={txt => setTitle(txt)}
+        onKeyPress={del => showError(del)}
         placeholder="Spot title"
+        onBlur={() => userLeft()}
       >
         <ThinText size={20}>{getTitle}</ThinText>
       </TextInput>
@@ -36,7 +59,6 @@ export default InputData;
 
 const s = StyleSheet.create({
   container: { flex: 1, marginVertical: 5, backgroundColor: "#FFF" },
-  headline: { paddingTop: 15, paddingLeft: 10 },
   inputCon: { flexDirection: "row" },
   inputField: {
     flex: 8,

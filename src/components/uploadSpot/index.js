@@ -1,5 +1,5 @@
 import InputData from "./InputData";
 import ImagePicking from "./ImagePicking";
 import SpotTags from "./SpotTags";
-import SubmitSpot from "./SubmitSpot";
-export { InputData, ImagePicking, SpotTags, SubmitSpot };
+import VerifySpot from "./VerifySpot";
+export { InputData, ImagePicking, SpotTags, VerifySpot };

@@ -1,22 +1,22 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Dimensions, Alert } from "react-native";
 import { TouchableOpacity, ActivityIndicator, ScrollView } from "react-native";
+import { Platform } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { NormalText, ThinText } from "../StyledText";
-const { width, height } = Dimensions.get("window");
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import { CheckImagesLocation } from "../../features/LocationService";
+import Headline from "./Headline";
+import Thumbnails from "./Thumbnails";
+
+const { width, height } = Dimensions.get("window");
 const imgHeight = width / 1.5;
 
 const ImagePicking = props => {
-  const { getImages } = props;
-
+  const { getImages, headline } = props;
+  const [status, setStatus] = React.useState(false);
   const [imageLoading, setImageLoading] = React.useState(true);
-  /*const [images, setImages] = React.useState([
-    { url: defaultUrl, set: false, location: {} }
-  ]);*/
-
   const scrollViewRef = React.useRef();
   const [action, setAction] = React.useState(null);
 
@@ -27,17 +27,21 @@ const ImagePicking = props => {
 
   // ask for camera rool permissions
   const getPermissionAsync = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    return status;
+    const { statusPermissions } = await Permissions.askAsync(
+      Permissions.CAMERA_ROLL
+    );
+    return statusPermissions;
   };
 
   // launch image picker, set image, check if location is present.
   const pickImage = async img => {
+    let editing = Platform.OS === "ios" ? false : true;
+    console.log(editing);
     if (!img.set) {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Image,
-        allowsEditing: false,
-        aspect: [4, 3],
+        allowsEditing: editing,
+        aspect: [15, 10],
         quality: 1,
         exif: true
       });
@@ -58,6 +62,7 @@ const ImagePicking = props => {
               ? true
               : CheckImagesLocation(prevLocation, imgLocation);
           if (distanceCheck) {
+            setStatus(false);
             let imgUri = result.uri;
             setImg(imgUri, imgLocation);
           } else {
@@ -72,6 +77,8 @@ const ImagePicking = props => {
             "Image can not be used due to missing image location"
           );
         }
+      } else {
+        getImages.length - 1 === 0 ? setStatus(true) : null;
       }
     }
   };
@@ -86,9 +93,6 @@ const ImagePicking = props => {
     getImages.length !== 4 ? imagesCopy.push(nextImage) : null;
 
     setAction("add"); // set slide action
-
-    //setImages(imagesCopy); // add image to local component array
-
     props.imageData(imagesCopy); // send images to parrent component
   };
 
@@ -105,21 +109,27 @@ const ImagePicking = props => {
   const removeImage = async id => {
     setAction("remove");
     let imagesCopy = Object.assign([getImages], getImages);
+    let newPlaceholder = { url: "", set: false, location: {} };
+    let placeholderId = imagesCopy[imagesCopy.length - 1];
+    if (placeholderId.set !== false) {
+      imagesCopy.push(newPlaceholder);
+    }
     imagesCopy.splice(id, 1);
     props.imageData(imagesCopy);
+    getImages.length - 1 === 1 ? setStatus(true) : setStatus(false);
   };
 
   return (
     <View style={s.container}>
-      <View style={s.headline}>
-        <NormalText size={13} color="#2f363d">
-          Add images
-        </NormalText>
-      </View>
+      <Headline
+        name={headline.name}
+        warning={headline.warning}
+        active={status}
+      />
+
       <ScrollView
         showsHorizontalScrollIndicator={false}
         horizontal={true}
-        style={s.imageContainer}
         pagingEnabled
         snapToStart
         ref={scrollViewRef}
@@ -140,6 +150,7 @@ const ImagePicking = props => {
           );
         })}
       </ScrollView>
+      <Thumbnails images={getImages} />
     </View>
   );
 };
@@ -152,7 +163,11 @@ const ImageCon = props => {
     : require("../../assets/images/imagePlaceholder.png");
 
   return (
-    <TouchableOpacity style={s.imageCon} onPress={props.pickImage}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={s.imageCon}
+      onPress={props.pickImage}
+    >
       {data.set && (
         <TouchableOpacity onPress={props.removeImage} style={s.remove}>
           <Feather name="x" size={27} color="#e74c3c" />
@@ -181,13 +196,12 @@ const s = StyleSheet.create({
     paddingBottom: 10,
     backgroundColor: "#FFF"
   },
-  headline: { paddingTop: 15, paddingLeft: 10 },
   imageCon: {
     width: width,
     height: imgHeight,
     position: "relative"
   },
-  img: { width: width - 10, height: imgHeight, margin: 5 },
+  img: { width: width, height: imgHeight, marginVertical: 5 },
   loading: { height: imgHeight },
   remove: {
     position: "absolute",

@@ -1,12 +1,8 @@
 import * as React from "react";
 import { TouchableOpacity, Alert, Keyboard } from "react-native";
 import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
-import {
-  InputData,
-  ImagePicking,
-  SpotTags,
-  SubmitSpot
-} from "../components/uploadSpot";
+import { InputData, ImagePicking } from "../components/uploadSpot";
+import { SpotTags, VerifySpot } from "../components/uploadSpot";
 import Header from "../components/header/Header";
 import { NormalText } from "../components/StyledText";
 import { Feather } from "@expo/vector-icons";
@@ -14,7 +10,6 @@ import { connect } from "react-redux";
 
 function SpotUpload(props) {
   const { user } = props;
-
   const [newImages, setNewImages] = React.useState([
     { set: false, location: {} }
   ]);
@@ -25,6 +20,7 @@ function SpotUpload(props) {
   const [duplicate, setDuplicate] = React.useState(true);
   const [newTitle, setNewTitle] = React.useState("");
   const [newTags, setNewTags] = React.useState([]);
+  const [btnActive, setBtnActive] = React.useState(false);
 
   const setImages = images => {
     let newImagesCopy = Object.assign({}, newImages);
@@ -35,6 +31,9 @@ function SpotUpload(props) {
     if (images.length !== 0) {
       newLocationCopy.latitude = images[0].location.latitude;
       newLocationCopy.longitude = images[0].location.longitude;
+    } else {
+      newLocationCopy.latitude = null;
+      newLocationCopy.longitude = null;
     }
     setNewLocation(newLocationCopy);
   };
@@ -73,28 +72,56 @@ function SpotUpload(props) {
     return errors;
   };
 
+  const spotStatus = status => {
+    setBtnActive(status);
+  };
+
+  const uploadSpot = status => {
+    if (status) {
+      console.log("upload now");
+    }
+  };
+
   return (
     <View style={s.container}>
       <Header rightIcon="trash" rightAction={() => clearSpotWarn()} />
       <ScrollView style={s.content}>
         <View style={s.imageContainer}>
           <ImagePicking
+            headline={{
+              name: "+ Add images",
+              warning: "min of 1 image is reqired"
+            }}
             imageData={images => setImages(images)}
             getImages={newImages}
           />
         </View>
 
         <View style={s.inputContiner}>
-          <InputData title={title => setTitle(title)} getTitle={newTitle} />
+          <InputData
+            headline={{
+              name: "Spot title",
+              warning: "min 3 characters are reqired"
+            }}
+            title={title => setTitle(title)}
+            getTitle={newTitle}
+          />
         </View>
 
         <View style={s.tagsContiner}>
-          <SpotTags selectTag={tag => setTags(tag)} getTags={newTags} />
+          <SpotTags
+            headline={{
+              name: "+ add tags",
+              warning: "min of 1 tag is reqired"
+            }}
+            selectTag={tag => setTags(tag)}
+            getTags={newTags}
+          />
         </View>
       </ScrollView>
 
       <View style={s.buttonContainer}>
-        <SubmitSpot
+        <VerifySpot
           user={user}
           duplicate={duplicate}
           images={newImages}
@@ -102,6 +129,9 @@ function SpotUpload(props) {
           title={newTitle}
           tags={newTags}
           error={errors => submitErrors(errors)}
+          spotStatus={status => spotStatus(status)}
+          uploadSpot={status => uploadSpot(status)}
+          btnStatus={btnActive}
         />
       </View>
     </View>
@@ -120,9 +150,6 @@ export default connect(
 const s = StyleSheet.create({
   container: { flex: 1, position: "relative" },
   content: { flex: 1, marginBottom: 38 },
-  imageContainer: { flex: 4.3 },
-  inputContiner: { flex: 1.2 },
-  tagsContiner: { flex: 3.5 },
   buttonContainer: {
     width: "100%",
     position: "absolute",
