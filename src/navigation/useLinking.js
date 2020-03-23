@@ -13,7 +13,8 @@ export default function(containerRef) {
           SpotUpload: "SpotUpload",
           UserProfile: "UserProfile",
           SpotDetails: "SpotDetails",
-          Settings: "Settings"
+          Settings: "Settings",
+          SpotVerify: "SpotVerify"
         }
       }
     }

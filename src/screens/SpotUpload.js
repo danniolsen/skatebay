@@ -2,7 +2,7 @@ import * as React from "react";
 import { TouchableOpacity, Alert } from "react-native";
 import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
 import { InputData, ImagePicking } from "../components/uploadSpot";
-import { SpotTags, VerifySpot } from "../components/uploadSpot";
+import { SpotTags, VerifySpotData } from "../components/uploadSpot";
 import Header from "../components/header/Header";
 import { NormalText } from "../components/StyledText";
 import { Feather } from "@expo/vector-icons";
@@ -24,11 +24,13 @@ function SpotUpload(props) {
   const [newTags, setNewTags] = React.useState([]);
   const [btnActive, setBtnActive] = React.useState(false);
 
+  // add images to images array
   const setImages = images => {
     let newImagesCopy = Object.assign({}, newImages);
     newImagesCopy = images;
     setNewImages(newImagesCopy);
 
+    // set location from first image
     let newLocationCopy = Object.assign({}, newLocation);
     if (images.length !== 0) {
       newLocationCopy.latitude = images[0].location.latitude;
@@ -40,17 +42,29 @@ function SpotUpload(props) {
     setNewLocation(newLocationCopy);
   };
 
+  // scroll down on jeyboard toggle
+  const focusInput = keyboard => {
+    if (keyboard) {
+      setTimeout(() => {
+        scrollViewRef.current.scrollToEnd({ animated: true });
+      }, 500);
+    }
+  };
+
+  // set spot title to title
   const setTitle = title => {
     let newTitleCopy = Object.assign({}, newTitle);
     newTitleCopy = title;
     setNewTitle(newTitleCopy);
   };
 
+  // add tags to tags array
   const setTags = tag => {
     let newTagsCopy = [...newTags];
     setNewTags(tag);
   };
 
+  // earning before removing spot data
   const clearSpotWarn = () => {
     Alert.alert(
       "Clear spot",
@@ -63,6 +77,7 @@ function SpotUpload(props) {
     );
   };
 
+  // clear all spot data
   const clearSpot = () => {
     setNewTitle("");
     setNewTags([]);
@@ -70,27 +85,26 @@ function SpotUpload(props) {
     setNewImages([{ set: false, location: {} }]);
   };
 
-  const submitErrors = errors => {
-    return errors;
-  };
-
+  // activate and inactivate button
   const spotStatus = status => {
     setBtnActive(status);
   };
 
-  const verifySpot = status => {
-    if (status) {
-      navigation.push("SpotDetails", {});
+  // verify spot data
+  const verifySpot = () => {
+    if (btnActive) {
+      let spot = {
+        user: user,
+        images: newImages,
+        title: newTitle,
+        tags: newTags,
+        location: newLocation,
+        status: btnActive
+      };
+      navigation.navigate("SpotVerify", spot);
     }
   };
 
-  const focusInput = keyboard => {
-    if (keyboard) {
-      setTimeout(() => {
-        scrollViewRef.current.scrollToEnd({ animated: true });
-      }, 500);
-    }
-  };
   return (
     <View style={s.container}>
       <Header rightIcon="trash" rightAction={() => clearSpotWarn()} />
@@ -137,16 +151,15 @@ function SpotUpload(props) {
         </View>
 
         <View style={s.buttonContainer}>
-          <VerifySpot
+          <VerifySpotData
             user={user}
             duplicate={duplicate}
             images={newImages}
             location={newLocation}
             title={newTitle}
             tags={newTags}
-            error={errors => submitErrors(errors)}
             spotStatus={status => spotStatus(status)}
-            uploadSpot={status => verifySpot(status)}
+            verifySpot={status => verifySpot(status)}
             btnStatus={btnActive}
           />
         </View>
