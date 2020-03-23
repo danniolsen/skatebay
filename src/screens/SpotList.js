@@ -44,6 +44,7 @@ function SpotList(props) {
   };
 
   const goToSpot = spot => {
+    console.log(spot);
     navigation.push("SpotDetails", spot);
   };
 

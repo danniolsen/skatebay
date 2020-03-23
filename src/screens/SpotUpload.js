@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TouchableOpacity, Alert, Keyboard } from "react-native";
+import { TouchableOpacity, Alert } from "react-native";
 import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
 import { InputData, ImagePicking } from "../components/uploadSpot";
 import { SpotTags, VerifySpot } from "../components/uploadSpot";
@@ -9,7 +9,9 @@ import { Feather } from "@expo/vector-icons";
 import { connect } from "react-redux";
 
 function SpotUpload(props) {
-  const { user } = props;
+  const { user, navigation } = props;
+  const [keyboardUp, setKeyboardUp] = React.useState(false);
+  const scrollViewRef = React.useRef();
   const [newImages, setNewImages] = React.useState([
     { set: false, location: {} }
   ]);
@@ -76,16 +78,30 @@ function SpotUpload(props) {
     setBtnActive(status);
   };
 
-  const uploadSpot = status => {
+  const verifySpot = status => {
     if (status) {
-      console.log("upload now");
+      navigation.push("SpotDetails", {});
     }
   };
 
+  const focusInput = keyboard => {
+    if (keyboard) {
+      setTimeout(() => {
+        scrollViewRef.current.scrollToEnd({ animated: true });
+      }, 500);
+    }
+  };
   return (
     <View style={s.container}>
       <Header rightIcon="trash" rightAction={() => clearSpotWarn()} />
-      <ScrollView style={s.content}>
+
+      <ScrollView
+        style={s.content}
+        ref={scrollViewRef}
+        onContentSizeChange={(contentWidth, contentHeight) => {
+          focusInput();
+        }}
+      >
         <View style={s.imageContainer}>
           <ImagePicking
             headline={{
@@ -97,7 +113,7 @@ function SpotUpload(props) {
           />
         </View>
 
-        <View style={s.inputContiner}>
+        <View>
           <InputData
             headline={{
               name: "Spot title",
@@ -105,6 +121,7 @@ function SpotUpload(props) {
             }}
             title={title => setTitle(title)}
             getTitle={newTitle}
+            inputTap={keyboard => focusInput(keyboard)}
           />
         </View>
 
@@ -118,22 +135,22 @@ function SpotUpload(props) {
             getTags={newTags}
           />
         </View>
-      </ScrollView>
 
-      <View style={s.buttonContainer}>
-        <VerifySpot
-          user={user}
-          duplicate={duplicate}
-          images={newImages}
-          location={newLocation}
-          title={newTitle}
-          tags={newTags}
-          error={errors => submitErrors(errors)}
-          spotStatus={status => spotStatus(status)}
-          uploadSpot={status => uploadSpot(status)}
-          btnStatus={btnActive}
-        />
-      </View>
+        <View style={s.buttonContainer}>
+          <VerifySpot
+            user={user}
+            duplicate={duplicate}
+            images={newImages}
+            location={newLocation}
+            title={newTitle}
+            tags={newTags}
+            error={errors => submitErrors(errors)}
+            spotStatus={status => spotStatus(status)}
+            uploadSpot={status => verifySpot(status)}
+            btnStatus={btnActive}
+          />
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -148,11 +165,10 @@ export default connect(
 )(SpotUpload);
 
 const s = StyleSheet.create({
-  container: { flex: 1, position: "relative" },
-  content: { flex: 1, marginBottom: 38 },
+  container: { flex: 1 },
+  content: { flex: 1 },
   buttonContainer: {
     width: "100%",
-    position: "absolute",
     bottom: 0,
     left: 0
   }

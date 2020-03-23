@@ -26,6 +26,9 @@ const InputData = props => {
     txt < 3 ? setStatus(true) : null;
   };
 
+  const inputTap = () => {
+    props.inputTap(true);
+  };
   return (
     <View style={s.container}>
       <Headline
@@ -38,12 +41,12 @@ const InputData = props => {
         style={s.inputField}
         allowFontScaling
         autoCapitalize={"sentences"}
-        autoCorrect={false}
         maxLength={20}
         onChange={txt => setTitle(txt)}
         onKeyPress={del => showError(del)}
         placeholder="Spot title"
         onBlur={() => userLeft()}
+        onFocus={() => inputTap()}
       >
         <ThinText size={20}>{getTitle}</ThinText>
       </TextInput>

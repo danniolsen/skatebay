@@ -61,6 +61,7 @@ function App(props) {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#FFF" barStyle="dark-content" />
+
         <NavigationContainer
           ref={containerRef}
           initialState={initialNavigationState}
