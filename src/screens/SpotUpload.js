@@ -9,7 +9,7 @@ import { Feather } from "@expo/vector-icons";
 import { connect } from "react-redux";
 
 function SpotUpload(props) {
-  const { user } = props;
+  const { user, navigation } = props;
   const [keyboardUp, setKeyboardUp] = React.useState(false);
   const scrollViewRef = React.useRef();
   const [newImages, setNewImages] = React.useState([
@@ -78,15 +78,17 @@ function SpotUpload(props) {
     setBtnActive(status);
   };
 
-  const uploadSpot = status => {
+  const verifySpot = status => {
     if (status) {
-      console.log("upload now");
+      navigation.push("SpotDetails", {});
     }
   };
 
   const focusInput = keyboard => {
     if (keyboard) {
-      scrollViewRef.current.scrollToEnd({ animated: true });
+      setTimeout(() => {
+        scrollViewRef.current.scrollToEnd({ animated: true });
+      }, 500);
     }
   };
   return (
@@ -144,7 +146,7 @@ function SpotUpload(props) {
             tags={newTags}
             error={errors => submitErrors(errors)}
             spotStatus={status => spotStatus(status)}
-            uploadSpot={status => uploadSpot(status)}
+            uploadSpot={status => verifySpot(status)}
             btnStatus={btnActive}
           />
         </View>
