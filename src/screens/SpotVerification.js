@@ -65,14 +65,14 @@ const SpotVerification = props => {
       },
       user: user
     };
-    createSpotDis(newSpot);
-    /*.then(success => {
-        console.log("navigate to profile");
-      })
-      .catch(error => {
-        console.log("show error banner");
+    createSpotDis(newSpot)
+      .then(suc => {
+        console.log("success");
         setBtnLoading(false);
-      });*/
+      })
+      .catch(err => {
+        console.log("error");
+      });
   };
 
   return (
@@ -121,17 +121,22 @@ const SpotVerification = props => {
           />
         </MapView>
       </ScrollView>
-      <View style={s.buttonContainer}>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          style={s.submitBtn}
-          onPress={() => uploadSpot()}
-        >
-          <NormalText color="#FFF" size={17}>
-            {btnLoading ? <ActivityIndicator color="#FFF" /> : "Submit"}
-          </NormalText>
-        </TouchableOpacity>
-      </View>
+
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={s.submitBtn}
+        onPress={() => uploadSpot()}
+      >
+        <View style={s.buttonContainer}>
+          {btnLoading ? (
+            <ActivityIndicator color="#FFF" />
+          ) : (
+            <NormalText color="#FFF" size={17}>
+              Submit
+            </NormalText>
+          )}
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -174,12 +179,12 @@ const s = StyleSheet.create({
   map: { width: width, height: width },
   buttonContainer: {
     width: "100%",
-    position: "absolute",
     bottom: 0,
     left: 0,
+    zIndex: 2,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#3498db",
-    padding: 10
+    padding: 20
   }
 });

@@ -1,31 +1,31 @@
 import * as React from "react";
-import { Platform } from "react-native";
 import axios from "axios";
-
-let stripImages = img => {
-  return Platform.OS === "android" ? img : img.replace("file://", "");
-};
+import ImageConverter from "../../features/ImageConverter";
 
 const createNewSpot = newSpot => {
-  let images = [];
-  newSpot.spot.images.map(img => {
-    images.push(stripImages(img));
-  });
-
-  // send data to backend, get answer
   const create = (dispatch, error) => {
-    axios
-      .post("http://192.168.1.76:5000/uploadspot", {
-        spot: newSpot.spot,
-        user: newSpot.user
+    let formData = new FormData();
+
+    newSpot.spot.images.map(img => {
+      let imageUri = img; // single url
+      let filename = imageUri.split("/").pop(); // name single file
+      let match = /\.(\w+)$/.exec(filename); // match single file
+      let type = match ? `image/${match[1]}` : `image`; // set single type
+      formData.append("file", { uri: imageUri, name: filename, type });
+    });
+
+    return axios
+      .post("http://192.168.1.76:5000/uploadspot", formData, {
+        headers: {
+          "content-type": "multipart/form-data"
+        }
       })
-      .then(success => {
-        return success;
+      .then(res => {
+        return res.data;
       })
       .catch(err => {
-        return err.stack;
+        err.data;
       });
-    return null;
   };
   return create;
 };

@@ -15,7 +15,12 @@ const Thumbnails = props => {
       {images.map((img, i) => {
         return (
           <View key={i} style={s.imageContainer}>
-            {img.set && <Image style={s.image} source={{ uri: img.url }} />}
+            {img.set && (
+              <Image
+                style={s.image}
+                source={{ uri: `data:image/png;base64,${img.url}` }}
+              />
+            )}
           </View>
         );
       })}

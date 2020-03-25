@@ -76,7 +76,7 @@ const s = StyleSheet.create({
     marginTop: 5,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 10
+    padding: 20
   },
   submitBtn: {
     justifyContent: "center",

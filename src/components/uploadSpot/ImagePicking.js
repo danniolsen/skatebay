@@ -36,13 +36,13 @@ const ImagePicking = props => {
   // launch image picker, set image, check if location is present.
   const pickImage = async img => {
     let editing = Platform.OS === "ios" ? false : true;
-    console.log(editing);
+
     if (!img.set) {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Image,
         allowsEditing: editing,
         aspect: [15, 10],
-        quality: 1,
+        quality: 0.1,
         exif: true
       });
       if (!result.cancelled) {
