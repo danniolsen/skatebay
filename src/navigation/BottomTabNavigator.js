@@ -2,8 +2,9 @@ import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TabBarIcon from "../components/TabBarIcon";
 import SpotList from "../screens/SpotList";
-import ExploreMap from "../screens/ExploreMap";
+import Shops from "../screens/Shops";
 import SpotUpload from "../screens/SpotUpload";
+import ExploreMap from "../screens/ExploreMap";
 import UserProfile from "../screens/UserProfile";
 
 const BottomTab = createBottomTabNavigator();
@@ -28,12 +29,13 @@ export default function BottomTabNavigator({ navigation, route }) {
           )
         }}
       />
+
       <BottomTab.Screen
-        name="ExploreMap"
-        component={ExploreMap}
+        name="Shops"
+        component={Shops}
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="globe" />
+            <TabBarIcon focused={focused} name="shopping-bag" />
           )
         }}
       />
@@ -41,10 +43,19 @@ export default function BottomTabNavigator({ navigation, route }) {
       <BottomTab.Screen
         name="SpotUpload"
         component={SpotUpload}
-        mode="modal"
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="upload-cloud" />
+            <TabBarIcon focused={focused} name="plus-circle" />
+          )
+        }}
+      />
+
+      <BottomTab.Screen
+        name="ExploreMap"
+        component={ExploreMap}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="globe" />
           )
         }}
       />

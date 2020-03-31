@@ -19,12 +19,14 @@ function SpotList(props) {
   const [moreActions, setMoreActions] = React.useState(false);
   const [selected, setSelected] = React.useState(null);
   const [refreshing, setRefreshing] = React.useState(true);
+
   React.useEffect(() => {
     let isCancelled = false;
     if (!isCancelled) {
       // check if custom location is in use from params
       props.route.params ? getSpots(location) : getSpotlist();
     }
+
     return () => (isCancelled = true);
   }, []);
 

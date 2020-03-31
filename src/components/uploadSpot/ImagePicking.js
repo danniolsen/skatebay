@@ -1,17 +1,15 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Dimensions, Alert } from "react-native";
 import { TouchableOpacity, ActivityIndicator, ScrollView } from "react-native";
-import { Platform } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { NormalText, ThinText } from "../StyledText";
+import { NormalText } from "../StyledText";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
-import { CheckImagesLocation } from "../../features/LocationService";
 import Headline from "./Headline";
 import Thumbnails from "./Thumbnails";
-
 const { width, height } = Dimensions.get("window");
 const imgHeight = width / 1.5;
+import Upload from "../../features/Upload";
 
 const ImagePicking = props => {
   const { getImages, headline } = props;
@@ -35,65 +33,50 @@ const ImagePicking = props => {
 
   // launch image picker, set image, check if location is present.
   const pickImage = async img => {
-    let editing = Platform.OS === "ios" ? false : true;
-
     if (!img.set) {
-      let result = await ImagePicker.launchImageLibraryAsync({
+      let img = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Image,
-        allowsEditing: editing,
-        aspect: [15, 10],
+        allowsEditing: true,
+        cropping: true,
         quality: 0.1,
         exif: true
       });
-      if (!result.cancelled) {
-        let latitude = result.exif.GPSLatitude;
-        let longitude = result.exif.GPSLongitude;
+      if (!img.cancelled) {
+        console.log(img.uri);
+        let imgLocation = Upload().checkLocation(img);
 
-        let imgLocation = {
-          latitude: result.exif.GPSLatitude,
-          longitude: result.exif.GPSLongitude
-        };
+        if (imgLocation.status) {
+          let checkDistance = Upload().checkDistance(getImages, imgLocation);
 
-        if (imgLocation.latitude !== undefined) {
-          let prevLocation = getImages[getImages.length - 2];
+          if (checkDistance.status) {
+            setStatus(false); // if field has been touched (for errors)
 
-          let distanceCheck =
-            getImages.length === 1
-              ? true
-              : CheckImagesLocation(prevLocation, imgLocation);
-          if (distanceCheck) {
-            setStatus(false);
-            let imgUri = result.uri;
-            setImg(imgUri, imgLocation);
+            let resizedImage = Upload().resizeImage(img);
+            resizedImage
+              .then(smallImage => {
+                let imgUri = smallImage.uri;
+                setImg(imgUri, imgLocation);
+              })
+              .catch(err => {
+                alert("Something went wrong, try again");
+              });
           } else {
-            Alert.alert(
-              "Location issue!",
-              "the images location does not seam to match in range of previus image"
-            );
+            Alert.alert(checkDistance.title, checkDistance.value);
           }
         } else {
-          Alert.alert(
-            "Image location error",
-            "Image can not be used due to missing image location"
-          );
+          Alert.alert(imgLocation.title, imgLocation.value);
         }
       } else {
         getImages.length - 1 === 0 ? setStatus(true) : null;
       }
     }
   };
-  // add image to array, send images to parent component
-  const setImg = async (imgUri, location) => {
-    let imagesCopy = Object.assign([getImages], getImages);
-    let lastImgId = imagesCopy.length - 1;
-    imagesCopy[lastImgId].url = imgUri;
-    imagesCopy[lastImgId].set = true;
-    imagesCopy[lastImgId].location = location;
-    let nextImage = { url: "", set: false, location: {} };
-    getImages.length !== 4 ? imagesCopy.push(nextImage) : null;
 
+  const setImg = async (imgUri, location) => {
+    // set images and add new template, if less than 4 images
+    let addedImage = Upload().addImage(imgUri, getImages, location);
     setAction("add"); // set slide action
-    props.imageData(imagesCopy); // send images to parrent component
+    props.imageData(addedImage); // send images to parrent component
   };
 
   // slide to next image placeholder if image action was ADD
@@ -108,14 +91,9 @@ const ImagePicking = props => {
   // remove an image from the images array
   const removeImage = async id => {
     setAction("remove");
-    let imagesCopy = Object.assign([getImages], getImages);
-    let newPlaceholder = { url: "", set: false, location: {} };
-    let placeholderId = imagesCopy[imagesCopy.length - 1];
-    if (placeholderId.set !== false) {
-      imagesCopy.push(newPlaceholder);
-    }
-    imagesCopy.splice(id, 1);
-    props.imageData(imagesCopy);
+    // use getImages
+    let removedUpdate = Upload().removeImage(getImages, id);
+    props.imageData(removedUpdate);
     getImages.length - 1 === 1 ? setStatus(true) : setStatus(false);
   };
 

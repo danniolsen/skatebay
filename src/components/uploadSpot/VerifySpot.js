@@ -49,15 +49,10 @@ const VerifySpotData = props => {
     return props.spotStatus(status);
   };
 
-  /*const checkDuplicate = () => {
-    make later when upload works
-    return null;
-  };*/
   validateData();
 
   return (
     <TouchableOpacity
-      activeOpacity={0.8}
       style={[s.container, { backgroundColor: btnStatus ? "#3498db" : "#AAA" }]}
       onPress={props.verifySpot}
     >

@@ -15,12 +15,7 @@ const Thumbnails = props => {
       {images.map((img, i) => {
         return (
           <View key={i} style={s.imageContainer}>
-            {img.set && (
-              <Image
-                style={s.image}
-                source={{ uri: `data:image/png;base64,${img.url}` }}
-              />
-            )}
+            {img.set && <Image style={s.image} source={{ uri: img.url }} />}
           </View>
         );
       })}
@@ -32,11 +27,11 @@ export default Thumbnails;
 
 const s = StyleSheet.create({
   container: { flex: 1, flexDirection: "row", marginLeft: 0 },
-  imageContainer: { width: width / 4, marginTop: 1 },
+  imageContainer: { width: width / 4, marginTop: 5 },
   image: {
     width: imgWidth,
     height: null,
-    aspectRatio: 1.5,
+    aspectRatio: 1.6,
     resizeMode: "cover",
     borderWidth: 2,
     borderColor: "#FFF"

@@ -15,8 +15,9 @@ const imgHeight = width / 1.5;
 
 const SpotVerification = props => {
   let data = props.route.params;
-  const { navigation, createSpotDis } = props;
-  const { user, images, title, tags, status, location } = data;
+
+  const { navigation, createSpotDis, bannerDis, clearSpotDis } = props;
+  const { user, images, title, tags, status, location } = data.newSpot;
   const [imgs, setImgs] = React.useState([]);
   const [btnLoading, setBtnLoading] = React.useState(false);
   const [addressLoading, setAddressLoading] = React.useState(true);
@@ -24,11 +25,14 @@ const SpotVerification = props => {
 
   React.useEffect(() => {
     let isCanceled = false;
-    let realImgs = [];
-    images.map(img => {
-      img.set ? realImgs.push(img.url) : null;
+    // set images
+    let realImages = [];
+    images.map(rImg => {
+      if (rImg.set === true) {
+        realImages.push(rImg.url);
+      }
     });
-    setImgs(realImgs);
+    setImgs(realImages);
     getAddress()
       .then(add => {
         setAddress(add[0]);
@@ -67,11 +71,23 @@ const SpotVerification = props => {
     };
     createSpotDis(newSpot)
       .then(suc => {
-        console.log("success");
-        setBtnLoading(false);
+        setTimeout(() => {
+          bannerDis({
+            banner: { msg: "Spot was created", style: "#FFF", show: true }
+          });
+          navigation.navigate("root", {
+            screen: "UserProfile",
+            params: { getUploads: true }
+          });
+          clearSpotDis();
+        }, 1000);
+
+        setTimeout(() => {
+          setBtnLoading(false);
+        }, 1200);
       })
       .catch(err => {
-        console.log("error");
+        alert("An error has occured");
       });
   };
 
@@ -123,8 +139,8 @@ const SpotVerification = props => {
       </ScrollView>
 
       <TouchableOpacity
-        activeOpacity={0.8}
         style={s.submitBtn}
+        disabled={btnLoading}
         onPress={() => uploadSpot()}
       >
         <View style={s.buttonContainer}>
@@ -142,7 +158,9 @@ const SpotVerification = props => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  createSpotDis: payload => dispatch(createNewSpot(payload))
+  createSpotDis: payload => dispatch(createNewSpot(payload)),
+  bannerDis: payload => dispatch({ type: "SHOW_BANNER", payload: payload }),
+  clearSpotDis: payload => dispatch({ type: "NEW_SPOT_RESET" })
 });
 
 export default connect(

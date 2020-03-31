@@ -5,11 +5,12 @@ import { InputData, ImagePicking } from "../components/uploadSpot";
 import { SpotTags, VerifySpotData } from "../components/uploadSpot";
 import Header from "../components/header/Header";
 import { NormalText } from "../components/StyledText";
-import { Feather } from "@expo/vector-icons";
 import { connect } from "react-redux";
+import { setNewSpotData } from "../redux/actions/newSpotActions";
 
 function SpotUpload(props) {
-  const { user, navigation } = props;
+  const { user, navigation, newSpot, setNewSpotDis, clearSpotDis } = props;
+
   const [keyboardUp, setKeyboardUp] = React.useState(false);
   const scrollViewRef = React.useRef();
   const [newImages, setNewImages] = React.useState([
@@ -26,20 +27,21 @@ function SpotUpload(props) {
 
   // add images to images array
   const setImages = images => {
-    let newImagesCopy = Object.assign({}, newImages);
-    newImagesCopy = images;
-    setNewImages(newImagesCopy);
+    // new redux
+    let newSpotCopy = Object.assign({}, newSpot);
+    newSpotCopy.newSpot.images = images;
+    // new redux ends
 
     // set location from first image
-    let newLocationCopy = Object.assign({}, newLocation);
     if (images.length !== 0) {
-      newLocationCopy.latitude = images[0].location.latitude;
-      newLocationCopy.longitude = images[0].location.longitude;
-    } else {
-      newLocationCopy.latitude = null;
-      newLocationCopy.longitude = null;
+      // new redux
+      newSpotCopy.newSpot.location = {
+        latitude: images[0].location.value.latitude,
+        longitude: images[0].location.value.longitude
+      };
+      // new redux ends
     }
-    setNewLocation(newLocationCopy);
+    setNewSpotDis(newSpotCopy); // new redux
   };
 
   // scroll down on jeyboard toggle
@@ -53,15 +55,18 @@ function SpotUpload(props) {
 
   // set spot title to title
   const setTitle = title => {
-    let newTitleCopy = Object.assign({}, newTitle);
-    newTitleCopy = title;
-    setNewTitle(newTitleCopy);
+    // new redux
+    let newSpotCopy = Object.assign({}, newSpot);
+    newSpotCopy.newSpot.title = title;
+    setNewSpotDis(newSpotCopy);
+    //new redux ends
   };
 
   // add tags to tags array
   const setTags = tag => {
-    let newTagsCopy = [...newTags];
-    setNewTags(tag);
+    let newSpotCopy = Object.assign({}, newSpot);
+    newSpotCopy.newSpot.tags = tag;
+    setNewSpotDis(newSpotCopy);
   };
 
   // earning before removing spot data
@@ -79,10 +84,7 @@ function SpotUpload(props) {
 
   // clear all spot data
   const clearSpot = () => {
-    setNewTitle("");
-    setNewTags([]);
-    setNewLocation({ latitude: null, longitude: null });
-    setNewImages([{ set: false, location: {} }]);
+    clearSpotDis();
   };
 
   // activate and inactivate button
@@ -93,21 +95,20 @@ function SpotUpload(props) {
   // verify spot data
   const verifySpot = () => {
     if (btnActive) {
-      let spot = {
-        user: user,
-        images: newImages,
-        title: newTitle,
-        tags: newTags,
-        location: newLocation,
-        status: btnActive
-      };
-      navigation.navigate("SpotVerify", spot);
+      let newSpotCopy = Object.assign({}, newSpot);
+      newSpotCopy.newSpot.user = user;
+      // status: btnActive
+      navigation.navigate("SpotVerify", newSpotCopy);
     }
   };
 
   return (
     <View style={s.container}>
-      <Header rightIcon="trash" rightAction={() => clearSpotWarn()} />
+      <Header
+        rightIcon="trash"
+        color="#e74c3c"
+        rightAction={() => clearSpotWarn()}
+      />
 
       <ScrollView
         style={s.content}
@@ -123,7 +124,7 @@ function SpotUpload(props) {
               warning: "Minimum 1 image is reqired"
             }}
             imageData={images => setImages(images)}
-            getImages={newImages}
+            getImages={newSpot.newSpot.images}
           />
         </View>
 
@@ -134,7 +135,7 @@ function SpotUpload(props) {
               warning: "Minimum 3 characters are reqired"
             }}
             title={title => setTitle(title)}
-            getTitle={newTitle}
+            getTitle={newSpot.newSpot.title}
             inputTap={keyboard => focusInput(keyboard)}
           />
         </View>
@@ -146,7 +147,7 @@ function SpotUpload(props) {
               warning: "Minimum of 1 tag is reqired"
             }}
             selectTag={tag => setTags(tag)}
-            getTags={newTags}
+            getTags={newSpot.newSpot.tags}
           />
         </View>
 
@@ -154,10 +155,10 @@ function SpotUpload(props) {
           <VerifySpotData
             user={user}
             duplicate={duplicate}
-            images={newImages}
-            location={newLocation}
-            title={newTitle}
-            tags={newTags}
+            images={newSpot.newSpot.images}
+            location={newSpot.newSpot.location}
+            title={newSpot.newSpot.title}
+            tags={newSpot.newSpot.tags}
             spotStatus={status => spotStatus(status)}
             verifySpot={status => verifySpot(status)}
             btnStatus={btnActive}
@@ -169,12 +170,18 @@ function SpotUpload(props) {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  newSpot: state.newSpot
+});
+
+const mapDispatchToProps = dispatch => ({
+  setNewSpotDis: payload => dispatch(setNewSpotData(payload)),
+  clearSpotDis: payload => dispatch({ type: "NEW_SPOT_RESET" })
 });
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(SpotUpload);
 
 const s = StyleSheet.create({

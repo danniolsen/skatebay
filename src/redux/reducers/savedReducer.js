@@ -9,7 +9,7 @@ const savedReducer = (state = initialState, action) => {
     case SAVE_NEW_SPOT:
       return {
         ...state,
-        spots: action.payload.spots
+        spots: action.payload.spot
       };
     case GET_SAVED_SPOTS:
       return {
