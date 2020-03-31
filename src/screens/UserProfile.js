@@ -21,6 +21,7 @@ function UserProfile(props) {
     let isCancelled = false;
     if (!isCancelled) {
       savedListDis(user);
+      uploadsListDis(user);
     }
     return () => {
       isCancelled = true;

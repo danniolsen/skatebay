@@ -27,6 +27,8 @@ const getSpotList = spotData => {
 
 const getUploadedSpots = user => {
   const uploadedSpots = (dispatch, err) => {
+    console.log("called now");
+    console.log(user.user_id);
     axios
       .post("http://192.168.1.76:5000/getuploads", {
         user: {
@@ -35,6 +37,7 @@ const getUploadedSpots = user => {
         }
       })
       .then(response => {
+        console.log(response);
         dispatch(fetchUploadedSpots({ spots: response.data }));
       })
       .catch(err => {
