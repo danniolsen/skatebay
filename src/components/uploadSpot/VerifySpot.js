@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { NormalText } from "../StyledText";
 import { Feather } from "@expo/vector-icons";
 
-const VerifySpot = props => {
+const VerifySpotData = props => {
   const { user, duplicate, images, location, title, tags, btnStatus } = props;
 
   const checkImages = () => {
@@ -45,29 +45,25 @@ const VerifySpot = props => {
     statusArray.push(titleStatus, imagesStatus, tagsStatus, locationStatus);
     const isTrue = currentStatus => currentStatus === true;
     let status = statusArray.every(isTrue) ? true : false;
+
     return props.spotStatus(status);
   };
 
-  /*const checkDuplicate = () => {
-    make later when upload works
-    return null;
-  };*/
   validateData();
 
   return (
     <TouchableOpacity
-      activeOpacity={0.8}
       style={[s.container, { backgroundColor: btnStatus ? "#3498db" : "#AAA" }]}
-      onPress={props.uploadSpot}
+      onPress={props.verifySpot}
     >
-      <NormalText color="#FFF" size={17} style={s.btnTxt}>
+      <NormalText color="#FFF" size={17}>
         Verify
       </NormalText>
     </TouchableOpacity>
   );
 };
 
-export default VerifySpot;
+export default VerifySpotData;
 
 const s = StyleSheet.create({
   container: {
@@ -75,7 +71,7 @@ const s = StyleSheet.create({
     marginTop: 5,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 10
+    padding: 20
   },
   submitBtn: {
     justifyContent: "center",

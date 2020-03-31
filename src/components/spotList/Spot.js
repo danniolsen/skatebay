@@ -96,7 +96,7 @@ const s = StyleSheet.create({
   },
   imgNo: { paddingLeft: 5 },
   image: {
-    height: imgHeight,
+    height: imgHeight - 20,
     resizeMode: "stretch"
   },
   optionsBar: {

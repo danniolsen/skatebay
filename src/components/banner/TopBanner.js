@@ -5,21 +5,24 @@ import { connect } from "react-redux";
 import { bannerHide } from "../../redux/actions/bannerActions";
 const TopBanner = props => {
   let color = "#FFF";
-  const { msg, style, hideBannerDis } = props;
+  const { msg, style, hideBannerDis, banner } = props;
 
   // wait 1500 ms to display banner (fade in and out)
+  // call banner banner:{msg: 'txt', style:'hex code', show: boolean}
   return (
     <View style={s.banner}>
-      <View style={s.bannerCon}>
-        <View style={s.message}>
-          <NormalText color={style}>{msg}</NormalText>
+      {banner.show && (
+        <View style={s.bannerCon}>
+          <View style={s.message}>
+            <NormalText color={style}>{msg}</NormalText>
+          </View>
+          <View style={s.dismis}>
+            <TouchableOpacity onPress={() => hideBannerDis()}>
+              <NormalText color="#FFF">Dismis</NormalText>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={s.dismis}>
-          <TouchableOpacity onPress={() => hideBannerDis()}>
-            <NormalText color="#FFF">Dismis</NormalText>
-          </TouchableOpacity>
-        </View>
-      </View>
+      )}
     </View>
   );
 };
@@ -28,8 +31,12 @@ const mapDispatchToProps = dispatch => ({
   hideBannerDis: payload => dispatch(bannerHide())
 });
 
+const mapStateToProps = state => ({
+  banner: state.banner.banner
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(TopBanner);
 
@@ -39,7 +46,7 @@ const s = StyleSheet.create({
     position: "absolute",
     zIndex: 1,
     padding: 10,
-    bottom: 80
+    bottom: 100
   },
   bannerCon: {
     backgroundColor: "rgba(000,000,000, 0.6)",

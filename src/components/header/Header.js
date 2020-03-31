@@ -20,7 +20,12 @@ function Header(props) {
       </View>
       <View style={s.right}>
         <TouchableOpacity onPress={props.rightAction}>
-          <Feather name={props.rightIcon} size={23} style={s.icon} />
+          <Feather
+            name={props.rightIcon}
+            color={props.color ? props.color : "#2f3c41"}
+            size={23}
+            style={s.icon}
+          />
         </TouchableOpacity>
       </View>
     </View>
@@ -43,7 +48,7 @@ const s = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  icon: { color: "#2f3c41" },
+  //icon: { color: "#2f3c41" },
   center: {
     flex: 7,
     flexDirection: "row",

@@ -41,12 +41,15 @@ const LocationService = async () => {
     });
 };
 
-export const CheckImagesLocation = (prevLocation, imgLocation) => {
-  let prevLat = prevLocation.location.latitude;
-  let prevLon = prevLocation.location.longitude;
+export const CheckImagesLocation = (prevLocation, currentImage) => {
+  let prevLat = prevLocation.location.value.latitude;
+  let prevLon = prevLocation.location.value.longitude;
   let result = getDistance(
     { latitude: prevLat, longitude: prevLon },
-    { latitude: imgLocation.latitude, longitude: imgLocation.longitude }
+    {
+      latitude: currentImage.value.latitude,
+      longitude: currentImage.value.longitude
+    }
   );
   return result > 25 ? false : true;
 };

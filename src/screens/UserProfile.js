@@ -48,7 +48,7 @@ function UserProfile(props) {
           <ProfileHeader user={user}>
             <Option
               icon="bookmark"
-              number={saved.spots.length}
+              //number={saved.spots.length}
               action={() => changeType(0)}
             />
             <Option icon="layers" number={0} action={() => changeType(1)} />

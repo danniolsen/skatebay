@@ -9,5 +9,6 @@ export default {
   warningBackground: "#EAEB5E",
   warningText: "#666804",
   noticeBackground: tintColor,
-  noticeText: "#fff"
+  noticeText: "#fff",
+  iconColor: "#2f3c41"
 };

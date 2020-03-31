@@ -7,9 +7,11 @@ import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { Feather } from "@expo/vector-icons";
 import timeAgo from "../../features/TimeAgo";
+import tags from "../../staticData/tags";
 
 const SpotInfo = props => {
   const { spotDetails, userLocation } = props;
+  const [newTags, setNewTags] = React.useState([]);
   const [addressLoading, setAddressLoading] = React.useState(true);
   const [timeSince, setTimeSince] = React.useState("...");
   const [address, setAddress] = React.useState({
@@ -40,6 +42,8 @@ const SpotInfo = props => {
           };
           setAddress(errorAddress);
         });
+
+      findTags(tags);
     }
     () => (isCancled = true);
   }, []);
@@ -72,6 +76,15 @@ const SpotInfo = props => {
     } catch (err) {
       return null;
     }
+  };
+
+  const findTags = tags => {
+    let addTag = Object.assign([], newTags);
+    spotDetails.tags.map(spTag => {
+      let getTags = tags.find(tag => tag.id === spTag);
+      addTag.push(getTags);
+    });
+    setNewTags(addTag);
   };
   return (
     <>
@@ -110,23 +123,22 @@ const SpotInfo = props => {
           Tags
         </NormalText>
       </View>
-      <ScrollView
-        style={s.tagsCon}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-      >
-        <Tags tagName={spotDetails.spot_type} />
-      </ScrollView>
+      <View style={s.tagsCon}>
+        {newTags.map((spotTag, i) => {
+          return <Tag key={i} spotTag={spotTag} />;
+        })}
+      </View>
     </>
   );
 };
 
-const Tags = props => {
+const Tag = props => {
   return (
-    <View style={s.tagsCon}>
-      <ThinText style={s.tag} size={15} color="#2f3c41">
-        {props.tagName}
-      </ThinText>
+    // fix tags missing on fetch
+    <View style={s.tag}>
+      <NormalText size={15} color="#FFF">
+        {props.spotTag.name}
+      </NormalText>
     </View>
   );
 };
@@ -149,16 +161,17 @@ const s = StyleSheet.create({
   tagsHead: { paddingLeft: 10, paddingTop: 10 },
   tagsCon: {
     flexDirection: "row",
-    marginHorizontal: 10,
-    marginTop: 5,
-    paddingBottom: 5
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    flexWrap: "wrap",
+    justifyContent: "center"
   },
   tag: {
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#AAA",
-    marginRight: 5
+    paddingVertical: 7,
+    paddingHorizontal: 12,
+    marginRight: 10,
+    borderRadius: 10,
+    marginVertical: 5,
+    backgroundColor: "#7f8c8d"
   }
 });

@@ -6,10 +6,11 @@ import Headline from "./Headline";
 const SpotTags = props => {
   const { getTags, headline } = props;
   const [status, setStatus] = React.useState(false);
+
   const pickTag = tag => {
     let tagsCopy = Object.assign([], getTags);
     // check if tag exists, if true, remove tag, else add tag
-    let exists = tagsCopy.find(({ id }) => id === tag.id);
+    let exists = tagsCopy.find(({ id }) => id === tag.id); // use indexof
     exists ? unsetTag(tag) : setTag(tag);
   };
 
@@ -102,17 +103,18 @@ const s = StyleSheet.create({
 
 const tags = [
   { id: 1, name: "Street" },
-  { id: 2, name: "Wallride" },
-  { id: 3, name: "Stair" },
-  { id: 4, name: "Handrail" },
-  { id: 5, name: "Gab" },
-  { id: 6, name: "Manual" },
-  { id: 7, name: "Ledge" },
-  { id: 8, name: "DIY" },
-  { id: 9, name: "Flatbar" },
+  { id: 2, name: "Ledge" },
+  { id: 3, name: "Handrail" },
+  { id: 4, name: "Flat rail" },
+  { id: 5, name: "Stair / Gab" },
+  { id: 6, name: "Bank" },
+  { id: 7, name: "Wallride" },
+  { id: 8, name: "Manual" },
+  { id: 9, name: "Plaza" },
   { id: 10, name: "Skatepark" },
   { id: 11, name: "Vert" },
   { id: 12, name: "Bowl" },
   { id: 13, name: "Miniramp" },
-  { id: 14, name: "Transition" }
+  { id: 14, name: "Transition" },
+  { id: 15, name: "DIY" }
 ];
