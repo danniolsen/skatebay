@@ -1,4 +1,5 @@
 import { fetchSpotList, fetchSpotListError } from "../types/spotListTypes";
+import { fetchUploadedSpots } from "../types/uploadedSpotsTypes";
 import axios from "axios";
 
 const getSpotList = spotData => {
@@ -24,4 +25,23 @@ const getSpotList = spotData => {
   return spotlistSet;
 };
 
-export { getSpotList };
+const getUploadedSpots = user => {
+  const uploadedSpots = (dispatch, err) => {
+    axios
+      .post("http://192.168.1.76:5000/getuploads", {
+        user: {
+          user_id: user.user_id,
+          idToken: "verify token later"
+        }
+      })
+      .then(response => {
+        dispatch(fetchUploadedSpots({ spots: response.data }));
+      })
+      .catch(err => {
+        dispatch(fetchUploadedSpots({ spots: [] }));
+      });
+  };
+  return uploadedSpots;
+};
+
+export { getSpotList, getUploadedSpots };

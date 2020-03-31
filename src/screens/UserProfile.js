@@ -9,9 +9,11 @@ import ProfileHeader from "../components/profile/ProfileHeader";
 import ProfileSpot from "../components/profile/ProfileSpot";
 import EmptyProfileList from "../components/profile/EmptyList";
 import { getSavedSpotsList } from "../redux/actions/saveSpotActions";
+import { getUploadedSpots } from "../redux/actions/spotListActions";
 
 function UserProfile(props) {
   const { user, navigation, saved, savedListDis } = props;
+  const { uploadsListDis, uploads } = props;
   const [refreshing, setRefreshing] = React.useState(false);
   const [type, setType] = React.useState(0);
 
@@ -26,14 +28,14 @@ function UserProfile(props) {
   }, []);
 
   const changeType = newType => {
-    newType !== type ? setType(newType) : null;
+    if (newType !== type) {
+      setType(newType);
+      newType === 0 ? savedListDis(user) : uploadsListDis(user);
+    }
   };
-  const getData = () => {
-    setRefreshing(true);
-    //fetch data here.
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+
+  const setColor = tabId => {
+    return tabId === type ? "#FFF" : "#9e9e9e";
   };
 
   return (
@@ -48,16 +50,20 @@ function UserProfile(props) {
           <ProfileHeader user={user}>
             <Option
               icon="bookmark"
-              //number={saved.spots.length}
+              number={saved.spots.length}
               action={() => changeType(0)}
+              color={setColor(0)}
             />
-            <Option icon="layers" number={0} action={() => changeType(1)} />
+            <Option
+              icon="layers"
+              number={uploads.spots.length}
+              action={() => changeType(1)}
+              color={setColor(1)}
+            />
           </ProfileHeader>
         }
         numColumns={4}
-        data={saved.spots}
-        onRefresh={() => getData()}
-        refreshing={refreshing}
+        data={type === 0 ? saved.spots : uploads.spots}
         renderItem={({ item }) => (
           <ProfileSpot
             spot={item}
@@ -73,11 +79,12 @@ function UserProfile(props) {
 }
 
 const Option = props => {
+  const { color } = props;
   return (
     <TouchableOpacity onPress={props.action} style={s.option}>
       <View style={{ flexDirection: "row" }}>
-        <Feather name={props.icon} color="#FFF" size={20} />
-        <NormalText style={s.number} color="#FFF" size={15}>
+        <Feather name={props.icon} color={color} size={20} />
+        <NormalText style={s.number} color={color} size={15}>
           {props.number}
         </NormalText>
       </View>
@@ -87,10 +94,12 @@ const Option = props => {
 
 const mapStateToProps = state => ({
   user: state.user.user,
-  saved: state.saved
+  saved: state.saved,
+  uploads: state.uploads
 });
 const mapDispatchToProps = dispatch => ({
-  savedListDis: payload => dispatch(getSavedSpotsList(payload))
+  savedListDis: payload => dispatch(getSavedSpotsList(payload)),
+  uploadsListDis: payload => dispatch(getUploadedSpots(payload))
 });
 
 export default connect(
