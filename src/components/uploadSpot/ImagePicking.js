@@ -36,8 +36,9 @@ const ImagePicking = props => {
     if (!img.set) {
       let img = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Image,
-        allowsEditing: true,
+        allowsEditing: false,
         cropping: true,
+        aspect: [15, 10],
         quality: 0.1,
         exif: true
       });
