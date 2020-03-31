@@ -14,7 +14,6 @@ const getSavedSpotsList = user => {
         dispatch(getSavedSpots({ spots: response.data }));
       })
       .catch(err => {
-        console.log(err.stack);
         dispatch(getSavedSpots({ spots: [] }));
       });
   };

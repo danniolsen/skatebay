@@ -7,6 +7,7 @@ import SpotList from "./spotListReducer";
 import Saved from "./savedReducer";
 import Banner from "./bannerReducer";
 import NewSpot from "./newSpotReducer";
+import Uploads from "./uploadedSpotsReducer";
 import { SignOut } from "../../features/AuthSocial";
 
 const appReducer = combineReducers({
@@ -14,6 +15,7 @@ const appReducer = combineReducers({
   newSpot: NewSpot,
   spotList: SpotList,
   saved: Saved,
+  uploads: Uploads,
   loading: Loading,
   auth: Auth,
   location: Location,

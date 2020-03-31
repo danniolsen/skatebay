@@ -42,7 +42,6 @@ const ImagePicking = props => {
         exif: true
       });
       if (!img.cancelled) {
-        console.log(img.uri);
         let imgLocation = Upload().checkLocation(img);
 
         if (imgLocation.status) {
