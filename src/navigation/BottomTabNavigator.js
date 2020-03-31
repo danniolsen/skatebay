@@ -8,7 +8,7 @@ import ExploreMap from "../screens/ExploreMap";
 import UserProfile from "../screens/UserProfile";
 
 const BottomTab = createBottomTabNavigator();
-const INITIAL_ROUTE_NAME = "SpotUpload";
+const INITIAL_ROUTE_NAME = "SpotList";
 
 export default function BottomTabNavigator({ navigation, route }) {
   navigation.setOptions({ title: null });
