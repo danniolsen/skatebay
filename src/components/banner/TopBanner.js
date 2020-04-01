@@ -1,11 +1,14 @@
 import * as React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { NormalText } from "../StyledText";
 import { connect } from "react-redux";
+import { NormalText } from "../StyledText";
 import { bannerHide } from "../../redux/actions/bannerActions";
-const TopBanner = props => {
-  let color = "#FFF";
-  const { msg, style, hideBannerDis, banner } = props;
+
+const TopBanner = (props) => {
+  const color = "#FFF";
+  const {
+    msg, style, hideBannerDis, banner
+  } = props;
 
   // wait 1500 ms to display banner (fade in and out)
   // call banner banner:{msg: 'txt', style:'hex code', show: boolean}
@@ -27,11 +30,11 @@ const TopBanner = props => {
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  hideBannerDis: payload => dispatch(bannerHide())
+const mapDispatchToProps = (dispatch) => ({
+  hideBannerDis: (payload) => dispatch(bannerHide())
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   banner: state.banner.banner
 });
 

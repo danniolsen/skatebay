@@ -7,12 +7,12 @@ export const fetchUserBegin = () => ({
   type: FETCH_USER_BEGIN
 });
 
-export const fetchUserSuccess = user => ({
+export const fetchUserSuccess = (user) => ({
   type: FETCH_USER_SUCCESS,
   payload: user
 });
 
-export const fetchuUserFailure = error => ({
+export const fetchuUserFailure = (error) => ({
   type: FETCH_USER_FAILURE,
   payload: error
 });

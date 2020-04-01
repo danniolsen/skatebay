@@ -1,11 +1,14 @@
 import * as React from "react";
-import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { SafeAreaView, Platform } from "react-native";
-import { ThinText } from "../StyledText";
+import {
+  View, Image, TouchableOpacity, StyleSheet,
+  SafeAreaView, Platform
+} from "react-native";
+
 import { Feather } from "@expo/vector-icons";
+import { ThinText } from "../StyledText";
 
 function Header(props) {
-  let logo = "../../assets/images/logo.png";
+  const logo = "../../assets/images/logo.png";
 
   return (
     <View style={s.container}>
@@ -48,7 +51,7 @@ const s = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  //icon: { color: "#2f3c41" },
+  // icon: { color: "#2f3c41" },
   center: {
     flex: 7,
     flexDirection: "row",

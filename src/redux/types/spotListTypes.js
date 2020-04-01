@@ -1,7 +1,7 @@
 export const FETCH_SPOTLIST = "FETCH_SPOTLIST";
 export const FETCH_SPOTLIST_FAILURE = "FETCH_SPOTLIST_FAILURE";
 
-export const fetchSpotList = spotlist => ({
+export const fetchSpotList = (spotlist) => ({
   type: FETCH_SPOTLIST,
   payload: spotlist
 });

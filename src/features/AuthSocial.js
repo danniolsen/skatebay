@@ -18,7 +18,7 @@ const AuthFacebook = async () => {
     firebase
       .auth()
       .signInWithCredential(credential)
-      .catch(error => {
+      .catch((error) => {
         alert("Sorry, an error has occured!");
       });
   } else {
@@ -42,10 +42,10 @@ const AuthGoogle = async () => {
       firebase
         .auth()
         .signInWithCredential(credential)
-        .then(res => {
-          //hey
+        .then((res) => {
+          // hey
         })
-        .catch(error => {
+        .catch((error) => {
           alert("Something went wrong");
           return null;
         });
@@ -65,8 +65,8 @@ const SignOut = async () => {
     firebase
       .auth()
       .signOut()
-      .then(function() {})
-      .catch(function(error) {
+      .then(() => {})
+      .catch((error) => {
         alert("error", error);
       });
   } catch (e) {

@@ -8,7 +8,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "lint": "eslint \"./**/*.js\""
   },
   "jest": {
     "preset": "jest-expo"
@@ -22,6 +23,8 @@
     "@react-navigation/stack": "5.2.9",
     "@react-navigation/web": "~1.0.0-alpha.9",
     "axios": "^0.19.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
     "expo": "~36.0.0",
     "expo-asset": "~8.0.0",
     "expo-constants": "~8.0.0",
@@ -31,6 +34,7 @@
     "expo-image-manipulator": "^8.0.0",
     "expo-image-picker": "^8.0.2",
     "expo-location": "^8.0.0",
+    "expo-permissions": "^8.1.0",
     "firebase": "^7.8.2",
     "geolib": "^3.2.1",
     "moment": "^2.24.0",
@@ -57,6 +61,10 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "babel-preset-expo": "~8.0.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.19.0",
     "jest-expo": "~36.0.1",
     "remotedev-rn-debugger": "^0.8.3"
   }

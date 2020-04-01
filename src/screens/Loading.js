@@ -1,6 +1,8 @@
 import React from "react";
-import { View, StyleSheet, ActivityIndicator } from "react-native";
-import { ImageBackground } from "react-native";
+import {
+  View, StyleSheet, ActivityIndicator, ImageBackground
+} from "react-native";
+
 import { ThinText } from "../components/StyledText";
 
 function Loading() {

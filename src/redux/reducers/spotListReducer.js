@@ -1,11 +1,12 @@
 import { FETCH_SPOTLIST, FETCH_SPOTLIST_FAILURE } from "../types/spotListTypes";
+
 const initialState = {
   spotList: [],
   spotListError: null
 };
 
 const spotListReducer = (state = initialState, action) => {
-  let data = action.payload;
+  const data = action.payload;
   switch (action.type) {
     case FETCH_SPOTLIST:
       return {

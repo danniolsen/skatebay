@@ -1,9 +1,11 @@
 import * as React from "react";
-import { ScrollView, StyleSheet, View, TouchableOpacity } from "react-native";
+import {
+  ScrollView, StyleSheet, View, TouchableOpacity
+} from "react-native";
 import { connect } from "react-redux";
+import { Feather } from "@expo/vector-icons";
 import { NormalText } from "../components/StyledText";
 import Header from "../components/header/Header";
-import { Feather } from "@expo/vector-icons";
 
 function Settings(props) {
   const { navigation, signOutDis } = props;
@@ -49,22 +51,20 @@ function Settings(props) {
 }
 
 // move to components
-const Item = props => {
-  return (
-    <TouchableOpacity onPress={props.action} style={s.listItem}>
-      <View style={s.listIcon}>
-        <Feather name={props.icon} size={20} color="#A9A9A9" />
-      </View>
+const Item = (props) => (
+  <TouchableOpacity onPress={props.action} style={s.listItem}>
+    <View style={s.listIcon}>
+      <Feather name={props.icon} size={20} color="#A9A9A9" />
+    </View>
 
-      <View style={s.listText}>
-        <NormalText>{props.title}</NormalText>
-      </View>
-    </TouchableOpacity>
-  );
-};
+    <View style={s.listText}>
+      <NormalText>{props.title}</NormalText>
+    </View>
+  </TouchableOpacity>
+);
 
-const mapDispatchToProps = dispatch => ({
-  signOutDis: payload => dispatch({ type: "SIGN_OUT" })
+const mapDispatchToProps = (dispatch) => ({
+  signOutDis: (payload) => dispatch({ type: "SIGN_OUT" })
 });
 
 export default connect(

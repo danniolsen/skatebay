@@ -1,13 +1,15 @@
 import * as React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
-import { NormalText } from "../StyledText";
 import { Feather } from "@expo/vector-icons";
+import { NormalText } from "../StyledText";
 
-const VerifySpotData = props => {
-  const { user, duplicate, images, location, title, tags, btnStatus } = props;
+const VerifySpotData = (props) => {
+  const {
+    user, duplicate, images, location, title, tags, btnStatus
+  } = props;
 
   const checkImages = () => {
-    let numOfImgs = [];
+    const numOfImgs = [];
     images.map((img, i) => {
       if (img.set) {
         numOfImgs.push(img.set);
@@ -20,8 +22,8 @@ const VerifySpotData = props => {
   };
 
   const checkLocation = () => {
-    let status = location.latitude !== null && location.longitude !== null;
-    return status ? true : false;
+    const status = location.latitude !== null && location.longitude !== null;
+    return !!status;
   };
 
   const checkTitle = () => {
@@ -31,20 +33,18 @@ const VerifySpotData = props => {
     return false;
   };
 
-  const checkTags = () => {
-    return tags.length >= 1 && tags.length <= 5 ? true : false;
-  };
+  const checkTags = () => (!!(tags.length >= 1 && tags.length <= 5));
 
   const validateData = () => {
-    let statusArray = [];
-    let titleStatus = checkTitle();
-    let imagesStatus = checkImages();
-    let tagsStatus = checkTags();
-    let locationStatus = checkLocation();
+    const statusArray = [];
+    const titleStatus = checkTitle();
+    const imagesStatus = checkImages();
+    const tagsStatus = checkTags();
+    const locationStatus = checkLocation();
 
     statusArray.push(titleStatus, imagesStatus, tagsStatus, locationStatus);
-    const isTrue = currentStatus => currentStatus === true;
-    let status = statusArray.every(isTrue) ? true : false;
+    const isTrue = (currentStatus) => currentStatus === true;
+    const status = !!statusArray.every(isTrue);
 
     return props.spotStatus(status);
   };

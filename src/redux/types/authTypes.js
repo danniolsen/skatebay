@@ -7,9 +7,9 @@ export const setAuthBegin = () => ({
   payload: { authLoading: true }
 });
 
-export const setAuthSuccess = auth => ({
+export const setAuthSuccess = (auth) => ({
   type: SET_AUTH_SUCCESS,
-  payload: { auth: auth }
+  payload: { auth }
 });
 
 export const setAuthFailure = () => ({

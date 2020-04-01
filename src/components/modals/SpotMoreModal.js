@@ -1,11 +1,14 @@
 import * as React from "react";
-import { Modal, View, StyleSheet, TouchableOpacity } from "react-native";
-import { ActivityIndicator } from "react-native";
-import { NormalText } from "../StyledText";
+import {
+  Modal, View, StyleSheet, TouchableOpacity,
+  ActivityIndicator
+} from "react-native";
+
 import { Feather } from "@expo/vector-icons";
 import { connect } from "react-redux";
+import { NormalText } from "../StyledText";
 
-const SpotMoreModal = props => {
+const SpotMoreModal = (props) => {
   const { user, spot } = props;
   const [colored, setColored] = React.useState({ id: null });
   const [selected, setSelected] = React.useState(null);
@@ -16,10 +19,10 @@ const SpotMoreModal = props => {
   });
   const [reporting, setReporting] = React.useState(false);
 
-  const reportSpot = item => {
-    let reported = {
-      spot: spot,
-      user: user,
+  const reportSpot = (item) => {
+    const reported = {
+      spot,
+      user,
       reason: item.id
     };
     setSelected(reported);
@@ -36,7 +39,7 @@ const SpotMoreModal = props => {
   return (
     <Modal
       visible={props.visible}
-      transparent={true}
+      transparent
       animationType="fade"
       style={s.container}
       onCloseRequest={() => props.close}
@@ -53,18 +56,16 @@ const SpotMoreModal = props => {
               Report spot
             </NormalText>
           </View>
-          {items.map(item => {
-            return (
-              <Item
-                key={item.id}
-                id={item.id}
-                icon={item.icon}
-                title={item.title}
-                action={() => reportSpot(item)}
-                selected={colored}
-              />
-            );
-          })}
+          {items.map((item) => (
+            <Item
+              key={item.id}
+              id={item.id}
+              icon={item.icon}
+              title={item.title}
+              action={() => reportSpot(item)}
+              selected={colored}
+            />
+          ))}
 
           <TouchableOpacity
             disabled={inActive.inactive}
@@ -86,8 +87,8 @@ const SpotMoreModal = props => {
 };
 
 // move to components
-const Item = props => {
-  let colored = props.selected.id === props.id ? "#E9E9E9" : null;
+const Item = (props) => {
+  const colored = props.selected.id === props.id ? "#E9E9E9" : null;
 
   return (
     <TouchableOpacity

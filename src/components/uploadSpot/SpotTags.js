@@ -3,19 +3,19 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { NormalText, ThinText } from "../StyledText";
 import Headline from "./Headline";
 
-const SpotTags = props => {
+const SpotTags = (props) => {
   const { getTags, headline } = props;
   const [status, setStatus] = React.useState(false);
 
-  const pickTag = tag => {
-    let tagsCopy = Object.assign([], getTags);
+  const pickTag = (tag) => {
+    const tagsCopy = Object.assign([], getTags);
     // check if tag exists, if true, remove tag, else add tag
-    let exists = tagsCopy.find(({ id }) => id === tag.id); // use indexof
+    const exists = tagsCopy.find(({ id }) => id === tag.id); // use indexof
     exists ? unsetTag(tag) : setTag(tag);
   };
 
-  const setTag = tag => {
-    let tagsCopy = Object.assign([], getTags);
+  const setTag = (tag) => {
+    const tagsCopy = Object.assign([], getTags);
     // set tag if no more than 5 tags
     if (tagsCopy.length + 1 <= 5) {
       tagsCopy.push(tag);
@@ -24,18 +24,18 @@ const SpotTags = props => {
     setStatus(false);
   };
 
-  const unsetTag = tag => {
-    let tagsCopy = Object.assign([], getTags);
+  const unsetTag = (tag) => {
+    const tagsCopy = Object.assign([], getTags);
     // get tag index
-    let index = tagsCopy.map(e => e.id).indexOf(tag.id);
+    const index = tagsCopy.map((e) => e.id).indexOf(tag.id);
     tagsCopy.splice(index, 1); // remove tag
     props.selectTag(tagsCopy); // send tags to uploadspot
     tagsCopy.length === 0 ? setStatus(true) : setStatus(false);
   };
 
-  const colorTag = tag => {
-    let tagsCopy = Object.assign([], getTags);
-    let exists = tagsCopy.find(({ id }) => id === tag.id);
+  const colorTag = (tag) => {
+    const tagsCopy = Object.assign([], getTags);
+    const exists = tagsCopy.find(({ id }) => id === tag.id);
     return exists ? "#7f8c8d" : "#bec1c2";
   };
 
@@ -48,18 +48,16 @@ const SpotTags = props => {
       />
 
       <View style={s.tagCon}>
-        {tags.map(tag => {
-          return (
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() => pickTag(tag)}
-              style={[s.tag, { backgroundColor: colorTag(tag) }]}
-              key={tag.id}
-            >
-              <NormalText color="#FFF">{tag.name}</NormalText>
-            </TouchableOpacity>
-          );
-        })}
+        {tags.map((tag) => (
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => pickTag(tag)}
+            style={[s.tag, { backgroundColor: colorTag(tag) }]}
+            key={tag.id}
+          >
+            <NormalText color="#FFF">{tag.name}</NormalText>
+          </TouchableOpacity>
+        ))}
       </View>
       <View style={s.tagsCounter}>
         <ThinText size={16} color="#2f363d">

@@ -25,6 +25,6 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 const storage = firebase.app().storage(`gs://${STORAGE_BUCKET}`);
-let storageRef = storage.ref();
+const storageRef = storage.ref();
 
 export { firebaseConfig, storageRef, storage };

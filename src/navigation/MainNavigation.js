@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, SafeAreaView } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { connect } from "react-redux";
 import BottomTabNavigator from "./BottomTabNavigator";
 import Auth from "../screens/Auth";
 import SpotDetails from "../screens/SpotDetails";
@@ -8,8 +10,7 @@ import Loading from "../screens/Loading";
 import SpotVerification from "../screens/SpotVerification";
 import Banner from "../components/banner/TopBanner";
 
-import { createStackNavigator } from "@react-navigation/stack";
-import { connect } from "react-redux";
+
 const Stack = createStackNavigator();
 
 function MainNavigator(props) {
@@ -38,7 +39,7 @@ function MainNavigator(props) {
   );
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   loading: state.loading,
   auth: state.auth,
   banner: state.banner.banner

@@ -1,14 +1,17 @@
 import * as React from "react";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
-import { TouchableOpacity } from "react-native";
-import Header from "../components/header/Header";
+import {
+  StyleSheet, Text, View, Dimensions,
+  TouchableOpacity
+} from "react-native";
+
 import { Feather } from "@expo/vector-icons";
 import MapView, { Marker } from "react-native-maps";
-import { NormalText } from "../components/StyledText";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import Header from "../components/header/Header";
+import { NormalText } from "../components/StyledText";
 import { setNewLocation } from "../redux/actions/locationActions";
 import LocationService from "../features/LocationService";
-import PropTypes from "prop-types";
 
 const { width, height } = Dimensions.get("window");
 
@@ -20,8 +23,8 @@ function ExploreMap(props) {
     longitude: location.longitude
   });
 
-  const updateLocation = e => {
-    let updatedLocation = {
+  const updateLocation = (e) => {
+    const updatedLocation = {
       latitude: e.nativeEvent.coordinate.latitude,
       longitude: e.nativeEvent.coordinate.longitude
     };
@@ -30,16 +33,16 @@ function ExploreMap(props) {
 
   const restoreLocation = () => {
     LocationService()
-      .then(currentLocation => {
+      .then((currentLocation) => {
         setNewLocation(currentLocation);
       })
-      .catch(err => {
+      .catch((err) => {
         alert("Location not available");
       });
   };
 
   const confirmNewLocation = () => {
-    let loc = {
+    const loc = {
       latitude: newLocation.latitude,
       longitude: newLocation.longitude
     };
@@ -53,8 +56,8 @@ function ExploreMap(props) {
   return (
     <View style={s.container}>
       <MapView
-        onLongPress={e => updateLocation(e)}
-        showsUserLocation={true}
+        onLongPress={(e) => updateLocation(e)}
+        showsUserLocation
         style={s.map}
         initialRegion={{
           latitude: newLocation.latitude,
@@ -69,7 +72,7 @@ function ExploreMap(props) {
             latitude: newLocation.latitude,
             longitude: newLocation.longitude
           }}
-          onDragEnd={e => updateLocation(e)}
+          onDragEnd={(e) => updateLocation(e)}
         />
       </MapView>
 
@@ -91,51 +94,49 @@ function ExploreMap(props) {
   );
 }
 
-const LocationContainer = props => {
-  return (
-    <>
-      <View style={s.locationLeft}>
-        <View style={s.locationRow}>
-          <NormalText color="#FFF" style={s.locationName}>
-            Latitude
-          </NormalText>
-          <NormalText color="#FFF" style={s.locationValue}>
-            {props.lat}
-          </NormalText>
-        </View>
-
-        <View style={s.locationRow}>
-          <NormalText color="#FFF" style={s.locationName}>
-            Longitude
-          </NormalText>
-          <NormalText color="#FFF" style={s.locationValue}>
-            {props.lon}
-          </NormalText>
-        </View>
+const LocationContainer = (props) => (
+  <>
+    <View style={s.locationLeft}>
+      <View style={s.locationRow}>
+        <NormalText color="#FFF" style={s.locationName}>
+          Latitude
+        </NormalText>
+        <NormalText color="#FFF" style={s.locationValue}>
+          {props.lat}
+        </NormalText>
       </View>
 
-      <View style={s.locationRight}>
-        <View style={s.buttonCon}>
-          <TouchableOpacity onPress={props.restoreLocation}>
-            <Feather name="navigation" size={25} color="#FFF" />
-          </TouchableOpacity>
-        </View>
-        <View style={s.buttonCon}>
-          <TouchableOpacity onPress={props.confirmLocation}>
-            <Feather name="check" size={25} color="#FFF" />
-          </TouchableOpacity>
-        </View>
+      <View style={s.locationRow}>
+        <NormalText color="#FFF" style={s.locationName}>
+          Longitude
+        </NormalText>
+        <NormalText color="#FFF" style={s.locationValue}>
+          {props.lon}
+        </NormalText>
       </View>
-    </>
-  );
-};
+    </View>
 
-const mapStateToProps = state => ({
+    <View style={s.locationRight}>
+      <View style={s.buttonCon}>
+        <TouchableOpacity onPress={props.restoreLocation}>
+          <Feather name="navigation" size={25} color="#FFF" />
+        </TouchableOpacity>
+      </View>
+      <View style={s.buttonCon}>
+        <TouchableOpacity onPress={props.confirmLocation}>
+          <Feather name="check" size={25} color="#FFF" />
+        </TouchableOpacity>
+      </View>
+    </View>
+  </>
+);
+
+const mapStateToProps = (state) => ({
   location: state.location
 });
 
-const mapDispatchToProps = dispatch => ({
-  locationDis: payload => dispatch(setNewLocation(payload))
+const mapDispatchToProps = (dispatch) => ({
+  locationDis: (payload) => dispatch(setNewLocation(payload))
 });
 
 export default connect(

@@ -1,7 +1,7 @@
 export const SHOW_BANNER = "SHOW_BANNER";
 export const HIDE_BANNER = "HIDE_BANNER";
 
-export const showBanner = banner => ({
+export const showBanner = (banner) => ({
   type: SHOW_BANNER,
   payload: banner
 });

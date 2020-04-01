@@ -1,7 +1,8 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
 import { NormalText } from "../StyledText";
-const Headline = props => {
+
+const Headline = (props) => {
   const { name, warning, active } = props;
 
   return (

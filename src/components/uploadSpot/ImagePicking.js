@@ -1,17 +1,21 @@
 import * as React from "react";
-import { View, StyleSheet, Image, Dimensions, Alert } from "react-native";
-import { TouchableOpacity, ActivityIndicator, ScrollView } from "react-native";
+import {
+  View, StyleSheet, Image, Dimensions, Alert,
+  TouchableOpacity, ActivityIndicator, ScrollView
+} from "react-native";
+
 import { Feather } from "@expo/vector-icons";
-import { NormalText } from "../StyledText";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
+import { NormalText } from "../StyledText";
 import Headline from "./Headline";
 import Thumbnails from "./Thumbnails";
-const { width, height } = Dimensions.get("window");
-const imgHeight = width / 1.5;
 import Upload from "../../features/Upload";
 
-const ImagePicking = props => {
+const { width, height } = Dimensions.get("window");
+const imgHeight = width / 1.5;
+
+const ImagePicking = (props) => {
   const { getImages, headline } = props;
   const [status, setStatus] = React.useState(false);
   const [imageLoading, setImageLoading] = React.useState(true);
@@ -32,9 +36,9 @@ const ImagePicking = props => {
   };
 
   // launch image picker, set image, check if location is present.
-  const pickImage = async img => {
+  const pickImage = async (img) => {
     if (!img.set) {
-      let img = await ImagePicker.launchImageLibraryAsync({
+      const img = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Image,
         allowsEditing: false,
         cropping: true,
@@ -43,21 +47,21 @@ const ImagePicking = props => {
         exif: true
       });
       if (!img.cancelled) {
-        let imgLocation = Upload().checkLocation(img);
+        const imgLocation = Upload().checkLocation(img);
 
         if (imgLocation.status) {
-          let checkDistance = Upload().checkDistance(getImages, imgLocation);
+          const checkDistance = Upload().checkDistance(getImages, imgLocation);
 
           if (checkDistance.status) {
             setStatus(false); // if field has been touched (for errors)
 
-            let resizedImage = Upload().resizeImage(img);
+            const resizedImage = Upload().resizeImage(img);
             resizedImage
-              .then(smallImage => {
-                let imgUri = smallImage.uri;
+              .then((smallImage) => {
+                const imgUri = smallImage.uri;
                 setImg(imgUri, imgLocation);
               })
-              .catch(err => {
+              .catch((err) => {
                 alert("Something went wrong, try again");
               });
           } else {
@@ -74,7 +78,7 @@ const ImagePicking = props => {
 
   const setImg = async (imgUri, location) => {
     // set images and add new template, if less than 4 images
-    let addedImage = Upload().addImage(imgUri, getImages, location);
+    const addedImage = Upload().addImage(imgUri, getImages, location);
     setAction("add"); // set slide action
     props.imageData(addedImage); // send images to parrent component
   };
@@ -89,10 +93,10 @@ const ImagePicking = props => {
   };
 
   // remove an image from the images array
-  const removeImage = async id => {
+  const removeImage = async (id) => {
     setAction("remove");
     // use getImages
-    let removedUpdate = Upload().removeImage(getImages, id);
+    const removedUpdate = Upload().removeImage(getImages, id);
     props.imageData(removedUpdate);
     getImages.length - 1 === 1 ? setStatus(true) : setStatus(false);
   };
@@ -107,7 +111,7 @@ const ImagePicking = props => {
 
       <ScrollView
         showsHorizontalScrollIndicator={false}
-        horizontal={true}
+        horizontal
         pagingEnabled
         snapToStart
         ref={scrollViewRef}
@@ -115,28 +119,26 @@ const ImagePicking = props => {
           slideImage();
         }}
       >
-        {getImages.map((img, index) => {
-          return (
-            <ImageCon
-              key={index}
-              data={img}
-              removeImage={() => removeImage(index)}
-              pickImage={() => pickImage(img)}
-              loading={imageLoading}
-              noOfImages={getImages.length}
-            />
-          );
-        })}
+        {getImages.map((img, index) => (
+          <ImageCon
+            key={index}
+            data={img}
+            removeImage={() => removeImage(index)}
+            pickImage={() => pickImage(img)}
+            loading={imageLoading}
+            noOfImages={getImages.length}
+          />
+        ))}
       </ScrollView>
       <Thumbnails images={getImages} />
     </View>
   );
 };
 
-const ImageCon = props => {
+const ImageCon = (props) => {
   const { data, loading, noOfImages } = props;
 
-  let setUri = data.set
+  const setUri = data.set
     ? { uri: data.url }
     : require("../../assets/images/imagePlaceholder.png");
 
@@ -175,11 +177,11 @@ const s = StyleSheet.create({
     backgroundColor: "#FFF"
   },
   imageCon: {
-    width: width,
+    width,
     height: imgHeight,
     position: "relative"
   },
-  img: { width: width, height: imgHeight, marginVertical: 5 },
+  img: { width, height: imgHeight, marginVertical: 5 },
   loading: { height: imgHeight },
   remove: {
     position: "absolute",

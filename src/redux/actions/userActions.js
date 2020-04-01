@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   fetchUserBegin,
   fetchUserSuccess,
@@ -6,32 +7,31 @@ import {
   clearUserSuccess
 } from "../types/userTypes";
 
-import axios from "axios";
 
 import { SignOut } from "../../features/AuthSocial";
 
-const setUserState = idToken => {
+const setUserState = (idToken) => {
   const setUser = (dispatch, error) => {
     dispatch({ type: "SET_AUTH_BEGIN" });
     axios
-      .post(`http://192.168.1.76:5000/auth`, {
-        idToken: idToken
+      .post("http://192.168.1.76:5000/auth", {
+        idToken
       })
-      .then(function(response) {
-        let user = response.data;
+      .then((response) => {
+        const user = response.data;
         user.idToken = idToken;
-        dispatch(fetchUserSuccess({ user: user }));
+        dispatch(fetchUserSuccess({ user }));
 
         // check if user were returned
         if (Object.entries(user).length !== 0 && user.constructor === Object) {
           dispatch({ type: "SET_AUTH_SUCCESS", payload: { auth: true } });
         }
       })
-      .catch(function(error) {
+      .catch((error) => {
         dispatch(fetchuUserFailure({ error: "Invalid request" }));
         dispatch({ type: "SET_AUTH_FAILURE", payload: { auth: false } });
       })
-      .finally(fin => {
+      .finally((fin) => {
         dispatch({ type: "LOADING_STOP" });
       });
   };
@@ -39,7 +39,7 @@ const setUserState = idToken => {
 };
 
 const clearUserState = () => {
-  const clearUser = dispatch => {
+  const clearUser = (dispatch) => {
     dispatch({ type: "LOADING_START" });
     try {
       dispatch(clearUserSuccess);

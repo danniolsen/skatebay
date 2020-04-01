@@ -1,14 +1,17 @@
 import * as React from "react";
-import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
-import { Dimensions, Text, ActivityIndicator } from "react-native";
+import {
+  View, TouchableOpacity, Image, StyleSheet,
+  Dimensions, Text, ActivityIndicator
+} from "react-native";
+
 import { Feather } from "@expo/vector-icons";
-import { storage } from "../../utils/firebase";
 import { SliderBox } from "react-native-image-slider-box";
+import { storage } from "../../utils/firebase";
 
 const { width, height } = Dimensions.get("window");
 const imgHeight = width / 1.5;
 
-const SpotImages = props => {
+const SpotImages = (props) => {
   const { spotImages, spotId } = props;
   const [images, setImages] = React.useState([]);
   const [imgLoading, setImgLoading] = React.useState(true);
@@ -24,12 +27,12 @@ const SpotImages = props => {
     };
   }, []);
 
-  const getImages = async storageRef => {
-    let imgCopy = [];
-    let storage = await storageRef.listAll();
+  const getImages = async (storageRef) => {
+    const imgCopy = [];
+    const storage = await storageRef.listAll();
 
-    let addImages = storage.items.map(async imageRef => {
-      let img = await imageRef.getDownloadURL();
+    const addImages = storage.items.map(async (imageRef) => {
+      const img = await imageRef.getDownloadURL();
       imgCopy.push(img);
     });
 
@@ -57,5 +60,5 @@ export default SpotImages;
 const s = StyleSheet.create({
   container: { backgroundColor: "#FFF", height: imgHeight },
   image: { flex: 1 },
-  slider: { width: width, height: imgHeight }
+  slider: { width, height: imgHeight }
 });
