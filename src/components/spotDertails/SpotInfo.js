@@ -7,7 +7,6 @@ import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { Feather } from "@expo/vector-icons";
 import timeAgo from "../../features/TimeAgo";
-import tags from "../../staticData/tags";
 
 const SpotInfo = props => {
   const { spotDetails, userLocation } = props;
@@ -43,7 +42,7 @@ const SpotInfo = props => {
           setAddress(errorAddress);
         });
 
-      findTags(tags);
+      setNewTags(spotDetails.tags);
     }
     () => (isCancled = true);
   }, []);
@@ -78,14 +77,6 @@ const SpotInfo = props => {
     }
   };
 
-  const findTags = tags => {
-    let addTag = Object.assign([], newTags);
-    spotDetails.tags.map(spTag => {
-      let getTags = tags.find(tag => tag.id === spTag);
-      addTag.push(getTags);
-    });
-    setNewTags(addTag);
-  };
   return (
     <>
       <View style={s.container}>
@@ -133,6 +124,7 @@ const SpotInfo = props => {
 };
 
 const Tag = props => {
+  const { spotTag } = props;
   return (
     // fix tags missing on fetch
     <View style={s.tag}>

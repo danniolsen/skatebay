@@ -58,7 +58,7 @@ const createNewSpot = newSpot => {
         }
       })
       .catch(err => {
-        return err;
+        return true;
       });
   };
 

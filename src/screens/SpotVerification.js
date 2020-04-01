@@ -70,21 +70,32 @@ const SpotVerification = props => {
       user: user
     };
     createSpotDis(newSpot)
-      .then(suc => {
-        setTimeout(() => {
-          bannerDis({
-            banner: { msg: "Spot was created", style: "#FFF", show: true }
-          });
-          navigation.navigate("root", {
-            screen: "UserProfile",
-            params: { getUploads: true }
-          });
-          clearSpotDis();
-        }, 1000);
+      .then((err, suc) => {
+        if (!err) {
+          setTimeout(() => {
+            bannerDis({
+              banner: { msg: "Spot was created", style: "#FFF", show: true }
+            });
+            navigation.navigate("root", {
+              screen: "UserProfile",
+              params: { getUploads: true }
+            });
+            clearSpotDis();
+          }, 1000);
 
-        setTimeout(() => {
+          setTimeout(() => {
+            setBtnLoading(false);
+          }, 1200);
+        } else {
+          bannerDis({
+            banner: {
+              msg: "An error has occured",
+              style: "#f39c12",
+              show: true
+            }
+          });
           setBtnLoading(false);
-        }, 1200);
+        }
       })
       .catch(err => {
         alert("An error has occured");
