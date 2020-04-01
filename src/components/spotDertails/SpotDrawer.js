@@ -1,54 +1,53 @@
 import * as React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { Dimensions } from "react-native";
+import {
+  View, StyleSheet, Text, TouchableOpacity,
+  Dimensions
+} from "react-native";
+
 import BottomSheet from "reanimated-bottom-sheet";
 import { Feather } from "@expo/vector-icons";
 import { ThinText } from "../StyledText";
 
 const { width, height } = Dimensions.get("window");
 
-const SpotDrawer = props => {
-  return (
-    <BottomSheet
-      style={s.container}
-      snapPoints={["80%", "53%", "20%"]}
-      initialSnap={1}
-      onChange={() => alert("changed")}
-      renderHeader={() => (
-        <RenderHeader
-          title={props.title}
-          updateDistance={props.updateDistance}
-        />
-      )}
-      renderContent={() => (
-        <View style={{ backgroundColor: "#FFF" }}>{props.children}</View>
-      )}
-      enabledContentGestureInteraction={false}
-    />
-  );
-};
+const SpotDrawer = (props) => (
+  <BottomSheet
+    style={s.container}
+    snapPoints={["80%", "53%", "20%"]}
+    initialSnap={1}
+    onChange={() => alert("changed")}
+    renderHeader={() => (
+      <RenderHeader
+        title={props.title}
+        updateDistance={props.updateDistance}
+      />
+    )}
+    renderContent={() => (
+      <View style={{ backgroundColor: "#FFF" }}>{props.children}</View>
+    )}
+    enabledContentGestureInteraction={false}
+  />
+);
 
-const RenderHeader = props => {
-  return (
-    <View style={s.mapHeader}>
-      <View style={s.pullBtnCon}>
-        <View style={s.pullBtn} />
+const RenderHeader = (props) => (
+  <View style={s.mapHeader}>
+    <View style={s.pullBtnCon}>
+      <View style={s.pullBtn} />
+    </View>
+    <View style={s.headerCon}>
+      <View style={s.spotTitle}>
+        <ThinText color="#2f3c41" size={20}>
+          {props.title}
+        </ThinText>
       </View>
-      <View style={s.headerCon}>
-        <View style={s.spotTitle}>
-          <ThinText color="#2f3c41" size={20}>
-            {props.title}
-          </ThinText>
-        </View>
-        <View style={s.updateDistance}>
-          <TouchableOpacity onPress={props.updateDistance}>
-            <Feather name="navigation" color="#2f3c41" size={22} />
-          </TouchableOpacity>
-        </View>
+      <View style={s.updateDistance}>
+        <TouchableOpacity onPress={props.updateDistance}>
+          <Feather name="navigation" color="#2f3c41" size={22} />
+        </TouchableOpacity>
       </View>
     </View>
-  );
-};
+  </View>
+);
 export default SpotDrawer;
 
 const s = StyleSheet.create({

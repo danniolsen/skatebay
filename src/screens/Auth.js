@@ -1,9 +1,12 @@
 import * as React from "react";
-import { StyleSheet, View, ImageBackground, Image } from "react-native";
-import { TouchableOpacity, ActivityIndicator } from "react-native";
+import {
+  StyleSheet, View, ImageBackground, Image,
+  TouchableOpacity, ActivityIndicator
+} from "react-native";
+
+import { connect } from "react-redux";
 import { ThinText } from "../components/StyledText";
 import AuthWidget from "../components/auth/AuthWidget";
-import { connect } from "react-redux";
 
 function Auth(props) {
   const { auth, user } = props;
@@ -39,16 +42,14 @@ function Auth(props) {
   );
 }
 
-const Loading = () => {
-  return (
-    <View style={s.overlay}>
-      <ActivityIndicator size="large" />
-      <ThinText style={{ marginTop: 10 }}>Loading...</ThinText>
-    </View>
-  );
-};
+const Loading = () => (
+  <View style={s.overlay}>
+    <ActivityIndicator size="large" />
+    <ThinText style={{ marginTop: 10 }}>Loading...</ThinText>
+  </View>
+);
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   auth: state.auth,
   user: state.user
 });

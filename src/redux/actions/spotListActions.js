@@ -1,11 +1,11 @@
+import axios from "axios";
 import { fetchSpotList, fetchSpotListError } from "../types/spotListTypes";
 import { fetchUploadedSpots } from "../types/uploadedSpotsTypes";
-import axios from "axios";
 
-const getSpotList = spotData => {
+const getSpotList = (spotData) => {
   const spotlistSet = (dispatch, error) => {
     axios
-      .post(`http://192.168.1.76:5000/spotlist`, {
+      .post("http://192.168.1.76:5000/spotlist", {
         user: {
           user_id: spotData.user.user_id,
           latitude: spotData.location.latitude,
@@ -14,18 +14,18 @@ const getSpotList = spotData => {
           idToken: spotData.user.idToken
         }
       })
-      .then(function(response) {
-        let spotlist = response.data;
+      .then((response) => {
+        const spotlist = response.data;
         dispatch(fetchSpotList(spotlist));
       })
-      .catch(function(error) {
+      .catch((error) => {
         dispatch(fetchSpotListError([]));
       });
   };
   return spotlistSet;
 };
 
-const getUploadedSpots = user => {
+const getUploadedSpots = (user) => {
   const uploadedSpots = (dispatch, err) => {
     console.log("called now");
     console.log(user.user_id);
@@ -36,11 +36,11 @@ const getUploadedSpots = user => {
           idToken: "verify token later"
         }
       })
-      .then(response => {
+      .then((response) => {
         console.log(response);
         dispatch(fetchUploadedSpots({ spots: response.data }));
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(fetchUploadedSpots({ spots: [] }));
       });
   };

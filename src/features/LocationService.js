@@ -4,16 +4,16 @@ import * as Permissions from "expo-permissions";
 import { getDistance } from "geolib";
 
 const LocationService = async () => {
-  let { status } = await Permissions.askAsync(Permissions.LOCATION);
+  const { status } = await Permissions.askAsync(Permissions.LOCATION);
   if (status !== "granted") {
     return alert(
       "Location service is required in order to display the skatespots"
     );
   }
 
-  let location = Location.getCurrentPositionAsync({});
+  const location = Location.getCurrentPositionAsync({});
 
-  let geoLocation = {
+  const geoLocation = {
     latitude: null,
     longitude: null,
     banner: {
@@ -24,16 +24,15 @@ const LocationService = async () => {
   };
 
   return location
-    .then(loc => {
+    .then((loc) => {
       geoLocation.latitude = loc.coords.latitude;
       geoLocation.longitude = loc.coords.longitude;
       return geoLocation;
     })
-    .catch(err => {
+    .catch((err) => {
       lgeoLocation.atitude = "00.000000";
       geoLocation.longitude = "00.00000";
-      geoLocation.banner.msg =
-        "Location service is required to show the skatespots";
+      geoLocation.banner.msg = "Location service is required to show the skatespots";
       geoLocation.banner.style = "#ffc105";
       geoLocation.banner.show = true;
 
@@ -42,16 +41,16 @@ const LocationService = async () => {
 };
 
 export const CheckImagesLocation = (prevLocation, currentImage) => {
-  let prevLat = prevLocation.location.value.latitude;
-  let prevLon = prevLocation.location.value.longitude;
-  let result = getDistance(
+  const prevLat = prevLocation.location.value.latitude;
+  const prevLon = prevLocation.location.value.longitude;
+  const result = getDistance(
     { latitude: prevLat, longitude: prevLon },
     {
       latitude: currentImage.value.latitude,
       longitude: currentImage.value.longitude
     }
   );
-  return result > 25 ? false : true;
+  return !(result > 25);
 };
 
 export default LocationService;

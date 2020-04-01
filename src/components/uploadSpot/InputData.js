@@ -3,12 +3,12 @@ import { View, StyleSheet, TextInput } from "react-native";
 import { NormalText, ThinText } from "../StyledText";
 import Headline from "./Headline";
 
-const InputData = props => {
+const InputData = (props) => {
   const { getTitle, headline } = props;
   const [status, setStatus] = React.useState(false);
 
-  const setTitle = txt => {
-    let newTitle = txt.nativeEvent.text;
+  const setTitle = (txt) => {
+    const newTitle = txt.nativeEvent.text;
     props.title(newTitle);
 
     if (status) {
@@ -16,13 +16,13 @@ const InputData = props => {
     }
   };
 
-  const showError = del => {
-    let deleting = del.nativeEvent.key === "Backspace";
+  const showError = (del) => {
+    const deleting = del.nativeEvent.key === "Backspace";
     deleting && getTitle.length - 1 < 3 ? setStatus(true) : null;
   };
 
   const userLeft = () => {
-    let txt = getTitle.length;
+    const txt = getTitle.length;
     txt < 3 ? setStatus(true) : null;
   };
 
@@ -40,10 +40,10 @@ const InputData = props => {
       <TextInput
         style={s.inputField}
         allowFontScaling
-        autoCapitalize={"sentences"}
+        autoCapitalize="sentences"
         maxLength={20}
-        onChange={txt => setTitle(txt)}
-        onKeyPress={del => showError(del)}
+        onChange={(txt) => setTitle(txt)}
+        onKeyPress={(del) => showError(del)}
         placeholder="Spot title"
         onBlur={() => userLeft()}
         onFocus={() => inputTap()}

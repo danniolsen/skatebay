@@ -1,6 +1,6 @@
 import { showBanner, hideBanner } from "../types/bannerTypes";
 
-const bannerShow = banner => {
+const bannerShow = (banner) => {
   const doShowBanner = (dispatch, err) => {
     dispatch(showBanner(banner));
   };

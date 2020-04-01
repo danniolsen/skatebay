@@ -1,12 +1,15 @@
 import * as React from "react";
-import { View, TouchableOpacity, Text, StyleSheet, Image } from "react-native";
-import { Dimensions, ActivityIndicator, Alert } from "react-native";
+import {
+  View, TouchableOpacity, Text, StyleSheet, Image,
+  Dimensions, ActivityIndicator, Alert
+} from "react-native";
+
 import { Feather } from "@expo/vector-icons";
 import { ThinText, NormalText } from "../StyledText";
 import { storageRef } from "../../utils/firebase";
 import SpotOptions from "./SpotOptions";
 
-const width = Dimensions.get("window").width;
+const { width } = Dimensions.get("window");
 const imgHeight = width / 1.5;
 
 function Spot(props) {
@@ -17,8 +20,8 @@ function Spot(props) {
   React.useEffect(() => {
     let isCancled = false;
     if (!isCancled) {
-      let starsRef = storageRef.child(`/${props.spotId}/${props.url}`);
-      starsRef.getDownloadURL().then(url => {
+      const starsRef = storageRef.child(`/${props.spotId}/${props.url}`);
+      starsRef.getDownloadURL().then((url) => {
         setMainImage(url);
       });
     }

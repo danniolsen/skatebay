@@ -1,10 +1,9 @@
 import * as React from "react";
-import { StyleSheet, View, ScrollView, FlatList } from "react-native";
-import { Image, ImageBackground, TouchableOpacity } from "react-native";
+import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
-import { ThinText, NormalText } from "../components/StyledText";
-import Header from "../components/header/Header";
 import { Feather } from "@expo/vector-icons";
+import { NormalText } from "../components/StyledText";
+import Header from "../components/header/Header";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import ProfileSpot from "../components/profile/ProfileSpot";
 import EmptyProfileList from "../components/profile/EmptyList";
@@ -14,7 +13,6 @@ import { getUploadedSpots } from "../redux/actions/spotListActions";
 function UserProfile(props) {
   const { user, navigation, saved, savedListDis } = props;
   const { uploadsListDis, uploads } = props;
-  const [refreshing, setRefreshing] = React.useState(false);
   const [type, setType] = React.useState(0);
 
   React.useEffect(() => {
@@ -31,13 +29,15 @@ function UserProfile(props) {
   const changeType = newType => {
     if (newType !== type) {
       setType(newType);
-      newType === 0 ? savedListDis(user) : uploadsListDis(user);
+      if (newType !== 0) {
+        uploadsListDis(user);
+      } else {
+        savedListDis(user);
+      }
     }
   };
 
-  const setColor = tabId => {
-    return tabId === type ? "#FFF" : "#9e9e9e";
-  };
+  const setColor = tabId => (tabId === type ? "#FFF" : "#9e9e9e");
 
   return (
     <View style={s.container}>
@@ -80,13 +80,13 @@ function UserProfile(props) {
 }
 
 const Option = props => {
-  const { color } = props;
+  const { color, icon, action, number } = props;
   return (
-    <TouchableOpacity onPress={props.action} style={s.option}>
+    <TouchableOpacity onPress={action} style={s.option}>
       <View style={{ flexDirection: "row" }}>
-        <Feather name={props.icon} color={color} size={20} />
+        <Feather name={icon} color={color} size={20} />
         <NormalText style={s.number} color={color} size={15}>
-          {props.number}
+          {number}
         </NormalText>
       </View>
     </TouchableOpacity>

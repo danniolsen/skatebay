@@ -1,14 +1,16 @@
 import * as React from "react";
-import { TouchableOpacity, Text, Image, StyleSheet, View } from "react-native";
+import {
+  TouchableOpacity, Text, Image, StyleSheet, View
+} from "react-native";
 import FacebookBtn from "../../assets/buttons/facebook.png";
 import GoogleBtn from "../../assets/buttons/google.png";
 import { AuthFacebook, AuthGoogle } from "../../features/AuthSocial";
 
-const AuthWidget = props => {
+const AuthWidget = (props) => {
   const { type, bg } = props;
-  let btnImg = props.type === "Google" ? GoogleBtn : FacebookBtn;
+  const btnImg = props.type === "Google" ? GoogleBtn : FacebookBtn;
 
-  const signIn = type => {
+  const signIn = (type) => {
     const authType = type === "Google" ? AuthGoogle() : AuthFacebook();
   };
   return (

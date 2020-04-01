@@ -1,12 +1,16 @@
 import * as React from "react";
-import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
-import { Dimensions, Text } from "react-native";
-const width = Dimensions.get("window").width;
+import {
+  View, TouchableOpacity, StyleSheet, Image,
+  Dimensions, Text
+} from "react-native";
+
 import { storageRef } from "../../utils/firebase";
 
+const { width } = Dimensions.get("window");
+
 function ProfileSpot(props) {
-  let type = props.type;
-  let spot = props.spot;
+  const { type } = props;
+  const { spot } = props;
 
   const [mainImage, setMainImage] = React.useState();
 
@@ -20,9 +24,9 @@ function ProfileSpot(props) {
     };
   }, []);
 
-  const getImages = imgUrl => {
-    let starsRef = storageRef.child(`/${props.spot.spot_id}/${imgUrl}`);
-    starsRef.getDownloadURL().then(url => {
+  const getImages = (imgUrl) => {
+    const starsRef = storageRef.child(`/${props.spot.spot_id}/${imgUrl}`);
+    starsRef.getDownloadURL().then((url) => {
       setMainImage(url);
     });
   };

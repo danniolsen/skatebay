@@ -1,10 +1,14 @@
 import * as React from "react";
-import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
-import { ActivityIndicator } from "react-native";
-import { ThinText } from "../StyledText";
+import {
+  View, StyleSheet, ImageBackground, Dimensions,
+  ActivityIndicator
+} from "react-native";
+
 import { Feather } from "@expo/vector-icons";
-const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
+import { ThinText } from "../StyledText";
+
+const { width } = Dimensions.get("window");
+const { height } = Dimensions.get("window");
 
 function EmptyProfileList(props) {
   const [loading, setLoading] = React.useState(true);
@@ -12,7 +16,7 @@ function EmptyProfileList(props) {
   React.useEffect(() => {
     let isCancelled = false;
 
-    setTimeout(function() {
+    setTimeout(() => {
       if (!isCancelled) {
         setLoading(false);
       }

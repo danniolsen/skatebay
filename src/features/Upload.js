@@ -1,12 +1,12 @@
-import { CheckImagesLocation } from "./LocationService";
-import ImageConverter from "./ImageConverter";
 import { Asset } from "expo-asset";
 import * as ImageManipulator from "expo-image-manipulator";
+import { CheckImagesLocation } from "./LocationService";
+import ImageConverter from "./ImageConverter";
 
-const checkLocation = img => {
+const checkLocation = (img) => {
   // construct new location object
   if (img.exif.GPSLatitude) {
-    let imgLocation = {
+    const imgLocation = {
       latitude: img.exif.GPSLatitude,
       longitude: img.exif.GPSLongitude
     };
@@ -24,24 +24,23 @@ const checkLocation = img => {
 };
 // check next image is in range of previus image
 const checkDistance = (images, currentImage) => {
-  let previusImage = images[images.length - 2];
-  let imgStatus = previusImage !== undefined ? previusImage : false;
+  const previusImage = images[images.length - 2];
+  const imgStatus = previusImage !== undefined ? previusImage : false;
 
   if (images.length === 1) {
     return {
       status: true
     };
-  } else {
-    return {
-      status: CheckImagesLocation(previusImage, currentImage),
-      title: "Image location is out of range",
-      value: "The selected image seams to be taken further away than the others"
-    };
   }
+  return {
+    status: CheckImagesLocation(previusImage, currentImage),
+    title: "Image location is out of range",
+    value: "The selected image seams to be taken further away than the others"
+  };
 };
 
 // resize image size and quality
-const resizeImage = async img => {
+const resizeImage = async (img) => {
   const resizedPhoto = await ImageManipulator.manipulateAsync(
     img.uri,
     [{ resize: { width: 600 } }],
@@ -52,24 +51,24 @@ const resizeImage = async img => {
 
 // add image to existing images array
 const addImage = (imgUri, getImages, location) => {
-  let imagesCopy = Object.assign([getImages], getImages);
-  let lastImgId = imagesCopy.length - 1;
+  const imagesCopy = Object.assign([getImages], getImages);
+  const lastImgId = imagesCopy.length - 1;
 
   imagesCopy[lastImgId].url = imgUri;
   imagesCopy[lastImgId].set = true;
   imagesCopy[lastImgId].location = location;
 
-  let nextImage = { url: "", set: false, location: {} };
+  const nextImage = { url: "", set: false, location: {} };
   imagesCopy.length !== 4 ? imagesCopy.push(nextImage) : null;
   return imagesCopy;
 };
 
 // remove image from images array
 const removeImage = (getImages, id) => {
-  let imagesCopy = Object.assign([getImages], getImages);
+  const imagesCopy = Object.assign([getImages], getImages);
 
-  let newPlaceholder = { url: "", set: false, location: {} };
-  let placeholderId = imagesCopy[imagesCopy.length - 1];
+  const newPlaceholder = { url: "", set: false, location: {} };
+  const placeholderId = imagesCopy[imagesCopy.length - 1];
 
   if (placeholderId.set !== false) {
     imagesCopy.push(newPlaceholder);
@@ -78,14 +77,12 @@ const removeImage = (getImages, id) => {
   return imagesCopy;
 };
 
-const Upload = () => {
-  return {
-    checkLocation,
-    checkDistance,
-    resizeImage,
-    addImage,
-    removeImage
-  };
-};
+const Upload = () => ({
+  checkLocation,
+  checkDistance,
+  resizeImage,
+  addImage,
+  removeImage
+});
 
 export default Upload;

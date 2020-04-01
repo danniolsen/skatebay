@@ -1,7 +1,7 @@
 import { Asset } from "expo-asset";
 import * as ImageManipulator from "expo-image-manipulator";
 
-const ImageConverter = async uri => {
+const ImageConverter = async (uri) => {
   const resizedPhoto = await ImageManipulator.manipulateAsync(
     uri,
     [{ resize: { width: 600 } }],

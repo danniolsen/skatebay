@@ -1,14 +1,13 @@
 import * as React from "react";
-import { Platform, StatusBar, StyleSheet, View } from "react-native";
+import { StatusBar, StyleSheet, View } from "react-native";
 import { SplashScreen } from "expo";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
+import * as firebase from "firebase";
+import { connect } from "react-redux";
 import MainNavigator from "./src/navigation/MainNavigation";
 import useLinking from "./src/navigation/useLinking";
-import * as firebase from "firebase";
-import { firebaseConfig } from "./src/utils/firebase";
-import { connect } from "react-redux";
 import { setUserState } from "./src/redux/actions/userActions";
 
 function App(props) {
@@ -20,12 +19,12 @@ function App(props) {
 
   React.useEffect(
     () => {
-      let user = firebase.auth().onAuthStateChanged(user => {
+      const user = firebase.auth().onAuthStateChanged(user => {
         if (user != null) {
           firebase
             .auth()
             .currentUser.getIdToken(true)
-            .then(function(idToken) {
+            .then(idToken => {
               setUserDis(idToken);
             });
         } else {
@@ -49,6 +48,7 @@ function App(props) {
           setLoadingComplete(true);
           SplashScreen.hide();
         }
+        return null;
       }
       loadResourcesAndDataAsync();
     },
@@ -57,20 +57,19 @@ function App(props) {
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return null;
-  } else {
-    return (
-      <View style={styles.container}>
-        <StatusBar backgroundColor="#FFF" barStyle="dark-content" />
-
-        <NavigationContainer
-          ref={containerRef}
-          initialState={initialNavigationState}
-        >
-          <MainNavigator authState={auth} />
-        </NavigationContainer>
-      </View>
-    );
   }
+  return (
+    <View style={styles.container}>
+      <StatusBar backgroundColor="#FFF" barStyle="dark-content" />
+
+      <NavigationContainer
+        ref={containerRef}
+        initialState={initialNavigationState}
+      >
+        <MainNavigator authState={auth} />
+      </NavigationContainer>
+    </View>
+  );
 }
 
 const mapStateToProps = state => ({

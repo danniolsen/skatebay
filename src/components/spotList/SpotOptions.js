@@ -1,23 +1,29 @@
 import * as React from "react";
-import { View, StyleSheet, TouchableOpacity, Fragment } from "react-native";
-import { Alert } from "react-native";
+import {
+  View, StyleSheet, TouchableOpacity, Fragment,
+  Alert
+} from "react-native";
+
 import { Feather } from "@expo/vector-icons";
-import { ThinText } from "../StyledText";
 import { connect } from "react-redux";
-import { saveSpot } from "../../redux/actions/saveSpotActions";
-import { getSavedSpotsList } from "../../redux/actions/saveSpotActions";
 import { getDistance, convertDistance } from "geolib";
+import { ThinText } from "../StyledText";
+import { saveSpot, getSavedSpotsList } from "../../redux/actions/saveSpotActions";
+
 import { removeSpot } from "../../redux/actions/removeActions";
+
 function SpotOptions(props) {
   const [btnColored, setButtonColor] = React.useState({
     saved: false,
     color: "#2f363d"
   });
-  const { saveSpotDis, savedListDis, user, userLocation } = props;
+  const {
+    saveSpotDis, savedListDis, user, userLocation
+  } = props;
   const { removeSpotDis } = props;
 
   React.useEffect(() => {
-    let saved = props.saved
+    const saved = props.saved
       ? { saved: true, color: "#27ae60" }
       : { saved: false, color: "#2f363d" };
     let isCancled = false;
@@ -27,11 +33,11 @@ function SpotOptions(props) {
   }, []);
 
   const saveSpot = () => {
-    let saveData = {
+    const saveData = {
       spot_id: props.spotId,
       user_id: user.user_id
     };
-    saveSpotDis(saveData).then(sp => {
+    saveSpotDis(saveData).then((sp) => {
       if (btnColored.saved) {
         setButtonColor({ saved: false, color: "#2f363d" });
       } else {
@@ -41,15 +47,15 @@ function SpotOptions(props) {
     });
   };
 
-  const distance = location => {
-    let dis = getDistance(
+  const distance = (location) => {
+    const dis = getDistance(
       { latitude: props.spotLocation.lat, longitude: props.spotLocation.lon },
       {
         latitude: props.userLocation.latitude,
         longitude: props.userLocation.longitude
       }
     );
-    let converted = convertDistance(dis, "km");
+    const converted = convertDistance(dis, "km");
     return converted.toFixed(1);
   };
 
@@ -66,7 +72,7 @@ function SpotOptions(props) {
   };
 
   const removeSpot = () => {
-    let removeData = {
+    const removeData = {
       spot_id: props.spotId,
       user_id: user.user_id
     };
@@ -75,7 +81,7 @@ function SpotOptions(props) {
   };
 
   return (
-    <React.Fragment>
+    <>
       <View style={s.option}>
         <TouchableOpacity onPress={() => saveSpot()}>
           <Feather name="bookmark" size={25} color={btnColored.color} />
@@ -93,21 +99,23 @@ function SpotOptions(props) {
       </View>
       <View style={s.distance}>
         <ThinText color="#2f363d" size={20}>
-          {distance(props.spotLocation)} km
+          {distance(props.spotLocation)}
+          {" "}
+          km
         </ThinText>
       </View>
-    </React.Fragment>
+    </>
   );
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.user.user,
   userLocation: state.location
 });
-const mapDispatchToProps = dispatch => ({
-  saveSpotDis: payload => dispatch(saveSpot(payload)),
-  savedListDis: payload => dispatch(getSavedSpotsList(payload)),
-  removeSpotDis: payload => dispatch(removeSpot(payload))
+const mapDispatchToProps = (dispatch) => ({
+  saveSpotDis: (payload) => dispatch(saveSpot(payload)),
+  savedListDis: (payload) => dispatch(getSavedSpotsList(payload)),
+  removeSpotDis: (payload) => dispatch(removeSpot(payload))
 });
 
 export default connect(

@@ -1,8 +1,8 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
-import rootReducer from "./reducers/RootReducers";
 import { persistStore, persistReducer } from "redux-persist";
 import { AsyncStorage } from "react-native";
+import rootReducer from "./reducers/RootReducers";
 
 const persistConfig = {
   key: "root",
@@ -15,15 +15,15 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 export default function configureStore(initialState = {}) {
   const composeEnhancers = compose;
 
-  let store = createStore(
+  const store = createStore(
     persistedReducer,
     composeEnhancers(
       applyMiddleware(thunk),
       process.env.NODE_ENV !== "production" && window.devToolsExtension
         ? window.__REDUX_DEVTOOLS_EXTENSION__()
-        : f => f
+        : (f) => f
     )
   );
-  let persistor = persistStore(store);
+  const persistor = persistStore(store);
   return { store, persistor };
 }

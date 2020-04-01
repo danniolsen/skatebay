@@ -1,56 +1,58 @@
 import * as React from "react";
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { ScrollView, Dimensions, ActivityIndicator } from "react-native";
-import { NormalText, ThinText } from "../components/StyledText";
-import Header from "../components/header/Header";
-import { SliderBox } from "react-native-image-slider-box";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+  ActivityIndicator
+} from "react-native";
 import * as Location from "expo-location";
-import * as Permissions from "expo-permissions";
+
 import MapView, { Marker } from "react-native-maps";
 import { connect } from "react-redux";
+import Header from "../components/header/Header";
+import { NormalText, ThinText } from "../components/StyledText";
 import { createNewSpot } from "../redux/actions/newSpotActions";
 
 const { width } = Dimensions.get("window");
 const imgHeight = width / 1.5;
 
 const SpotVerification = props => {
-  let data = props.route.params;
+  const { params } = props.route;
 
   const { navigation, createSpotDis, bannerDis, clearSpotDis } = props;
-  const { user, images, title, tags, status, location } = data.newSpot;
+  const { user, images, title, tags, location } = params.newSpot;
   const [imgs, setImgs] = React.useState([]);
   const [btnLoading, setBtnLoading] = React.useState(false);
-  const [addressLoading, setAddressLoading] = React.useState(true);
   const [address, setAddress] = React.useState({});
 
   React.useEffect(() => {
     let isCanceled = false;
-    // set images
-    let realImages = [];
-    images.map(rImg => {
-      if (rImg.set === true) {
-        realImages.push(rImg.url);
-      }
-    });
-    setImgs(realImages);
-    getAddress()
-      .then(add => {
-        setAddress(add[0]);
-      })
-      .finally(fin => {
-        setAddressLoading(false);
+    if (!isCanceled) {
+      // set images
+      const realImages = [];
+      images.map(rImg => {
+        if (rImg.set === true) {
+          return realImages.push(rImg.url);
+        }
       });
+      setImgs(realImages);
+      getAddress().then(add => {
+        setAddress(add[0]);
+      });
+    }
     () => (isCanceled = true);
   }, []);
 
   const getAddress = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    let latitude = parseFloat(location.latitude);
-    let longitude = parseFloat(location.longitude);
+    const latitude = parseFloat(location.latitude);
+    const longitude = parseFloat(location.longitude);
     try {
-      let addressLookup = Location.reverseGeocodeAsync({
-        latitude: latitude,
-        longitude: longitude
+      const addressLookup = Location.reverseGeocodeAsync({
+        latitude,
+        longitude
       });
       return addressLookup;
     } catch (err) {
@@ -62,12 +64,12 @@ const SpotVerification = props => {
     setBtnLoading(true);
     const newSpot = {
       spot: {
-        title: title,
+        title,
         images: imgs,
-        location: location,
-        tags: tags
+        location,
+        tags
       },
-      user: user
+      user
     };
     createSpotDis(newSpot)
       .then((err, suc) => {
@@ -96,10 +98,13 @@ const SpotVerification = props => {
           });
           setBtnLoading(false);
         }
+        return { err, suc };
       })
       .catch(err => {
         alert("An error has occured");
+        return err;
       });
+    return null;
   };
 
   return (
@@ -119,14 +124,14 @@ const SpotVerification = props => {
           snapToStart
           style={s.imageCon}
         >
-          {imgs.map((img, i) => {
-            return <Image key={i} style={s.image} source={{ uri: img }} />;
-          })}
+          {imgs.map((img, i) => (
+            <Image key={i} style={s.image} source={{ uri: img }} />
+          ))}
         </ScrollView>
 
         <View style={s.addressCon}>
           <ThinText style={s.infoTxt}>
-            {address.city}, {address.country}.
+            {address.city},{address.country}.
           </ThinText>
           <ThinText style={s.infoTxt}>{address.street}.</ThinText>
         </View>
@@ -170,7 +175,7 @@ const SpotVerification = props => {
 
 const mapDispatchToProps = dispatch => ({
   createSpotDis: payload => dispatch(createNewSpot(payload)),
-  bannerDis: payload => dispatch({ type: "SHOW_BANNER", payload: payload }),
+  bannerDis: payload => dispatch({ type: "SHOW_BANNER", payload }),
   clearSpotDis: payload => dispatch({ type: "NEW_SPOT_RESET" })
 });
 
@@ -193,7 +198,7 @@ const s = StyleSheet.create({
   },
   imageCon: {},
   image: {
-    width: width,
+    width,
     height: imgHeight,
     borderWidth: 5,
     borderColor: "#FFF"
@@ -205,7 +210,7 @@ const s = StyleSheet.create({
     paddingBottom: 10
   },
   infoTxt: { marginVertical: 2 },
-  map: { width: width, height: width },
+  map: { width, height: width },
   buttonContainer: {
     width: "100%",
     bottom: 0,

@@ -3,23 +3,23 @@ import axios from "axios";
 import ImageConverter from "../../features/ImageConverter";
 import { setNewSpot, resetNewSpot } from "../types/newSpotTypes";
 
-const setNewSpotData = newSpot => {
+const setNewSpotData = (newSpot) => {
   const setSpotData = (dispatch, error) => {
     dispatch(setNewSpot(newSpot));
   };
   return setSpotData;
 };
 
-const createNewSpot = newSpot => {
-  //upload images
-  const uploadImages = spot_id => {
-    let formData = new FormData();
+const createNewSpot = (newSpot) => {
+  // upload images
+  const uploadImages = (spot_id) => {
+    const formData = new FormData();
     formData.append("spot_id", spot_id);
 
     newSpot.spot.images.map((img, i) => {
-      let filename = `skatebay-spot-${i}.jpg`;
-      let match = /\.(\w+)$/.exec(filename);
-      let type = match ? `image/${match[1]}` : `image`;
+      const filename = `skatebay-spot-${i}.jpg`;
+      const match = /\.(\w+)$/.exec(filename);
+      const type = match ? `image/${match[1]}` : "image";
 
       formData.append("spotimage", {
         uri: img,
@@ -34,32 +34,26 @@ const createNewSpot = newSpot => {
           "content-type": "multipart/form-data"
         }
       })
-      .then(res => {
-        return res.data;
-      })
-      .catch(err => {
-        return err.data;
-      });
+      .then((res) => res.data)
+      .catch((err) => err.data);
   };
-  //return uploadImages;
+  // return uploadImages;
 
   const createspotdata = (dispatch, error) => {
-    let spot = newSpot.spot;
-    let user = newSpot.user;
+    const { spot } = newSpot;
+    const { user } = newSpot;
 
     return axios
       .post("http://192.168.1.76:5000/newspot", {
-        spot: spot,
-        user: user
+        spot,
+        user
       })
-      .then(res => {
+      .then((res) => {
         if (res.data.spot_id && res.data.status) {
           uploadImages(res.data.spot_id);
         }
       })
-      .catch(err => {
-        return true;
-      });
+      .catch((err) => true);
   };
 
   return createspotdata;
