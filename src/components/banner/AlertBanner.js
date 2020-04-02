@@ -31,7 +31,7 @@ const AlertBanner = props => {
     }
     Animated.timing(fadeAnim, {
       toValue: 0,
-      duration: 500
+      duration: 250
     }).start(() => hideAlertBannerDis());
   };
 
@@ -40,7 +40,7 @@ const AlertBanner = props => {
       if (show) {
         Animated.timing(fadeAnim, {
           toValue: 1,
-          duration: 500
+          duration: 250
         }).start();
       }
     },
