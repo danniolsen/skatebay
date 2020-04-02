@@ -24,18 +24,18 @@ const LocationService = async () => {
   };
 
   return location
-    .then((loc) => {
+    .then(loc => {
       geoLocation.latitude = loc.coords.latitude;
       geoLocation.longitude = loc.coords.longitude;
       return geoLocation;
     })
-    .catch((err) => {
-      lgeoLocation.atitude = "00.000000";
+    .catch(err => {
+      geoLocation.atitude = "00.000000";
       geoLocation.longitude = "00.00000";
-      geoLocation.banner.msg = "Location service is required to show the skatespots";
+      geoLocation.banner.msg =
+        "Location service is required to show the skatespots";
       geoLocation.banner.style = "#ffc105";
       geoLocation.banner.show = true;
-
       return geoLocation;
     });
 };

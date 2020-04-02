@@ -1,7 +1,5 @@
 import * as React from "react";
-import {
-  StyleSheet, View, TouchableOpacity, FlatList
-} from "react-native";
+import { StyleSheet, View, TouchableOpacity, FlatList } from "react-native";
 import { connect } from "react-redux";
 import * as firebase from "firebase";
 import { ThinText, NormalText } from "../components/StyledText";
@@ -16,9 +14,7 @@ import { reportSpot } from "../redux/actions/reportActions";
 import { bannerShow } from "../redux/actions/bannerActions";
 
 function SpotList(props) {
-  const {
-    user, location, locationDis, spotList, reportSpotDis
-  } = props;
+  const { user, location, locationDis, spotList, reportSpotDis } = props;
   const { spotListDis, navigation, bannerShowDis } = props;
   const [moreActions, setMoreActions] = React.useState(false);
   const [selected, setSelected] = React.useState(null);
@@ -36,32 +32,31 @@ function SpotList(props) {
 
   const getSpotlist = () => {
     setRefreshing(true);
-    LocationService().then((loc) => {
+    LocationService().then(loc => {
       locationDis({ latitude: loc.latitude, longitude: loc.longitude });
-      bannerShowDis({ banner: loc.banner });
       getSpots(loc);
     });
   };
 
-  const getSpots = (loc) => {
+  const getSpots = loc => {
     const spotData = { location: loc, user: user.user };
     spotListDis(spotData);
     setRefreshing(false);
   };
 
-  const goToSpot = (spot) => {
+  const goToSpot = spot => {
     navigation.push("SpotDetails", spot);
   };
 
-  const openMoreActions = (spot) => {
+  const openMoreActions = spot => {
     setSelected(spot);
     setMoreActions(true);
   };
 
-  const reportSpot = (report) => {
+  const reportSpot = report => {
     const reportResponse = reportSpotDis(report);
     reportResponse
-      .then((success) => {
+      .then(success => {
         bannerShowDis({
           banner: {
             msg: success.msg,
@@ -70,7 +65,7 @@ function SpotList(props) {
           }
         });
       })
-      .catch((err) => {
+      .catch(err => {
         bannerShowDis({
           banner: {
             msg: "Something went wrong",
@@ -79,7 +74,7 @@ function SpotList(props) {
           }
         });
       })
-      .finally((f) => {
+      .finally(f => {
         setTimeout(() => {
           setMoreActions(false);
         }, 1000);
@@ -94,7 +89,7 @@ function SpotList(props) {
           close={() => setMoreActions(false)}
           spot={selected}
           user={user}
-          submit={(report) => reportSpot(report)}
+          submit={report => reportSpot(report)}
         />
       )}
       <Header rightIcon="sliders" rightAction={() => alert("filtering")} />
@@ -125,16 +120,16 @@ function SpotList(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   user: state.user,
   location: state.location,
   spotList: state.spotList
 });
-const mapDispatchToProps = (dispatch) => ({
-  locationDis: (payload) => dispatch(setNewLocation(payload)),
-  spotListDis: (payload) => dispatch(getSpotList(payload)),
-  reportSpotDis: (payload) => dispatch(reportSpot(payload)),
-  bannerShowDis: (payload) => dispatch(bannerShow(payload))
+const mapDispatchToProps = dispatch => ({
+  locationDis: payload => dispatch(setNewLocation(payload)),
+  spotListDis: payload => dispatch(getSpotList(payload)),
+  reportSpotDis: payload => dispatch(reportSpot(payload)),
+  bannerShowDis: payload => dispatch(bannerShow(payload))
 });
 
 export default connect(

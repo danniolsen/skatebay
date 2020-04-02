@@ -1,21 +1,23 @@
 import * as React from "react";
-import {
-  TouchableOpacity, Alert, ScrollView, StyleSheet, Text, View, Image
-} from "react-native";
+import { TouchableOpacity, Alert, ScrollView, StyleSheet } from "react-native";
+import { Text, View, Image } from "react-native";
 
 import { connect } from "react-redux";
 import {
-  InputData, ImagePicking, SpotTags, VerifySpotData
+  InputData,
+  ImagePicking,
+  SpotTags,
+  VerifySpotData
 } from "../components/uploadSpot";
-
 import Header from "../components/header/Header";
+import { bannerShowAlert } from "../redux/actions/bannerActions";
 import { NormalText } from "../components/StyledText";
 import { setNewSpotData } from "../redux/actions/newSpotActions";
+import AlertBanner from "../components/banner/AlertBanner";
 
 function SpotUpload(props) {
-  const {
-    user, navigation, newSpot, setNewSpotDis, clearSpotDis
-  } = props;
+  const { user, navigation, newSpot, setNewSpotDis, clearSpotDis } = props;
+  const { bannerAlertDis, alert } = props;
 
   const [keyboardUp, setKeyboardUp] = React.useState(false);
   const scrollViewRef = React.useRef();
@@ -32,7 +34,7 @@ function SpotUpload(props) {
   const [btnActive, setBtnActive] = React.useState(false);
 
   // add images to images array
-  const setImages = (images) => {
+  const setImages = images => {
     // new redux
     const newSpotCopy = { ...newSpot };
     newSpotCopy.newSpot.images = images;
@@ -51,7 +53,7 @@ function SpotUpload(props) {
   };
 
   // scroll down on jeyboard toggle
-  const focusInput = (keyboard) => {
+  const focusInput = keyboard => {
     if (keyboard) {
       setTimeout(() => {
         scrollViewRef.current.scrollToEnd({ animated: true });
@@ -60,7 +62,7 @@ function SpotUpload(props) {
   };
 
   // set spot title to title
-  const setTitle = (title) => {
+  const setTitle = title => {
     // new redux
     const newSpotCopy = { ...newSpot };
     newSpotCopy.newSpot.title = title;
@@ -69,7 +71,7 @@ function SpotUpload(props) {
   };
 
   // add tags to tags array
-  const setTags = (tag) => {
+  const setTags = tag => {
     const newSpotCopy = { ...newSpot };
     newSpotCopy.newSpot.tags = tag;
     setNewSpotDis(newSpotCopy);
@@ -77,15 +79,15 @@ function SpotUpload(props) {
 
   // earning before removing spot data
   const clearSpotWarn = () => {
-    Alert.alert(
-      "Clear spot",
-      "Are you sure you want to clear the spot?",
-      [
-        { text: "Cancel", onPress: () => null },
-        { text: "Clear", onPress: () => clearSpot() }
-      ],
-      { cancelable: false }
-    );
+    bannerAlertDis({
+      banner: {
+        title: "Clear spot",
+        msg: "Are you sure you want to clear the spot?",
+        options: true,
+        show: true,
+        style: "warn"
+      }
+    });
   };
 
   // clear all spot data
@@ -94,7 +96,7 @@ function SpotUpload(props) {
   };
 
   // activate and inactivate button
-  const spotStatus = (status) => {
+  const spotStatus = status => {
     setBtnActive(status);
   };
 
@@ -110,6 +112,14 @@ function SpotUpload(props) {
 
   return (
     <View style={s.container}>
+      <AlertBanner
+        style={alert.style}
+        title={alert.title}
+        msg={alert.msg}
+        options={alert.options}
+        show={alert.show}
+        alertAction={() => clearSpot()}
+      />
       <Header
         rightIcon="trash"
         color="#e74c3c"
@@ -129,7 +139,7 @@ function SpotUpload(props) {
               name: "+ Add images",
               warning: "Minimum 1 image is reqired"
             }}
-            imageData={(images) => setImages(images)}
+            imageData={images => setImages(images)}
             getImages={newSpot.newSpot.images}
           />
         </View>
@@ -140,9 +150,9 @@ function SpotUpload(props) {
               name: "Spot title",
               warning: "Minimum 3 characters are reqired"
             }}
-            title={(title) => setTitle(title)}
+            title={title => setTitle(title)}
             getTitle={newSpot.newSpot.title}
-            inputTap={(keyboard) => focusInput(keyboard)}
+            inputTap={keyboard => focusInput(keyboard)}
           />
         </View>
 
@@ -152,7 +162,7 @@ function SpotUpload(props) {
               name: "+ add tags",
               warning: "Minimum of 1 tag is reqired"
             }}
-            selectTag={(tag) => setTags(tag)}
+            selectTag={tag => setTags(tag)}
             getTags={newSpot.newSpot.tags}
           />
         </View>
@@ -165,8 +175,8 @@ function SpotUpload(props) {
             location={newSpot.newSpot.location}
             title={newSpot.newSpot.title}
             tags={newSpot.newSpot.tags}
-            spotStatus={(status) => spotStatus(status)}
-            verifySpot={(status) => verifySpot(status)}
+            spotStatus={status => spotStatus(status)}
+            verifySpot={status => verifySpot(status)}
             btnStatus={btnActive}
           />
         </View>
@@ -175,14 +185,16 @@ function SpotUpload(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   user: state.user,
-  newSpot: state.newSpot
+  newSpot: state.newSpot,
+  alert: state.banner.alert
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  setNewSpotDis: (payload) => dispatch(setNewSpotData(payload)),
-  clearSpotDis: (payload) => dispatch({ type: "NEW_SPOT_RESET" })
+const mapDispatchToProps = dispatch => ({
+  setNewSpotDis: payload => dispatch(setNewSpotData(payload)),
+  clearSpotDis: payload => dispatch({ type: "NEW_SPOT_RESET" }),
+  bannerAlertDis: payload => dispatch(bannerShowAlert(payload))
 });
 
 export default connect(
