@@ -10,11 +10,10 @@ import Loading from "../screens/Loading";
 import SpotVerification from "../screens/SpotVerification";
 import Banner from "../components/banner/TopBanner";
 
-
 const Stack = createStackNavigator();
 
 function MainNavigator(props) {
-  const { loading, banner, authState } = props;
+  const { loading, banner, authState, alertBanner } = props;
 
   return (
     <View style={{ flex: 1 }}>
@@ -39,10 +38,11 @@ function MainNavigator(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   loading: state.loading,
   auth: state.auth,
-  banner: state.banner.banner
+  banner: state.banner.banner,
+  alert: state.banner.alert
 });
 
 export default connect(

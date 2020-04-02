@@ -1,15 +1,7 @@
 import * as React from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  Dimensions,
-  ActivityIndicator
-} from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { ActivityIndicator, ScrollView, Dimensions } from "react-native";
 import * as Location from "expo-location";
-
 import MapView, { Marker } from "react-native-maps";
 import { connect } from "react-redux";
 import Header from "../components/header/Header";
