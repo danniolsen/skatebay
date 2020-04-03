@@ -1,7 +1,13 @@
 import * as React from "react";
 import {
-  View, TouchableOpacity, Text, StyleSheet, Image,
-  Dimensions, ActivityIndicator, Alert
+  View,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  ActivityIndicator,
+  Alert
 } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
@@ -21,7 +27,7 @@ function Spot(props) {
     let isCancled = false;
     if (!isCancled) {
       const starsRef = storageRef.child(`/${props.spotId}/${props.url}`);
-      starsRef.getDownloadURL().then((url) => {
+      starsRef.getDownloadURL().then(url => {
         setMainImage(url);
       });
     }

@@ -14,17 +14,22 @@ function UserProfile(props) {
   const { user, navigation, saved, savedListDis } = props;
   const { uploadsListDis, uploads } = props;
   const [type, setType] = React.useState(0);
+  const { params } = props.route;
 
-  React.useEffect(() => {
-    let isCancelled = false;
-    if (!isCancelled) {
-      savedListDis(user);
-      uploadsListDis(user);
-    }
-    return () => {
-      isCancelled = true;
-    };
-  }, []);
+  React.useEffect(
+    () => {
+      let isCancelled = false;
+      if (!isCancelled) {
+        savedListDis(user);
+        uploadsListDis(user);
+      }
+      params ? setType(1) : null;
+      return () => {
+        isCancelled = true;
+      };
+    },
+    [params]
+  );
 
   const changeType = newType => {
     if (newType !== type) {
@@ -71,7 +76,7 @@ function UserProfile(props) {
             enterAction={() => navigation.push("SpotDetails", item)}
           />
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.spot_id}
         ListEmptyComponent={() => <EmptyProfileList />}
         showsVerticalScrollIndicator={false}
       />

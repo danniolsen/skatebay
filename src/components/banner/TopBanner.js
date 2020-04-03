@@ -11,20 +11,22 @@ const TopBanner = props => {
   // wait 1500 ms to display banner (fade in and out)
   // call banner banner:{msg: 'txt', style:'hex code', show: boolean}
   if (banner.show) {
-    <View style={s.banner}>
-      <View style={s.bannerCon}>
-        <View style={s.message}>
-          <NormalText color={style}>{msg}</NormalText>
-        </View>
-        <View style={s.dismis}>
-          <TouchableOpacity onPress={() => hideBannerDis()}>
-            <NormalText color="#FFF">Dismis</NormalText>
-          </TouchableOpacity>
+    return (
+      <View style={s.banner}>
+        <View style={s.bannerCon}>
+          <View style={s.message}>
+            <NormalText color={style}>{msg}</NormalText>
+          </View>
+          <View style={s.dismis}>
+            <TouchableOpacity onPress={() => hideBannerDis()}>
+              <NormalText color="#FFF">Dismis</NormalText>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>;
+    );
   } else {
-    return null;
+    return <View style={{ backgroundColor: "#F00" }} />;
   }
 };
 
