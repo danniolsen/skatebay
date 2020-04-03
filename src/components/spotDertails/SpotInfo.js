@@ -1,6 +1,9 @@
 import * as React from "react";
 import {
-  TouchableOpacity, View, StyleSheet, Text,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  Text,
   ScrollView
 } from "react-native";
 
@@ -11,7 +14,7 @@ import { Feather } from "@expo/vector-icons";
 import { ThinText, NormalText } from "../StyledText";
 import timeAgo from "../../features/TimeAgo";
 
-const SpotInfo = (props) => {
+const SpotInfo = props => {
   const { spotDetails, userLocation } = props;
   const [newTags, setNewTags] = React.useState([]);
   const [addressLoading, setAddressLoading] = React.useState(true);
@@ -29,7 +32,7 @@ const SpotInfo = (props) => {
       const date = timeAgo(spotDetails.spot_created_at);
       setTimeSince(date);
       getAddress()
-        .then((add) => {
+        .then(add => {
           const newAddress = {
             city: add[0].city,
             country: add[0].country,
@@ -37,7 +40,7 @@ const SpotInfo = (props) => {
           };
           setAddress(newAddress);
         })
-        .catch((err) => {
+        .catch(err => {
           const errorAddress = {
             ...address,
             error: "Not able to get address informations"
@@ -50,7 +53,7 @@ const SpotInfo = (props) => {
     () => (isCancled = true);
   }, []);
 
-  const distance = (location) => {
+  const distance = location => {
     const dis = getDistance(
       {
         latitude: spotDetails.latitude,
@@ -85,22 +88,12 @@ const SpotInfo = (props) => {
       <View style={s.container}>
         <View>
           <ThinText style={s.infoTxt}>
-            {address.city}
-            ,
-            {address.country}
-            .
+            {address.city},{` ${address.country}`}.
           </ThinText>
-          <ThinText style={s.infoTxt}>
-            {address.street}
-            .
-          </ThinText>
+          <ThinText style={s.infoTxt}>{address.street}.</ThinText>
         </View>
         <View style={s.distance}>
-          <ThinText size={20}>
-            {distance()}
-            {" "}
-            km
-          </ThinText>
+          <ThinText size={20}>{distance()} km</ThinText>
         </View>
       </View>
 
@@ -128,13 +121,15 @@ const SpotInfo = (props) => {
         </NormalText>
       </View>
       <View style={s.tagsCon}>
-        {newTags.map((spotTag, i) => <Tag key={i} spotTag={spotTag} />)}
+        {newTags.map((spotTag, i) => (
+          <Tag key={i} spotTag={spotTag} />
+        ))}
       </View>
     </>
   );
 };
 
-const Tag = (props) => {
+const Tag = props => {
   const { spotTag } = props;
   return (
     // fix tags missing on fetch

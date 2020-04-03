@@ -9,7 +9,6 @@ import Settings from "../screens/Settings";
 import Loading from "../screens/Loading";
 import SpotVerification from "../screens/SpotVerification";
 import Banner from "../components/banner/TopBanner";
-
 const Stack = createStackNavigator();
 
 function MainNavigator(props) {
