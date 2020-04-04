@@ -1,15 +1,6 @@
 import * as React from "react";
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  Image,
-  Dimensions,
-  ActivityIndicator,
-  Alert
-} from "react-native";
-
+import { View, TouchableOpacity, Text, StyleSheet, Alert } from "react-native";
+import { Image, Dimensions, ActivityIndicator } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { ThinText, NormalText } from "../StyledText";
 import { storageRef } from "../../utils/firebase";

@@ -1,14 +1,11 @@
 import * as React from "react";
-import {
-  Modal, View, StyleSheet, TouchableOpacity,
-  ActivityIndicator
-} from "react-native";
-
+import { Modal, View, StyleSheet, TouchableOpacity } from "react-native";
+import { ActivityIndicator } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { NormalText } from "../StyledText";
 
-const SpotMoreModal = (props) => {
+const SpotMoreModal = props => {
   const { user, spot } = props;
   const [colored, setColored] = React.useState({ id: null });
   const [selected, setSelected] = React.useState(null);
@@ -19,7 +16,7 @@ const SpotMoreModal = (props) => {
   });
   const [reporting, setReporting] = React.useState(false);
 
-  const reportSpot = (item) => {
+  const reportSpot = item => {
     const reported = {
       spot,
       user,
@@ -47,16 +44,11 @@ const SpotMoreModal = (props) => {
       <View style={s.modalContainer}>
         <View style={s.content}>
           <View style={s.headline}>
-            <View style={s.close}>
-              <TouchableOpacity onPress={props.close}>
-                <Feather name="x" color="#808080" size={35} style={s.x} />
-              </TouchableOpacity>
-            </View>
             <NormalText size={20} color="#808080">
               Report spot
             </NormalText>
           </View>
-          {items.map((item) => (
+          {items.map(item => (
             <Item
               key={item.id}
               id={item.id}
@@ -67,27 +59,40 @@ const SpotMoreModal = (props) => {
             />
           ))}
 
-          <TouchableOpacity
-            disabled={inActive.inactive}
-            style={[s.submitBtn, { backgroundColor: inActive.bg }]}
-            onPress={() => submitReport()}
-          >
-            <NormalText size={18} color={inActive.txt}>
-              {reporting ? (
-                <ActivityIndicator style={s.spinner} color="#FFF" />
-              ) : (
-                "Submit repport"
-              )}
-            </NormalText>
-          </TouchableOpacity>
+          <View style={s.buttonCon}>
+            <TouchableOpacity
+              onPress={props.close}
+              style={[s.button, { borderBottomLeftRadius: 10 }]}
+            >
+              <NormalText size={18} color="#808080">
+                Close
+              </NormalText>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => submitReport()}
+              disabled={inActive.inactive}
+              style={[
+                s.button,
+                { borderBottomRightRadius: 10, backgroundColor: inActive.bg }
+              ]}
+            >
+              <NormalText size={18} color={inActive.txt}>
+                {reporting ? (
+                  <ActivityIndicator style={s.spinner} color="#FFF" />
+                ) : (
+                  "Submit repport"
+                )}
+              </NormalText>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>
   );
 };
 
-// move to components
-const Item = (props) => {
+const Item = props => {
   const colored = props.selected.id === props.id ? "#E9E9E9" : null;
 
   return (
@@ -146,7 +151,6 @@ const s = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: "#FFF"
   },
-  x: { padding: 0, borderRadius: 50 },
   modalItem: {
     flexDirection: "row",
     paddingHorizontal: 15,
@@ -167,5 +171,11 @@ const s = StyleSheet.create({
     height: 25,
     width: 25,
     paddingTop: 2
+  },
+  buttonCon: { flexDirection: "row" },
+  button: {
+    flex: 1,
+    alignItems: "center",
+    padding: 10
   }
 });
