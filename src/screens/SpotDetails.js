@@ -1,29 +1,25 @@
 import * as React from "react";
-import {
-  StyleSheet, View, Dimensions, ScrollView, Text
-} from "react-native";
+import { StyleSheet, View, Dimensions, ScrollView, Text } from "react-native";
 import { connect } from "react-redux";
 import Header from "../components/header/Header";
 import { saveCount } from "../redux/actions/saveSpotActions";
-
 import { ThinText } from "../components/StyledText";
 import Map from "../components/spotDertails/Map";
 import SpotDrawer from "../components/spotDertails/SpotDrawer";
 import SpotImages from "../components/spotDertails/SpotImages";
 import SpotInfo from "../components/spotDertails/SpotInfo";
 import LocationService from "../features/LocationService";
-
 const { width, height } = Dimensions.get("window");
 // new stuff ends
 
 function SpotDetails(props) {
-  const { userlocation } = props;
+  const { userlocation, user } = props;
   const spotDetails = props.route.params;
   const [uLocation, setUlocation] = React.useState(userlocation);
   const [count, setCount] = React.useState("...");
 
   const newDistance = () => {
-    LocationService().then((loc) => {
+    LocationService().then(loc => {
       setUlocation(loc);
     });
   };
@@ -31,7 +27,7 @@ function SpotDetails(props) {
   React.useEffect(() => {
     let isCancled = false;
     if (!isCancled) {
-      saveCount(spotDetails.spot_id).then((c) => {
+      saveCount(spotDetails.spot_id).then(c => {
         setCount(c);
       });
     }
@@ -75,14 +71,16 @@ function SpotDetails(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   user: state.user.user,
-  userlocation: state.location
+  userlocation: state.location,
+  saved: state.saved.spots
 });
 
+const mapDispatchToProps = dispatch => ({});
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(SpotDetails);
 
 const s = StyleSheet.create({

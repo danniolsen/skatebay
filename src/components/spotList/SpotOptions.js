@@ -19,20 +19,13 @@ import {
 import { removeSpot } from "../../redux/actions/removeActions";
 
 function SpotOptions(props) {
-  const [btnColored, setButtonColor] = React.useState({
-    saved: false,
-    color: "#2f363d"
-  });
-  const { saveSpotDis, savedListDis, user, userLocation } = props;
+  const { saveSpotDis, savedListDis, user, userLocation, saved } = props;
   const { removeSpotDis } = props;
 
   React.useEffect(() => {
-    const saved = props.saved
-      ? { saved: true, color: "#27ae60" }
-      : { saved: false, color: "#2f363d" };
     let isCancled = false;
-    setButtonColor(saved);
-
+    if (!isCancled) {
+    }
     return () => (isCancled = true);
   }, []);
 
@@ -41,14 +34,20 @@ function SpotOptions(props) {
       spot_id: props.spotId,
       user_id: user.user_id
     };
-    saveSpotDis(saveData).then(sp => {
-      if (btnColored.saved) {
-        setButtonColor({ saved: false, color: "#2f363d" });
-      } else {
-        setButtonColor({ saved: true, color: "#27ae60" });
-      }
-      savedListDis(user);
-    });
+    saveSpotDis(saveData)
+      .then(sp => {
+        if (saved !== 0) {
+          console.log("save now");
+          //setButtonColor({ saved: false, color: "#2f363d" });
+        } else {
+          console.log("un save now");
+          //setButtonColor({ saved: true, color: "#27ae60" });
+        }
+        savedListDis(user);
+      })
+      .catch(err => {
+        alert("could not save");
+      });
   };
 
   const distance = location => {
@@ -84,11 +83,16 @@ function SpotOptions(props) {
     props.hideSpot();
   };
 
+  const isSaved = () => {
+    const exists = saved.find(({ spot_id }) => spot_id === props.spotId);
+    return exists ? "#27ae60" : "#2f363d";
+  };
+
   return (
     <>
       <View style={s.option}>
         <TouchableOpacity onPress={() => saveSpot()}>
-          <Feather name="bookmark" size={25} color={btnColored.color} />
+          <Feather name="bookmark" size={25} color={isSaved()} />
         </TouchableOpacity>
       </View>
       <View style={s.option}>
@@ -112,7 +116,8 @@ function SpotOptions(props) {
 
 const mapStateToProps = state => ({
   user: state.user.user,
-  userLocation: state.location
+  userLocation: state.location,
+  saved: state.saved.spots
 });
 const mapDispatchToProps = dispatch => ({
   saveSpotDis: payload => dispatch(saveSpot(payload)),

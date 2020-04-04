@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-  TouchableOpacity,
-  View,
-  StyleSheet,
-  Text,
-  ScrollView
-} from "react-native";
-
+import { View, StyleSheet, ScrollView } from "react-native";
 import { getDistance, convertDistance } from "geolib";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
@@ -99,13 +92,14 @@ const SpotInfo = props => {
 
       <View style={s.additionalCon}>
         <View style={s.savedCon}>
-          <Feather name="bookmark" color="#AAA" size={20} />
-          <ThinText style={{ marginTop: 3, paddingLeft: 5 }}>
+          <Feather name="bookmark" color="#2f363d" size={25} />
+
+          <ThinText style={{ marginTop: 5, paddingLeft: 5 }}>
             {props.saveCount}
           </ThinText>
         </View>
 
-        <View style={{ flex: 1, alignItems: "flex-end" }}>
+        <View style={{ flex: 1, alignItems: "flex-end", marginTop: 3 }}>
           <View style={s.timeCon}>
             <Feather name="clock" size={13} color="#AAA" />
             <ThinText color="#2f3c41" size={13} style={s.time}>
