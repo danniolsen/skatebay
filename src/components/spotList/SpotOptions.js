@@ -16,18 +16,9 @@ import {
   getSavedSpotsList
 } from "../../redux/actions/saveSpotActions";
 
-import { removeSpot } from "../../redux/actions/removeActions";
-
 function SpotOptions(props) {
   const { saveSpotDis, savedListDis, user, userLocation, saved } = props;
   const { removeSpotDis } = props;
-
-  React.useEffect(() => {
-    let isCancled = false;
-    if (!isCancled) {
-    }
-    return () => (isCancled = true);
-  }, []);
 
   const saveSpot = () => {
     const saveData = {
@@ -36,13 +27,6 @@ function SpotOptions(props) {
     };
     saveSpotDis(saveData)
       .then(sp => {
-        if (saved !== 0) {
-          console.log("save now");
-          //setButtonColor({ saved: false, color: "#2f363d" });
-        } else {
-          console.log("un save now");
-          //setButtonColor({ saved: true, color: "#27ae60" });
-        }
         savedListDis(user);
       })
       .catch(err => {
@@ -79,8 +63,7 @@ function SpotOptions(props) {
       spot_id: props.spotId,
       user_id: user.user_id
     };
-    removeSpotDis(removeData);
-    props.hideSpot();
+    props.hideSpot(removeData);
   };
 
   const isSaved = () => {
@@ -121,8 +104,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   saveSpotDis: payload => dispatch(saveSpot(payload)),
-  savedListDis: payload => dispatch(getSavedSpotsList(payload)),
-  removeSpotDis: payload => dispatch(removeSpot(payload))
+  savedListDis: payload => dispatch(getSavedSpotsList(payload))
 });
 
 export default connect(
