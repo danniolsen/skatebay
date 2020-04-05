@@ -2,6 +2,7 @@ import axios from "axios";
 import { fetchSpotList, fetchSpotListError } from "../types/spotListTypes";
 import { fetchUploadedSpots } from "../types/uploadedSpotsTypes";
 
+// get spots list based on location
 const getSpotList = spotData => {
   const spotlistSet = (dispatch, error) => {
     axios
@@ -25,6 +26,7 @@ const getSpotList = spotData => {
   return spotlistSet;
 };
 
+// get spots uploaded by user
 const getUploadedSpots = user => {
   const uploadedSpots = (dispatch, err) => {
     axios

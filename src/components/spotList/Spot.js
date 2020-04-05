@@ -5,14 +5,14 @@ import { Feather } from "@expo/vector-icons";
 import { ThinText, NormalText } from "../StyledText";
 import { storageRef } from "../../utils/firebase";
 import SpotOptions from "./SpotOptions";
-
+import img from "../../assets/images/imagePlaceholder.png";
 const { width } = Dimensions.get("window");
 const imgHeight = width / 1.5;
 
 function Spot(props) {
-  const { navigation } = props;
-  const [blur, setBlur] = React.useState(0);
+  const { navigation, spotIsHidden, refreshed, spotId } = props;
   const [mainImage, setMainImage] = React.useState();
+  const [blur, setBlur] = React.useState(0);
 
   React.useEffect(() => {
     let isCancled = false;
@@ -25,11 +25,16 @@ function Spot(props) {
     () => (isCancled = true);
   });
 
+  const isHidden = () => {
+    let exists = spotIsHidden.find(({ hidden }) => hidden === spotId);
+    return exists ? 70 : 0;
+  };
+
   return (
     <View style={s.container}>
       <View style={s.header}>
         <ThinText style={s.headline} size={20}>
-          {props.title}
+          {props.title} {"id " + props.spotId}
         </ThinText>
         <TouchableOpacity onPress={props.moreAction}>
           <Feather style={s.more} name="more-vertical" size={20} />
@@ -49,19 +54,12 @@ function Spot(props) {
               uri: mainImage
             }}
             style={s.image}
-            blurRadius={blur}
+            blurRadius={isHidden()}
           />
         </View>
       </TouchableOpacity>
 
-      <View style={s.optionsBar}>
-        <SpotOptions
-          spotId={props.spotId}
-          saved={props.saved}
-          hideSpot={() => setBlur(70)}
-          spotLocation={props.spotLocation}
-        />
-      </View>
+      <View style={s.optionsBar}>{props.children}</View>
     </View>
   );
 }

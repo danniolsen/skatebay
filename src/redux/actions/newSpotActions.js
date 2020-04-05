@@ -3,21 +3,22 @@ import axios from "axios";
 import ImageConverter from "../../features/ImageConverter";
 import { setNewSpot, resetNewSpot } from "../types/newSpotTypes";
 
-const setNewSpotData = (newSpot) => {
+const setNewSpotData = newSpot => {
   const setSpotData = (dispatch, error) => {
     dispatch(setNewSpot(newSpot));
   };
   return setSpotData;
 };
 
-const createNewSpot = (newSpot) => {
+const createNewSpot = newSpot => {
   // upload images
-  const uploadImages = (spot_id) => {
+
+  const uploadImages = spot => {
     const formData = new FormData();
-    formData.append("spot_id", spot_id);
+    formData.append("spot_id", spot.spot_id);
 
     newSpot.spot.images.map((img, i) => {
-      const filename = `skatebay-spot-${i}.jpg`;
+      const filename = spot.images[i];
       const match = /\.(\w+)$/.exec(filename);
       const type = match ? `image/${match[1]}` : "image";
 
@@ -34,8 +35,8 @@ const createNewSpot = (newSpot) => {
           "content-type": "multipart/form-data"
         }
       })
-      .then((res) => res.data)
-      .catch((err) => err.data);
+      .then(res => res.data)
+      .catch(err => err.data);
   };
   // return uploadImages;
 
@@ -48,12 +49,12 @@ const createNewSpot = (newSpot) => {
         spot,
         user
       })
-      .then((res) => {
+      .then(res => {
         if (res.data.spot_id && res.data.status) {
-          uploadImages(res.data.spot_id);
+          uploadImages(res.data);
         }
       })
-      .catch((err) => true);
+      .catch(err => true);
   };
 
   return createspotdata;

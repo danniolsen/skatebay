@@ -12,21 +12,25 @@ import { getSpotList } from "../redux/actions/spotListActions";
 import SpotMoreModal from "../components/modals/SpotMoreModal";
 import { reportSpot } from "../redux/actions/reportActions";
 import { bannerShow } from "../redux/actions/bannerActions";
+import SpotOptions from "../components/spotList/SpotOptions";
+import { removeSpot } from "../redux/actions/removeActions";
 
 function SpotList(props) {
   const { user, location, locationDis, spotList, reportSpotDis } = props;
-  const { spotListDis, navigation, bannerShowDis } = props;
+  const { spotListDis, navigation, bannerShowDis, removeSpotDis } = props;
   const [moreActions, setMoreActions] = React.useState(false);
   const [selected, setSelected] = React.useState(null);
   const [refreshing, setRefreshing] = React.useState(true);
+  const [hidden, setHidden] = React.useState([]);
+  const [mainImage, setMainImage] = React.useState();
 
   React.useEffect(() => {
     let isCancelled = false;
     if (!isCancelled) {
       // check if custom location is in use from params
       props.route.params ? getSpots(location) : getSpotlist();
+      console.log(props.route.params);
     }
-
     return () => (isCancelled = true);
   }, []);
 
@@ -81,6 +85,18 @@ function SpotList(props) {
       });
   };
 
+  const hideSpot = spot => {
+    let hiddenCopy = Object.assign([], hidden);
+    hiddenCopy.push({ hidden: spot.spot_id });
+    setHidden(hiddenCopy);
+    let removeData = {
+      spot_id: spot.spot_id,
+      user_id: user.user.user_id,
+      spotList: spotList
+    };
+    removeSpotDis(removeData);
+  };
+  //console.log("No of spots ", spotList.spotList.length);
   return (
     <View style={s.container}>
       {moreActions && (
@@ -110,7 +126,15 @@ function SpotList(props) {
             enterAction={() => goToSpot(item)}
             saved={item.saved}
             moreAction={() => openMoreActions(item)}
-          />
+            spotIsHidden={hidden}
+          >
+            <SpotOptions
+              spotId={item.spot_id}
+              saved={item.saved}
+              hideSpot={spot => hideSpot(spot)}
+              spotLocation={{ lat: item.latitude, lon: item.longitude }}
+            />
+          </Spot>
         )}
         keyExtractor={(item, index) => index.toString()}
         ListEmptyComponent={() => <EmptySpotList />}
@@ -129,7 +153,8 @@ const mapDispatchToProps = dispatch => ({
   locationDis: payload => dispatch(setNewLocation(payload)),
   spotListDis: payload => dispatch(getSpotList(payload)),
   reportSpotDis: payload => dispatch(reportSpot(payload)),
-  bannerShowDis: payload => dispatch(bannerShow(payload))
+  bannerShowDis: payload => dispatch(bannerShow(payload)),
+  removeSpotDis: payload => dispatch(removeSpot(payload))
 });
 
 export default connect(
