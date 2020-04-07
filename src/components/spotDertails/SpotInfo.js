@@ -87,34 +87,40 @@ const SpotInfo = props => {
           />
         </View>
         <View style={s.userName}>
-          <ThinText>{uploadOwner.displayname}</ThinText>
+          <ThinText color={Colors.default}>{uploadOwner.displayname}</ThinText>
         </View>
       </View>
       <View style={s.topContainer}>
         <View>
-          <ThinText style={s.infoTxt}>
+          <ThinText color={Colors.default} style={s.infoTxt}>
             {address.city},{` ${address.country}`}.
           </ThinText>
-          <ThinText style={s.infoTxt}>{address.street}.</ThinText>
+          <ThinText color={Colors.default} style={s.infoTxt}>
+            {address.street}.
+          </ThinText>
         </View>
         <View style={s.distance}>
-          <ThinText size={20}>{distance()} km</ThinText>
+          <ThinText color={Colors.default} size={20}>
+            {distance()} km
+          </ThinText>
         </View>
       </View>
 
       <View style={s.additionalCon}>
         <View style={s.savedCon}>
-          <Feather name="bookmark" color={Colors.iconColor} size={25} />
-
-          <ThinText style={{ marginTop: 5, paddingLeft: 5 }}>
+          <Feather name="bookmark" color={Colors.passive} size={25} />
+          <ThinText
+            color={Colors.default}
+            style={{ marginTop: 5, paddingLeft: 5 }}
+          >
             {props.saveCount}
           </ThinText>
         </View>
 
         <View style={{ flex: 1, alignItems: "flex-end", marginTop: 3 }}>
           <View style={s.timeCon}>
-            <Feather name="clock" size={13} color={Colors.iconColor} />
-            <ThinText color="#2f3c41" size={13} style={s.time}>
+            <Feather name="clock" size={13} color={Colors.passive} />
+            <ThinText color={Colors.default} size={13} style={s.time}>
               {timeSince}
             </ThinText>
           </View>
@@ -122,7 +128,7 @@ const SpotInfo = props => {
       </View>
 
       <View style={s.tagsHead}>
-        <NormalText color="#AAA" size={12}>
+        <NormalText color={Colors.passive} size={12}>
           Tags
         </NormalText>
       </View>
@@ -140,7 +146,7 @@ const Tag = props => {
   return (
     // fix tags missing on fetch
     <View style={s.tag}>
-      <NormalText size={15} color="#FFF">
+      <NormalText size={15} color={Colors.white}>
         {props.spotTag.name}
       </NormalText>
     </View>
@@ -182,6 +188,6 @@ const s = StyleSheet.create({
     marginRight: 10,
     borderRadius: 10,
     marginVertical: 5,
-    backgroundColor: "#7f8c8d"
+    backgroundColor: Colors.passive
   }
 });

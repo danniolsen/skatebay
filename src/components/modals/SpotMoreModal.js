@@ -4,6 +4,7 @@ import { ActivityIndicator } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { NormalText } from "../StyledText";
+import Colors from "../../constants/Colors";
 
 const SpotMoreModal = props => {
   const { user, spot } = props;
@@ -11,7 +12,7 @@ const SpotMoreModal = props => {
   const [selected, setSelected] = React.useState(null);
   const [inActive, setInActive] = React.useState({
     inactive: true,
-    txt: "#808080",
+    txt: Colors.passive,
     bg: "#CCC"
   });
   const [reporting, setReporting] = React.useState(false);
@@ -23,7 +24,7 @@ const SpotMoreModal = props => {
       reason: item.id
     };
     setSelected(reported);
-    setInActive({ inactive: false, txt: "#FFF", bg: "#27ae60" });
+    setInActive({ inactive: false, txt: Colors.white, bg: "#27ae60" });
     setColored({ id: item.id, color: "#CCC" });
   };
 
@@ -44,7 +45,7 @@ const SpotMoreModal = props => {
       <View style={s.modalContainer}>
         <View style={s.content}>
           <View style={s.headline}>
-            <NormalText size={20} color="#808080">
+            <NormalText size={20} color={Colors.passive}>
               Report spot
             </NormalText>
           </View>
@@ -64,7 +65,7 @@ const SpotMoreModal = props => {
               onPress={props.close}
               style={[s.button, { borderBottomLeftRadius: 10 }]}
             >
-              <NormalText size={18} color="#808080">
+              <NormalText size={16} color={Colors.passive}>
                 Close
               </NormalText>
             </TouchableOpacity>
@@ -77,9 +78,9 @@ const SpotMoreModal = props => {
                 { borderBottomRightRadius: 10, backgroundColor: inActive.bg }
               ]}
             >
-              <NormalText size={18} color={inActive.txt}>
+              <NormalText size={16} color={inActive.txt}>
                 {reporting ? (
-                  <ActivityIndicator style={s.spinner} color="#FFF" />
+                  <ActivityIndicator style={s.spinner} color={Colors.white} />
                 ) : (
                   "Submit repport"
                 )}

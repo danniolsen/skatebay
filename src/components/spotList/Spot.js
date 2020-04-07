@@ -9,6 +9,7 @@ import img from "../../assets/images/imagePlaceholder.png";
 const { width } = Dimensions.get("window");
 const imgHeight = width / 1.5;
 import Colors from "../../constants/Colors";
+
 function Spot(props) {
   const {
     navigation,
@@ -44,13 +45,13 @@ function Spot(props) {
   return (
     <View style={s.container}>
       <View style={s.header}>
-        <ThinText style={s.headline} size={20} color="#7f8c8d">
+        <ThinText style={s.headline} size={20} color={Colors.default}>
           {title}
         </ThinText>
         <TouchableOpacity onPress={moreAction}>
           <Feather
             style={s.more}
-            color={Colors.iconColor}
+            color={Colors.default}
             name="more-vertical"
             size={20}
           />
@@ -60,8 +61,8 @@ function Spot(props) {
       <TouchableOpacity onPress={enterAction} activeOpacity={0.8}>
         <View style={s.imageCon}>
           <View style={s.imageOverlay}>
-            <Feather name="image" size={20} color={Colors.iconColor} />
-            <NormalText style={s.imgNo} size={15} color={Colors.iconColor}>
+            <Feather name="image" size={20} color={Colors.passive} />
+            <NormalText style={s.imgNo} size={15} color={Colors.passive}>
               {imgCount}
             </NormalText>
           </View>

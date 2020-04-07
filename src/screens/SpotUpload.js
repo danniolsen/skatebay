@@ -1,7 +1,6 @@
 import * as React from "react";
 import { TouchableOpacity, Alert, ScrollView, StyleSheet } from "react-native";
-import { Text, View, Image } from "react-native";
-
+import { View, Image } from "react-native";
 import { connect } from "react-redux";
 import {
   InputData,
@@ -11,7 +10,6 @@ import {
 } from "../components/uploadSpot";
 import Header from "../components/header/Header";
 import { bannerShowAlert } from "../redux/actions/bannerActions";
-import { NormalText } from "../components/StyledText";
 import { setNewSpotData } from "../redux/actions/newSpotActions";
 import AlertBanner from "../components/banner/AlertBanner";
 

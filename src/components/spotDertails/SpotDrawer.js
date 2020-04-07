@@ -6,10 +6,10 @@ import {
   TouchableOpacity,
   Dimensions
 } from "react-native";
-
 import BottomSheet from "reanimated-bottom-sheet";
 import { Feather } from "@expo/vector-icons";
 import { ThinText } from "../StyledText";
+import Colors from "../../constants/Colors";
 
 const { width, height } = Dimensions.get("window");
 
@@ -36,13 +36,13 @@ const RenderHeader = props => (
     </View>
     <View style={s.headerCon}>
       <View style={s.spotTitle}>
-        <ThinText color="#2f3c41" size={20}>
+        <ThinText color={Colors.default} size={20}>
           {props.title}
         </ThinText>
       </View>
       <View style={s.updateDistance}>
         <TouchableOpacity onPress={props.updateDistance}>
-          <Feather name="navigation" color="#2f3c41" size={22} />
+          <Feather name="navigation" color={Colors.passive} size={22} />
         </TouchableOpacity>
       </View>
     </View>

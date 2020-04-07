@@ -1,9 +1,11 @@
 import React from "react";
 import {
-  StyleSheet, ImageBackground, View, Image,
+  StyleSheet,
+  ImageBackground,
+  View,
+  Image,
   Dimensions
 } from "react-native";
-
 
 const { width } = Dimensions.get("window");
 function ProfileHeader(props) {

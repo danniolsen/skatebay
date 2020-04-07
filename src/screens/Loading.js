@@ -1,8 +1,11 @@
 import React from "react";
 import {
-  View, StyleSheet, ActivityIndicator, ImageBackground
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  ImageBackground
 } from "react-native";
-
+import Colors from "../constants/Colors";
 import { ThinText } from "../components/StyledText";
 
 function Loading() {
@@ -11,8 +14,12 @@ function Loading() {
       source={require("../assets/images/loadingBackground.png")}
       style={s.container}
     >
-      <ActivityIndicator size="large" style={s.spaceing} />
-      <ThinText size={20} style={s.spaceing}>
+      <ActivityIndicator
+        size="large"
+        color={Colors.default}
+        style={s.spaceing}
+      />
+      <ThinText size={20} color={Colors.default} style={s.spaceing}>
         Loading
       </ThinText>
     </ImageBackground>

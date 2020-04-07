@@ -1,14 +1,16 @@
 import * as React from "react";
 import {
-  View, StyleSheet, ImageBackground, Dimensions,
+  View,
+  StyleSheet,
+  ImageBackground,
+  Dimensions,
   ActivityIndicator
 } from "react-native";
-
 import { Feather } from "@expo/vector-icons";
 import { ThinText } from "../StyledText";
+import Colors from "../../constants/Colors";
 
-const { width } = Dimensions.get("window");
-const { height } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 function EmptySpotList(props) {
   const [loading, setLoading] = React.useState(true);
@@ -37,7 +39,7 @@ function EmptySpotList(props) {
       )}
       {!loading && (
         <>
-          <ThinText size={25} style={s.seperaeteText}>
+          <ThinText size={25} color={Colors.default} style={s.seperaeteText}>
             Ooh!
           </ThinText>
 
@@ -45,14 +47,14 @@ function EmptySpotList(props) {
             source={require("../../assets/images/spotThumbnail.png")}
             style={s.bgImage}
           >
-            <Feather name="image" size={100} color="#CCC" />
+            <Feather name="image" size={100} color={Colors.inactive} />
           </ImageBackground>
 
-          <ThinText size={20} style={s.seperaeteText}>
+          <ThinText size={20} color={Colors.default} style={s.seperaeteText}>
             There are currently no spots around.
           </ThinText>
 
-          <ThinText size={13} style={s.seperaeteText}>
+          <ThinText size={13} color={Colors.default} style={s.seperaeteText}>
             Try to pull down to refresh.
           </ThinText>
         </>

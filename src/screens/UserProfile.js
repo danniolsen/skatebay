@@ -9,6 +9,7 @@ import ProfileSpot from "../components/profile/ProfileSpot";
 import EmptyProfileList from "../components/profile/EmptyList";
 import { getSavedSpotsList } from "../redux/actions/saveSpotActions";
 import { getUploadedSpots } from "../redux/actions/spotListActions";
+import Colors from "../constants/Colors";
 
 function UserProfile(props) {
   const { user, navigation, saved, savedListDis } = props;
@@ -42,7 +43,7 @@ function UserProfile(props) {
     }
   };
 
-  const setColor = tabId => (tabId === type ? "#FFF" : "#9e9e9e");
+  const setColor = tabId => (tabId === type ? Colors.white : Colors.inactive);
 
   return (
     <View style={s.container}>
