@@ -4,7 +4,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Fragment,
-  Alert
+  Alert,
+  Share
 } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
@@ -71,6 +72,24 @@ function SpotOptions(props) {
     return exists ? "#27ae60" : "#2f363d";
   };
 
+  const shareSpot = async () => {
+    try {
+      const result = await Share.share({
+        message: `SpotDetails ${props.link.spot_id}`
+      });
+
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   return (
     <>
       <View style={s.option}>
@@ -84,6 +103,16 @@ function SpotOptions(props) {
             name="eye-off"
             style={{ marginTop: 1 }}
             size={22}
+            color="#2f363d"
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={s.option}>
+        <TouchableOpacity onPress={() => shareSpot()}>
+          <Feather
+            name="share-2"
+            style={{ marginTop: 2 }}
+            size={24}
             color="#2f363d"
           />
         </TouchableOpacity>

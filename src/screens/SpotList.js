@@ -133,6 +133,7 @@ function SpotList(props) {
               saved={item.saved}
               hideSpot={spot => hideSpot(spot)}
               spotLocation={{ lat: item.latitude, lon: item.longitude }}
+              link={item}
             />
           </Spot>
         )}
