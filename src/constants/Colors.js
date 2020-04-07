@@ -10,5 +10,5 @@ export default {
   warningText: "#666804",
   noticeBackground: tintColor,
   noticeText: "#fff",
-  iconColor: "#2f3c41"
+  iconColor: "#6a7073"
 };

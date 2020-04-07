@@ -1,6 +1,9 @@
 import * as React from "react";
 import {
-  View, StyleSheet, Text, TouchableOpacity,
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
   Dimensions
 } from "react-native";
 
@@ -10,17 +13,14 @@ import { ThinText } from "../StyledText";
 
 const { width, height } = Dimensions.get("window");
 
-const SpotDrawer = (props) => (
+const SpotDrawer = props => (
   <BottomSheet
     style={s.container}
     snapPoints={["80%", "53%", "20%"]}
     initialSnap={1}
     onChange={() => alert("changed")}
     renderHeader={() => (
-      <RenderHeader
-        title={props.title}
-        updateDistance={props.updateDistance}
-      />
+      <RenderHeader title={props.title} updateDistance={props.updateDistance} />
     )}
     renderContent={() => (
       <View style={{ backgroundColor: "#FFF" }}>{props.children}</View>
@@ -29,7 +29,7 @@ const SpotDrawer = (props) => (
   />
 );
 
-const RenderHeader = (props) => (
+const RenderHeader = props => (
   <View style={s.mapHeader}>
     <View style={s.pullBtnCon}>
       <View style={s.pullBtn} />

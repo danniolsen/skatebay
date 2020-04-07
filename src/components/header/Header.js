@@ -1,8 +1,14 @@
 import * as React from "react";
 import {
-  View, Image, TouchableOpacity, StyleSheet,
-  SafeAreaView, Platform
+  View,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  Platform
 } from "react-native";
+import Colors from "../../constants/Colors";
+Colors.iconColor;
 
 import { Feather } from "@expo/vector-icons";
 import { ThinText } from "../StyledText";
@@ -14,7 +20,7 @@ function Header(props) {
     <View style={s.container}>
       <View style={s.left}>
         <TouchableOpacity onPress={props.leftAction}>
-          <Feather name={props.leftIcon} style={s.icon} size={30} />
+          <Feather name={props.leftIcon} color={Colors.iconColor} size={30} />
         </TouchableOpacity>
       </View>
       <View style={s.center}>
@@ -25,7 +31,7 @@ function Header(props) {
         <TouchableOpacity onPress={props.rightAction}>
           <Feather
             name={props.rightIcon}
-            color={props.color ? props.color : "#2f3c41"}
+            color={props.color ? props.color : Colors.iconColor}
             size={23}
             style={s.icon}
           />
@@ -51,7 +57,6 @@ const s = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  // icon: { color: "#2f3c41" },
   center: {
     flex: 7,
     flexDirection: "row",

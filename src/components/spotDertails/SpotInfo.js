@@ -1,14 +1,15 @@
 import * as React from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Image } from "react-native";
 import { getDistance, convertDistance } from "geolib";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { Feather } from "@expo/vector-icons";
 import { ThinText, NormalText } from "../StyledText";
 import timeAgo from "../../features/TimeAgo";
+import Colors from "../../constants/Colors";
 
 const SpotInfo = props => {
-  const { spotDetails, userLocation } = props;
+  const { spotDetails, userLocation, uploadOwner } = props;
   const [newTags, setNewTags] = React.useState([]);
   const [addressLoading, setAddressLoading] = React.useState(true);
   const [timeSince, setTimeSince] = React.useState("...");
@@ -77,8 +78,19 @@ const SpotInfo = props => {
   };
 
   return (
-    <>
-      <View style={s.container}>
+    <View style={s.container}>
+      <View style={s.userInformations}>
+        <View style={s.userImage}>
+          <Image
+            source={{ uri: uploadOwner.photo }}
+            style={s.userProfileImage}
+          />
+        </View>
+        <View style={s.userName}>
+          <ThinText>{uploadOwner.displayname}</ThinText>
+        </View>
+      </View>
+      <View style={s.topContainer}>
         <View>
           <ThinText style={s.infoTxt}>
             {address.city},{` ${address.country}`}.
@@ -92,7 +104,7 @@ const SpotInfo = props => {
 
       <View style={s.additionalCon}>
         <View style={s.savedCon}>
-          <Feather name="bookmark" color="#2f363d" size={25} />
+          <Feather name="bookmark" color={Colors.iconColor} size={25} />
 
           <ThinText style={{ marginTop: 5, paddingLeft: 5 }}>
             {props.saveCount}
@@ -101,7 +113,7 @@ const SpotInfo = props => {
 
         <View style={{ flex: 1, alignItems: "flex-end", marginTop: 3 }}>
           <View style={s.timeCon}>
-            <Feather name="clock" size={13} color="#AAA" />
+            <Feather name="clock" size={13} color={Colors.iconColor} />
             <ThinText color="#2f3c41" size={13} style={s.time}>
               {timeSince}
             </ThinText>
@@ -119,7 +131,7 @@ const SpotInfo = props => {
           <Tag key={i} spotTag={spotTag} />
         ))}
       </View>
-    </>
+    </View>
   );
 };
 
@@ -138,9 +150,11 @@ const Tag = props => {
 export default SpotInfo;
 
 const s = StyleSheet.create({
-  container: {
+  container: { flex: 1, paddingBottom: 30 },
+  topContainer: {
     flexDirection: "row",
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingBottom: 5,
     borderBottomColor: "#BBB",
     borderBottomWidth: StyleSheet.hairlineWidth
   },
@@ -150,6 +164,10 @@ const s = StyleSheet.create({
   timeCon: { flex: 1, flexDirection: "row", marginTop: 4 },
   time: { paddingLeft: 10, marginTop: -1.5 },
   savedCon: { flex: 1, flexDirection: "row", marginTop: -1 },
+  userInformations: { padding: 10, flexDirection: "row" },
+  userImage: { flex: 1.5 },
+  userProfileImage: { width: 35, height: 35, borderRadius: 17.5 },
+  userName: { flex: 8.5, justifyContent: "center" },
   tagsHead: { paddingLeft: 10, paddingTop: 10 },
   tagsCon: {
     flexDirection: "row",
