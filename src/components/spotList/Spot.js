@@ -10,14 +10,25 @@ const { width } = Dimensions.get("window");
 const imgHeight = width / 1.5;
 
 function Spot(props) {
-  const { navigation, spotIsHidden, refreshed, spotId } = props;
+  const {
+    navigation,
+    spotIsHidden,
+    refreshed,
+    spotId,
+    title,
+    moreAction,
+    enterAction,
+    imgCount,
+    children,
+    url
+  } = props;
   const [mainImage, setMainImage] = React.useState();
   const [blur, setBlur] = React.useState(0);
 
   React.useEffect(() => {
     let isCancled = false;
     if (!isCancled) {
-      const starsRef = storageRef.child(`/${props.spotId}/${props.url}`);
+      const starsRef = storageRef.child(`/${spotId}/${url}`);
       starsRef.getDownloadURL().then(url => {
         setMainImage(url);
       });
@@ -34,19 +45,19 @@ function Spot(props) {
     <View style={s.container}>
       <View style={s.header}>
         <ThinText style={s.headline} size={20}>
-          {props.title} {"id " + props.spotId}
+          {title}
         </ThinText>
-        <TouchableOpacity onPress={props.moreAction}>
+        <TouchableOpacity onPress={moreAction}>
           <Feather style={s.more} name="more-vertical" size={20} />
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity onPress={props.enterAction} activeOpacity={0.8}>
+      <TouchableOpacity onPress={enterAction} activeOpacity={0.8}>
         <View style={s.imageCon}>
           <View style={s.imageOverlay}>
             <Feather name="image" size={20} color="#2f363d" />
             <NormalText style={s.imgNo} size={15} color="#2f363d">
-              {props.imgCount}
+              {imgCount}
             </NormalText>
           </View>
           <Image
@@ -59,7 +70,7 @@ function Spot(props) {
         </View>
       </TouchableOpacity>
 
-      <View style={s.optionsBar}>{props.children}</View>
+      <View style={s.optionsBar}>{children}</View>
     </View>
   );
 }

@@ -29,7 +29,6 @@ function SpotList(props) {
     if (!isCancelled) {
       // check if custom location is in use from params
       props.route.params ? getSpots(location) : getSpotlist();
-      console.log(props.route.params);
     }
     return () => (isCancelled = true);
   }, []);
