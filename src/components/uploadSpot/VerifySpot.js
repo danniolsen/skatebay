@@ -1,12 +1,10 @@
 import * as React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
-import { Feather } from "@expo/vector-icons";
 import { NormalText } from "../StyledText";
+import Colors from "../../constants/Colors";
 
-const VerifySpotData = (props) => {
-  const {
-    user, duplicate, images, location, title, tags, btnStatus
-  } = props;
+const VerifySpotData = props => {
+  const { user, duplicate, images, location, title, tags, btnStatus } = props;
 
   const checkImages = () => {
     const numOfImgs = [];
@@ -33,7 +31,7 @@ const VerifySpotData = (props) => {
     return false;
   };
 
-  const checkTags = () => (!!(tags.length >= 1 && tags.length <= 5));
+  const checkTags = () => !!(tags.length >= 1 && tags.length <= 5);
 
   const validateData = () => {
     const statusArray = [];
@@ -43,7 +41,7 @@ const VerifySpotData = (props) => {
     const locationStatus = checkLocation();
 
     statusArray.push(titleStatus, imagesStatus, tagsStatus, locationStatus);
-    const isTrue = (currentStatus) => currentStatus === true;
+    const isTrue = currentStatus => currentStatus === true;
     const status = !!statusArray.every(isTrue);
 
     return props.spotStatus(status);
@@ -53,10 +51,13 @@ const VerifySpotData = (props) => {
 
   return (
     <TouchableOpacity
-      style={[s.container, { backgroundColor: btnStatus ? "#3498db" : "#AAA" }]}
+      style={[
+        s.container,
+        { backgroundColor: btnStatus ? Colors.btnActive : Colors.inactive }
+      ]}
       onPress={props.verifySpot}
     >
-      <NormalText color="#FFF" size={17}>
+      <NormalText color={Colors.white} size={17}>
         Verify
       </NormalText>
     </TouchableOpacity>

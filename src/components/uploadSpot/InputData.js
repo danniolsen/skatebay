@@ -2,12 +2,13 @@ import * as React from "react";
 import { View, StyleSheet, TextInput } from "react-native";
 import { NormalText, ThinText } from "../StyledText";
 import Headline from "./Headline";
+import Colors from "../../constants/Colors";
 
-const InputData = (props) => {
+const InputData = props => {
   const { getTitle, headline } = props;
   const [status, setStatus] = React.useState(false);
 
-  const setTitle = (txt) => {
+  const setTitle = txt => {
     const newTitle = txt.nativeEvent.text;
     props.title(newTitle);
 
@@ -16,7 +17,7 @@ const InputData = (props) => {
     }
   };
 
-  const showError = (del) => {
+  const showError = del => {
     const deleting = del.nativeEvent.key === "Backspace";
     deleting && getTitle.length - 1 < 3 ? setStatus(true) : null;
   };
@@ -42,17 +43,21 @@ const InputData = (props) => {
         allowFontScaling
         autoCapitalize="sentences"
         maxLength={20}
-        onChange={(txt) => setTitle(txt)}
-        onKeyPress={(del) => showError(del)}
+        onChange={txt => setTitle(txt)}
+        onKeyPress={del => showError(del)}
         placeholder="Spot title"
         onBlur={() => userLeft()}
         onFocus={() => inputTap()}
       >
-        <ThinText size={20}>{getTitle}</ThinText>
+        <ThinText size={20} color={Colors.default}>
+          {getTitle}
+        </ThinText>
       </TextInput>
 
       <View style={s.inputCounter}>
-        <ThinText size={14}>{`${getTitle.length} / 20`}</ThinText>
+        <ThinText color={Colors.default} size={14}>{`${
+          getTitle.length
+        } / 20`}</ThinText>
       </View>
     </View>
   );

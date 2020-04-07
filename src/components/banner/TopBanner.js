@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import { NormalText } from "../StyledText";
 import { bannerHide } from "../../redux/actions/bannerActions";
-
+import Colors from "../../constants/Colors";
 const TopBanner = props => {
   const color = "#FFF";
   const { msg, style, hideBannerDis, banner } = props;
@@ -19,14 +19,14 @@ const TopBanner = props => {
           </View>
           <View style={s.dismis}>
             <TouchableOpacity onPress={() => hideBannerDis()}>
-              <NormalText color="#FFF">Dismis</NormalText>
+              <NormalText color={Colors.white}>Dismis</NormalText>
             </TouchableOpacity>
           </View>
         </View>
       </View>
     );
   } else {
-    return <View style={{ backgroundColor: "#F00" }} />;
+    return <View />;
   }
 };
 

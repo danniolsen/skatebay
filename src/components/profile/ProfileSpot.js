@@ -4,8 +4,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Dimensions,
-  Text
+  Dimensions
 } from "react-native";
 
 import { storageRef } from "../../utils/firebase";

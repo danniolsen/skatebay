@@ -1,7 +1,13 @@
 import * as React from "react";
 import {
-  View, StyleSheet, Image, Dimensions, Alert,
-  TouchableOpacity, ActivityIndicator, ScrollView
+  View,
+  StyleSheet,
+  Image,
+  Dimensions,
+  Alert,
+  TouchableOpacity,
+  ActivityIndicator,
+  ScrollView
 } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
@@ -11,11 +17,11 @@ import { NormalText } from "../StyledText";
 import Headline from "./Headline";
 import Thumbnails from "./Thumbnails";
 import Upload from "../../features/Upload";
-
+import Colors from "../../constants/Colors";
 const { width, height } = Dimensions.get("window");
 const imgHeight = width / 1.5;
 
-const ImagePicking = (props) => {
+const ImagePicking = props => {
   const { getImages, headline } = props;
   const [status, setStatus] = React.useState(false);
   const [imageLoading, setImageLoading] = React.useState(true);
@@ -36,7 +42,7 @@ const ImagePicking = (props) => {
   };
 
   // launch image picker, set image, check if location is present.
-  const pickImage = async (img) => {
+  const pickImage = async img => {
     if (!img.set) {
       const img = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Image,
@@ -57,11 +63,11 @@ const ImagePicking = (props) => {
 
             const resizedImage = Upload().resizeImage(img);
             resizedImage
-              .then((smallImage) => {
+              .then(smallImage => {
                 const imgUri = smallImage.uri;
                 setImg(imgUri, imgLocation);
               })
-              .catch((err) => {
+              .catch(err => {
                 alert("Something went wrong, try again");
               });
           } else {
@@ -93,7 +99,7 @@ const ImagePicking = (props) => {
   };
 
   // remove an image from the images array
-  const removeImage = async (id) => {
+  const removeImage = async id => {
     setAction("remove");
     // use getImages
     const removedUpdate = Upload().removeImage(getImages, id);
@@ -135,7 +141,7 @@ const ImagePicking = (props) => {
   );
 };
 
-const ImageCon = (props) => {
+const ImageCon = props => {
   const { data, loading, noOfImages } = props;
 
   const setUri = data.set
@@ -150,19 +156,23 @@ const ImageCon = (props) => {
     >
       {data.set && (
         <TouchableOpacity onPress={props.removeImage} style={s.remove}>
-          <Feather name="x" size={27} color="#e74c3c" />
+          <Feather name="x" size={27} color={Colors.error} />
         </TouchableOpacity>
       )}
 
       <View style={s.imgCon}>
         {loading && (
-          <ActivityIndicator style={s.loading} size="large" color="#2f363d" />
+          <ActivityIndicator
+            style={s.loading}
+            size="large"
+            color={Colors.default}
+          />
         )}
         {!loading && <Image style={s.img} source={setUri} />}
       </View>
 
       <View style={s.imgOverlay}>
-        <NormalText color="#FFF">{`${noOfImages - 1} / 4`}</NormalText>
+        <NormalText color={Colors.white}>{`${noOfImages - 1} / 4`}</NormalText>
       </View>
     </TouchableOpacity>
   );

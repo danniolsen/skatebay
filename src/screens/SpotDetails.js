@@ -1,9 +1,8 @@
 import * as React from "react";
-import { StyleSheet, View, Dimensions, ScrollView, Text } from "react-native";
+import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import Header from "../components/header/Header";
 import { saveCount } from "../redux/actions/saveSpotActions";
-import { ThinText } from "../components/StyledText";
 import Map from "../components/spotDertails/Map";
 import SpotDrawer from "../components/spotDertails/SpotDrawer";
 import SpotImages from "../components/spotDertails/SpotImages";

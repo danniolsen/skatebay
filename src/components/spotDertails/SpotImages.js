@@ -8,7 +8,7 @@ import {
   Text,
   ActivityIndicator
 } from "react-native";
-
+import Colors from "../../constants/Colors";
 import { Feather } from "@expo/vector-icons";
 import { SliderBox } from "react-native-image-slider-box";
 import { storage } from "../../utils/firebase";
@@ -51,11 +51,11 @@ const SpotImages = props => {
     <View style={s.container}>
       <SliderBox
         style={s.slider}
-        imageLoadingColor="#2f3c41"
+        imageLoadingColor={Colors.passive}
         images={images}
         resizeMode="cover"
-        dotColor="#000"
-        inactiveDotColor="#FFF"
+        dotColor={Colors.passive}
+        inactiveDotColor={Colors.white}
       />
     </View>
   );

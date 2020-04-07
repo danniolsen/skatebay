@@ -1,18 +1,19 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
 import { NormalText } from "../StyledText";
+import Colors from "../../constants/Colors";
 
-const Headline = (props) => {
+const Headline = props => {
   const { name, warning, active } = props;
 
   return (
     <View style={s.headline}>
-      <NormalText style={s.headlineName} size={13} color="#2f363d">
+      <NormalText style={s.headlineName} size={13} color={Colors.default}>
         {name}
       </NormalText>
       <View style={s.headlineError}>
         {active && (
-          <NormalText size={10} color="#e74c3c">
+          <NormalText size={10} color={Colors.error}>
             {warning}
           </NormalText>
         )}

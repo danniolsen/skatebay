@@ -69,7 +69,7 @@ function SpotOptions(props) {
 
   const isSaved = () => {
     const exists = saved.find(({ spot_id }) => spot_id === props.spotId);
-    return exists ? "#27ae60" : Colors.iconColor;
+    return exists ? "#27ae60" : Colors.passive;
   };
 
   const shareSpot = async () => {
@@ -103,7 +103,7 @@ function SpotOptions(props) {
             name="eye-off"
             style={{ marginTop: 1 }}
             size={22}
-            color={Colors.iconColor}
+            color={Colors.passive}
           />
         </TouchableOpacity>
       </View>
@@ -113,7 +113,7 @@ function SpotOptions(props) {
             name="share-2"
             style={{ marginTop: 2 }}
             size={24}
-            color={Colors.iconColor}
+            color={Colors.passive}
           />
         </TouchableOpacity>
       </View>

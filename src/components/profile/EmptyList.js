@@ -1,9 +1,12 @@
 import * as React from "react";
 import {
-  View, StyleSheet, ImageBackground, Dimensions,
+  View,
+  StyleSheet,
+  ImageBackground,
+  Dimensions,
   ActivityIndicator
 } from "react-native";
-
+import Colors from "../../constants/Colors";
 import { Feather } from "@expo/vector-icons";
 import { ThinText } from "../StyledText";
 
@@ -32,7 +35,7 @@ function EmptyProfileList(props) {
       <View style={s.loadingCon} />
       {loading && (
         <View style={s.loadingCon}>
-          <ActivityIndicator size="large" />
+          <ActivityIndicator color={Colors.default} size="large" />
         </View>
       )}
       {!loading && (
@@ -42,10 +45,10 @@ function EmptyProfileList(props) {
             style={s.bgImage}
           />
 
-          <ThinText size={20} style={s.seperaeteText}>
+          <ThinText color={Colors.passive} size={20} style={s.seperaeteText}>
             No spots have been saved
           </ThinText>
-          <ThinText size={20} style={s.seperaeteText}>
+          <ThinText color={Colors.passive} size={20} style={s.seperaeteText}>
             to your collections, yet.
           </ThinText>
         </>

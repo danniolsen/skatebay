@@ -11,6 +11,7 @@ import { NormalText } from "../StyledText";
 import { bannerHideAlert } from "../../redux/actions/bannerActions";
 import { Feather } from "@expo/vector-icons";
 const { width, height } = Dimensions.get("window");
+import Colors from "../../constants/Colors";
 
 const AlertBanner = props => {
   const color = "#FFF";
@@ -56,14 +57,14 @@ const AlertBanner = props => {
         <View style={s.alertContainer}>
           <View style={[s.alertHeader, { backgroundColor: header.bg }]}>
             <View style={s.headerInnerCon}>
-              <NormalText style={s.headerTxt} color="#FFF" size={18}>
+              <NormalText style={s.headerTxt} color={Colors.white} size={18}>
                 {title}
               </NormalText>
               <Feather
                 style={s.headerIcon}
                 name={header.icon}
                 size={18}
-                color="#FFF"
+                color={Colors.white}
               />
             </View>
           </View>

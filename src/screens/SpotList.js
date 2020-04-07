@@ -2,7 +2,6 @@ import * as React from "react";
 import { StyleSheet, View, TouchableOpacity, FlatList } from "react-native";
 import { connect } from "react-redux";
 import * as firebase from "firebase";
-import { ThinText, NormalText } from "../components/StyledText";
 import Header from "../components/header/Header";
 import LocationService from "../features/LocationService";
 import { setNewLocation } from "../redux/actions/locationActions";

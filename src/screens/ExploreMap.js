@@ -1,9 +1,6 @@
 import * as React from "react";
-import {
-  StyleSheet, Text, View, Dimensions,
-  TouchableOpacity
-} from "react-native";
-
+import { StyleSheet, View, Dimensions, TouchableOpacity } from "react-native";
+import Colors from "../constants/Colors";
 import { Feather } from "@expo/vector-icons";
 import MapView, { Marker } from "react-native-maps";
 import { connect } from "react-redux";
@@ -23,7 +20,7 @@ function ExploreMap(props) {
     longitude: location.longitude
   });
 
-  const updateLocation = (e) => {
+  const updateLocation = e => {
     const updatedLocation = {
       latitude: e.nativeEvent.coordinate.latitude,
       longitude: e.nativeEvent.coordinate.longitude
@@ -33,10 +30,10 @@ function ExploreMap(props) {
 
   const restoreLocation = () => {
     LocationService()
-      .then((currentLocation) => {
+      .then(currentLocation => {
         setNewLocation(currentLocation);
       })
-      .catch((err) => {
+      .catch(err => {
         alert("Location not available");
       });
   };
@@ -56,7 +53,7 @@ function ExploreMap(props) {
   return (
     <View style={s.container}>
       <MapView
-        onLongPress={(e) => updateLocation(e)}
+        onLongPress={e => updateLocation(e)}
         showsUserLocation
         style={s.map}
         initialRegion={{
@@ -72,7 +69,7 @@ function ExploreMap(props) {
             latitude: newLocation.latitude,
             longitude: newLocation.longitude
           }}
-          onDragEnd={(e) => updateLocation(e)}
+          onDragEnd={e => updateLocation(e)}
         />
       </MapView>
 
@@ -85,7 +82,7 @@ function ExploreMap(props) {
         />
       </View>
       <View style={s.infoCon}>
-        <NormalText size={13} style={{ flex: 1 }} color="#FFF">
+        <NormalText size={13} style={{ flex: 1 }} color={Colors.white}>
           Press and hold the pin to change it's location, or long press anywhere
           on the map to place the marker
         </NormalText>
@@ -94,23 +91,23 @@ function ExploreMap(props) {
   );
 }
 
-const LocationContainer = (props) => (
+const LocationContainer = props => (
   <>
     <View style={s.locationLeft}>
       <View style={s.locationRow}>
-        <NormalText color="#FFF" style={s.locationName}>
+        <NormalText color={Colors.white} style={s.locationName}>
           Latitude
         </NormalText>
-        <NormalText color="#FFF" style={s.locationValue}>
+        <NormalText color={Colors.white} style={s.locationValue}>
           {props.lat}
         </NormalText>
       </View>
 
       <View style={s.locationRow}>
-        <NormalText color="#FFF" style={s.locationName}>
+        <NormalText color={Colors.white} style={s.locationName}>
           Longitude
         </NormalText>
-        <NormalText color="#FFF" style={s.locationValue}>
+        <NormalText color={Colors.white} style={s.locationValue}>
           {props.lon}
         </NormalText>
       </View>
@@ -119,24 +116,24 @@ const LocationContainer = (props) => (
     <View style={s.locationRight}>
       <View style={s.buttonCon}>
         <TouchableOpacity onPress={props.restoreLocation}>
-          <Feather name="navigation" size={25} color="#FFF" />
+          <Feather name="navigation" size={25} color={Colors.white} />
         </TouchableOpacity>
       </View>
       <View style={s.buttonCon}>
         <TouchableOpacity onPress={props.confirmLocation}>
-          <Feather name="check" size={25} color="#FFF" />
+          <Feather name="check" size={25} color={Colors.white} />
         </TouchableOpacity>
       </View>
     </View>
   </>
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   location: state.location
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  locationDis: (payload) => dispatch(setNewLocation(payload))
+const mapDispatchToProps = dispatch => ({
+  locationDis: payload => dispatch(setNewLocation(payload))
 });
 
 export default connect(

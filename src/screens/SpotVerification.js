@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import Header from "../components/header/Header";
 import { NormalText, ThinText } from "../components/StyledText";
 import { createNewSpot } from "../redux/actions/newSpotActions";
-
+import Colors from "../constants/Colors";
 const { width } = Dimensions.get("window");
 const imgHeight = width / 1.5;
 
@@ -104,7 +104,7 @@ const SpotVerification = props => {
       <Header leftIcon="chevron-left" leftAction={() => navigation.goBack()} />
       <ScrollView style={s.content}>
         <View style={s.title}>
-          <ThinText color="#2f3c41" size={20}>
+          <ThinText color={Colors.default} size={20}>
             {title}
           </ThinText>
         </View>
@@ -122,10 +122,12 @@ const SpotVerification = props => {
         </ScrollView>
 
         <View style={s.addressCon}>
-          <ThinText style={s.infoTxt}>
+          <ThinText color={Colors.default} style={s.infoTxt}>
             {address.city},{address.country}.
           </ThinText>
-          <ThinText style={s.infoTxt}>{address.street}.</ThinText>
+          <ThinText color={Colors.default} style={s.infoTxt}>
+            {address.street}.
+          </ThinText>
         </View>
 
         <MapView
@@ -153,9 +155,9 @@ const SpotVerification = props => {
       >
         <View style={s.buttonContainer}>
           {btnLoading ? (
-            <ActivityIndicator color="#FFF" />
+            <ActivityIndicator color={Colors.white} />
           ) : (
-            <NormalText color="#FFF" size={17}>
+            <NormalText color={Colors.white} size={17}>
               Submit
             </NormalText>
           )}
@@ -210,7 +212,7 @@ const s = StyleSheet.create({
     zIndex: 2,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#3498db",
+    backgroundColor: Colors.btnActive,
     padding: 20
   }
 });
