@@ -1,7 +1,12 @@
 import * as React from "react";
 import {
-  View, TouchableOpacity, Image, StyleSheet,
-  Dimensions, Text, ActivityIndicator
+  View,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Dimensions,
+  Text,
+  ActivityIndicator
 } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
@@ -11,7 +16,7 @@ import { storage } from "../../utils/firebase";
 const { width, height } = Dimensions.get("window");
 const imgHeight = width / 1.5;
 
-const SpotImages = (props) => {
+const SpotImages = props => {
   const { spotImages, spotId } = props;
   const [images, setImages] = React.useState([]);
   const [imgLoading, setImgLoading] = React.useState(true);
@@ -19,6 +24,7 @@ const SpotImages = (props) => {
   React.useEffect(() => {
     let isCancelled = false;
     if (!isCancelled) {
+      console.log(spotId);
       const storageRef = storage.ref(`${spotId}`);
       getImages(storageRef);
     }
@@ -27,11 +33,11 @@ const SpotImages = (props) => {
     };
   }, []);
 
-  const getImages = async (storageRef) => {
+  const getImages = async storageRef => {
     const imgCopy = [];
     const storage = await storageRef.listAll();
 
-    const addImages = storage.items.map(async (imageRef) => {
+    const addImages = storage.items.map(async imageRef => {
       const img = await imageRef.getDownloadURL();
       imgCopy.push(img);
     });

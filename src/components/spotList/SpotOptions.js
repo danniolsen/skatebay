@@ -7,7 +7,7 @@ import {
   Alert,
   Share
 } from "react-native";
-
+import Colors from "../../constants/Colors";
 import { Feather } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { getDistance, convertDistance } from "geolib";
@@ -69,7 +69,7 @@ function SpotOptions(props) {
 
   const isSaved = () => {
     const exists = saved.find(({ spot_id }) => spot_id === props.spotId);
-    return exists ? "#27ae60" : "#2f363d";
+    return exists ? "#27ae60" : Colors.iconColor;
   };
 
   const shareSpot = async () => {
@@ -103,7 +103,7 @@ function SpotOptions(props) {
             name="eye-off"
             style={{ marginTop: 1 }}
             size={22}
-            color="#2f363d"
+            color={Colors.iconColor}
           />
         </TouchableOpacity>
       </View>
@@ -113,7 +113,7 @@ function SpotOptions(props) {
             name="share-2"
             style={{ marginTop: 2 }}
             size={24}
-            color="#2f363d"
+            color={Colors.iconColor}
           />
         </TouchableOpacity>
       </View>

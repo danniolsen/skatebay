@@ -9,14 +9,16 @@ import SpotDrawer from "../components/spotDertails/SpotDrawer";
 import SpotImages from "../components/spotDertails/SpotImages";
 import SpotInfo from "../components/spotDertails/SpotInfo";
 import LocationService from "../features/LocationService";
+import { getUserById } from "../redux/actions/postedByUserActions";
+
 const { width, height } = Dimensions.get("window");
-// new stuff ends
 
 function SpotDetails(props) {
-  const { userlocation, user } = props;
+  const { userlocation, user, getUserDis } = props;
   const spotDetails = props.route.params;
   const [uLocation, setUlocation] = React.useState(userlocation);
   const [count, setCount] = React.useState("...");
+  const [uploadUser, setUploadUser] = React.useState({});
 
   const newDistance = () => {
     LocationService().then(loc => {
@@ -27,6 +29,10 @@ function SpotDetails(props) {
   React.useEffect(() => {
     let isCancled = false;
     if (!isCancled) {
+      getUserDis(spotDetails.spots_user_fk).then(postUser => {
+        setUploadUser(postUser);
+      });
+
       saveCount(spotDetails.spot_id).then(c => {
         setCount(c);
       });
@@ -63,6 +69,7 @@ function SpotDetails(props) {
               spotDetails={spotDetails}
               userLocation={uLocation}
               saveCount={count}
+              uploadOwner={uploadUser}
             />
           </View>
         </ScrollView>
@@ -77,7 +84,9 @@ const mapStateToProps = state => ({
   saved: state.saved.spots
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  getUserDis: payload => dispatch(getUserById(payload))
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps
