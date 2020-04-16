@@ -27,7 +27,7 @@ function ProfileSpot(props) {
   }, []);
 
   const getImages = imgUrl => {
-    const starsRef = storageRef.child(`/${props.spot.spot_id}/${imgUrl}`);
+    const starsRef = storageRef.child(`/${props.spot.uuid}/${imgUrl}`);
     starsRef.getDownloadURL().then(url => {
       setMainImage(url);
     });

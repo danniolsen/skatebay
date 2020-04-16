@@ -60,6 +60,7 @@ function SpotDetails(props) {
         <ScrollView style={s.innerScroll}>
           <SpotImages
             spotId={spotDetails.spot_id}
+            uuid={spotDetails.uuid}
             spotImages={spotDetails.spot_images}
           />
 

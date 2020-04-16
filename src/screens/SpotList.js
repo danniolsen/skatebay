@@ -21,7 +21,6 @@ function SpotList(props) {
   const [selected, setSelected] = React.useState(null);
   const [refreshing, setRefreshing] = React.useState(true);
   const [hidden, setHidden] = React.useState([]);
-  const [mainImage, setMainImage] = React.useState();
 
   React.useEffect(() => {
     let isCancelled = false;
@@ -94,7 +93,7 @@ function SpotList(props) {
     };
     removeSpotDis(removeData);
   };
-  //console.log("No of spots ", spotList.spotList.length);
+
   return (
     <View style={s.container}>
       {moreActions && (
@@ -117,6 +116,7 @@ function SpotList(props) {
             title={item.spot_title}
             spotId={item.spot_id}
             userId={user.user.user_id}
+            uuid={item.uuid}
             imgCount={item.spot_images.length}
             url={item.spot_images[0]}
             userLocation={location}

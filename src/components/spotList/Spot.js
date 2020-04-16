@@ -16,6 +16,7 @@ function Spot(props) {
     spotIsHidden,
     refreshed,
     spotId,
+    uuid,
     title,
     moreAction,
     enterAction,
@@ -29,7 +30,7 @@ function Spot(props) {
   React.useEffect(() => {
     let isCancled = false;
     if (!isCancled) {
-      const starsRef = storageRef.child(`/${spotId}/${url}`);
+      const starsRef = storageRef.child(`${uuid}/${url}`);
       starsRef.getDownloadURL().then(url => {
         setMainImage(url);
       });

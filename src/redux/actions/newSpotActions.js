@@ -16,6 +16,7 @@ const createNewSpot = newSpot => {
   const uploadImages = spot => {
     const formData = new FormData();
     formData.append("spot_id", spot.spot_id);
+    formData.append("uuid", spot.uuid);
 
     newSpot.spot.images.map((img, i) => {
       const filename = spot.images[i];
@@ -41,8 +42,7 @@ const createNewSpot = newSpot => {
   // return uploadImages;
 
   const createspotdata = (dispatch, error) => {
-    const { spot } = newSpot;
-    const { user } = newSpot;
+    const { spot, user } = newSpot;
 
     return axios
       .post("http://192.168.1.76:5000/newspot", {

@@ -17,15 +17,14 @@ const { width, height } = Dimensions.get("window");
 const imgHeight = width / 1.5;
 
 const SpotImages = props => {
-  const { spotImages, spotId } = props;
+  const { spotImages, spotId, uuid } = props;
   const [images, setImages] = React.useState([]);
   const [imgLoading, setImgLoading] = React.useState(true);
 
   React.useEffect(() => {
     let isCancelled = false;
     if (!isCancelled) {
-      console.log(spotId);
-      const storageRef = storage.ref(`${spotId}`);
+      const storageRef = storage.ref(`${uuid}`);
       getImages(storageRef);
     }
     return () => {
