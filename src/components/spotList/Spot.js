@@ -113,7 +113,7 @@ const s = StyleSheet.create({
   imgNo: { paddingLeft: 5 },
   image: {
     height: imgHeight - 20,
-    resizeMode: "stretch"
+    resizeMode: "cover"
   },
   optionsBar: {
     paddingVertical: 15,

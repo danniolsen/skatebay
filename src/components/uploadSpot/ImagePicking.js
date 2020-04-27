@@ -48,8 +48,7 @@ const ImagePicking = props => {
         mediaTypes: ImagePicker.MediaTypeOptions.Image,
         allowsEditing: false,
         cropping: true,
-        aspect: [15, 10],
-        quality: 0.1,
+        quality: 0.5,
         exif: true
       });
       if (!img.cancelled) {
